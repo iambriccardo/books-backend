@@ -15,7 +15,9 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "helmet": "^4.4.1"
+    "fp-ts": "^2.9.5",
+    "helmet": "^4.4.1",
+    "http-status-codes": "^2.1.4"
   },
   "devDependencies": {
     "@types/cors": "^2.8.10",

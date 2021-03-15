@@ -4,23 +4,45 @@ import { StatusCodes } from 'http-status-codes';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/lib/function';
 
-export interface IControllerHttpRequest {
+/**
+ * Interface describing the request object that a controller
+ * can take.
+ *
+ * Via this interface we pass to the controller all the necessary
+ * dependencies and information.
+ */
+export interface IControllerRequest {
     body: Request['body'];
     query: Request['query'];
     params: Request['params'];
 }
 
+/**
+ *  Interface describing the response object that a controller
+ *  will return.
+ */
 export interface IControllerResponse<T> {
     body: T;
 }
 
+/**
+ *  Type definition of the controller.
+ */
 export type Controller<ET, VT> = (
-    request: IControllerHttpRequest,
+    request: IControllerRequest,
 ) => TE.TaskEither<ET, IControllerResponse<VT>>;
 
-export const dispatchToController = <ET, VT>(
-    controller: Controller<ET, VT>,
-) => {
+/**
+ * Helper function which generates a middleware responsible of the interaction between express.js
+ * and the controller.
+ *
+ * The idea is to handle the requests all in the controller via a well defined interface, in order
+ * to completely hide the underlying framework used for communication. Moreover this implementation
+ * allows for a centralized representation of the json responses.
+ *
+ * @param controller, the controller which will handle the communication.
+ */
+export const expressToController = <ET, VT>(controller: Controller<ET, VT>) => {
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     return async (req: Request, res: Response) => {
         const controllerHttpRequest = {
@@ -51,12 +73,11 @@ export const dispatchToController = <ET, VT>(
     };
 };
 
-export const attachController = (
-    request: IControllerHttpRequest,
-    controller: (
-        request: IControllerHttpRequest,
-    ) => Promise<IControllerResponse<string>>,
-) => {
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    return async () => controller(request);
-};
+/**
+ * Utility function that maps a TaskEither right part to a valid controller response.
+ */
+export const mapToControllerResponse: <A, E>(
+    fa: TE.TaskEither<E, A>,
+) => TE.TaskEither<E, IControllerResponse<A>> = TE.map((response) => ({
+    body: response,
+}));

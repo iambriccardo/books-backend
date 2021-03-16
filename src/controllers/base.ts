@@ -5,6 +5,14 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/lib/function';
 
 /**
+ * Interface describing the context of the controller, as a
+ * set of key value pairs which can hold any value.
+ */
+interface IControllerContext {
+    [key: string]: unknown;
+}
+
+/**
  * Interface describing the request object that a controller
  * can take.
  *
@@ -15,6 +23,7 @@ export interface IControllerRequest {
     body: Request['body'];
     query: Request['query'];
     params: Request['params'];
+    context?: IControllerContext;
 }
 
 /**
@@ -41,14 +50,18 @@ export type Controller<ET, VT> = (
  * allows for a centralized representation of the json responses.
  *
  * @param controller, the controller which will handle the communication.
+ * @param context, the context of the controller.
  */
-export const expressToController = <ET, VT>(controller: Controller<ET, VT>) => {
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    return async (req: Request, res: Response) => {
+export const expressToController = <ET, VT>(
+    controller: Controller<ET, VT>,
+    context?: IControllerContext,
+) => {
+    return async (req: Request, res: Response): Promise<void> => {
         const controllerHttpRequest = {
             body: req.body,
             query: req.query,
             params: req.params,
+            context: context,
         };
 
         const startController = pipe(

@@ -3,35 +3,55 @@ import v1Routes from './routes/v1';
 import helmet from 'helmet';
 import cors from 'cors';
 import { connectToMongo } from './helpers/mongoose';
-
-const DEFAULT_PORT = 3000;
+import session from 'express-session';
+import passport from 'passport';
+import MongoStore from 'connect-mongo';
+import { LocalStrategy, userDeserializer } from './helpers/passport';
+import { MONGO_DB_URL, PORT, SESSION_SECRET_KEY } from './helpers/environment';
 
 class Server {
     app = express();
-    port = parseInt(process.env.PORT as string, 10) || DEFAULT_PORT;
+
+    sessionOptions = {
+        resave: true,
+        saveUninitialized: true,
+        secret: SESSION_SECRET_KEY,
+        store: MongoStore.create({
+            mongoUrl: MONGO_DB_URL,
+            autoRemove: 'interval',
+        }),
+    };
+
+    initResources() {
+        connectToMongo(MONGO_DB_URL).catch((reason) =>
+            console.log(`Error while connecting to mongoDB: ${reason}`),
+        );
+    }
+
+    configurePassport() {
+        passport.serializeUser(userDeserializer);
+        passport.deserializeUser(userDeserializer);
+        passport.use(LocalStrategy);
+    }
 
     applyMiddlewares() {
         this.app.use(helmet());
         this.app.use(cors());
         this.app.use(express.json());
+        this.app.use(session(this.sessionOptions));
+        this.app.use(passport.initialize());
+        this.app.use(passport.session());
 
         this.app.use('/v1', v1Routes);
     }
 
-    initResources() {
-        connectToMongo(
-            process.env.MONGO_DB_CONNECTION as string,
-        ).catch((reason) =>
-            console.log(`Error while connecting to mongoDB: ${reason}`),
-        );
-    }
-
     start() {
         this.initResources();
+        this.configurePassport();
         this.applyMiddlewares();
 
-        this.app.listen(this.port, () => {
-            console.log(`Listening on port: ${this.port}`);
+        this.app.listen(PORT, () => {
+            console.log(`Listening on port: ${PORT}`);
         });
     }
 }

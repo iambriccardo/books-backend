@@ -64,6 +64,7 @@ export const expressToController = <ET, VT>(
             context: context,
         };
 
+        // TODO: implement custom error type which maps to HTTP status codes.
         const startController = pipe(
             controller(controllerHttpRequest),
             TE.mapLeft((error) => String(error)),

@@ -9,8 +9,9 @@ import { validateSignupUseCase } from '../../use-cases/authentication/signup/val
 import { chain } from 'fp-ts/TaskEither';
 import { signupUseCase } from '../../use-cases/authentication/signup/signup';
 import { sanitizeSignupUseCase } from '../../use-cases/authentication/signup/sanitize-signup';
+import { AppError } from '../../errors/base';
 
-export const signupController: Controller<Error, void> = (
+export const signupController: Controller<AppError, void> = (
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     request: IControllerRequest,
 ) =>

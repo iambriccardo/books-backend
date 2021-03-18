@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
 import * as TE from 'fp-ts/TaskEither';
-import { StatusCodes } from 'http-status-codes';
 import * as E from 'fp-ts/Either';
+import * as T from 'fp-ts/Tuple';
 import { pipe } from 'fp-ts/lib/function';
+import { AppError, errorToStatusCode } from '../errors/base';
+import { StatusCodes } from 'http-status-codes';
 
 /**
  * Interface describing the context of the controller, as a
@@ -52,8 +54,8 @@ export type Controller<ET, VT> = (
  * @param controller, the controller which will handle the communication.
  * @param context, the context of the controller.
  */
-export const expressToController = <ET, VT>(
-    controller: Controller<ET, VT>,
+export const expressToController = <VT>(
+    controller: Controller<AppError, VT>,
     context?: IControllerContext,
 ) => {
     return async (req: Request, res: Response): Promise<void> => {
@@ -67,21 +69,34 @@ export const expressToController = <ET, VT>(
         // TODO: implement custom error type which maps to HTTP status codes.
         const startController = pipe(
             controller(controllerHttpRequest),
-            TE.mapLeft((error) => String(error)),
+            TE.mapLeft(
+                (error) =>
+                    [error, errorToStatusCode(error)] as [
+                        AppError,
+                        StatusCodes,
+                    ],
+            ),
         );
 
         const controllerResponse = await startController();
         if (E.isRight(controllerResponse)) {
-            res.json({
-                statusCode: StatusCodes.OK,
-                ...controllerResponse.right,
+            const response = controllerResponse.right;
+            const statusCode = StatusCodes.OK;
+
+            res.status(statusCode).json({
+                status: statusCode,
+                ...response,
             });
         } else if (E.isLeft(controllerResponse)) {
-            res.json({
-                statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
-                body: {
-                    error: controllerResponse.left,
-                },
+            const error = T.fst(controllerResponse.left);
+            const statusCode = T.snd(controllerResponse.left);
+
+            res.status(statusCode).json({
+                type: error.type,
+                title: error.title,
+                status: statusCode,
+                detail: error.detail,
+                instance: req.originalUrl,
             });
         }
     };

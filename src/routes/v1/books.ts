@@ -6,7 +6,7 @@ import { isAuthenticated } from '../../helpers/passport';
 
 const router = Router();
 
-router.get('/all', isAuthenticated, expressToController(getAllBooksController));
+router.get('/all', expressToController(getAllBooksController));
 router.post('/sell', isAuthenticated, expressToController(sellBookController));
 
 export default router;

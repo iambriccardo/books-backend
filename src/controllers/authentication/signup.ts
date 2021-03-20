@@ -20,5 +20,5 @@ export const signupController: Controller<AppError, void> = (
         toTaskEither,
         chain((user) => pipe(validateSignupUseCase(user), toTaskEither)),
         chain((user) => pipe(signupUseCase(user), toTaskEither)),
-        mapToControllerResponse,
+        mapToControllerResponse(false),
     );

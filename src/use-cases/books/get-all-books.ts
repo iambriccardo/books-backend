@@ -1,8 +1,8 @@
 import { Lazy } from 'fp-ts/function';
-import { Book, IBook } from '../../entities/book';
+import { BookDocument, BookModel } from '../../entities/book';
 
-export const getAllBooksUseCase = (): Lazy<Promise<IBook[]>> => {
+export const getAllBooksUseCase = (): Lazy<Promise<BookDocument[]>> => {
     return async () => {
-        return await Book.find({}).exec();
+        return await BookModel.find({}).exec();
     };
 };

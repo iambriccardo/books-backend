@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Tuple';
@@ -10,7 +10,10 @@ import { StatusCodes } from 'http-status-codes';
  * Interface describing the context of the controller, as a
  * set of key value pairs which can hold any value.
  */
-interface IControllerContext {
+export interface IControllerContext {
+    expressRequest: Request;
+    expressResponse: Response;
+    expressNext: NextFunction;
     [key: string]: unknown;
 }
 
@@ -25,7 +28,7 @@ export interface IControllerRequest {
     body: Request['body'];
     query: Request['query'];
     params: Request['params'];
-    context?: IControllerContext;
+    context: IControllerContext;
 }
 
 /**
@@ -34,6 +37,7 @@ export interface IControllerRequest {
  */
 export interface IControllerResponse<T> {
     body: T;
+    responseHandled: boolean;
 }
 
 /**
@@ -58,15 +62,23 @@ export const expressToController = <VT>(
     controller: Controller<AppError, VT>,
     context?: IControllerContext,
 ) => {
-    return async (req: Request, res: Response): Promise<void> => {
+    return async (
+        req: Request,
+        res: Response,
+        next: NextFunction,
+    ): Promise<void> => {
         const controllerHttpRequest = {
             body: req.body,
             query: req.query,
             params: req.params,
-            context: context,
+            context: {
+                expressRequest: req,
+                expressResponse: res,
+                expressNext: next,
+                ...context,
+            },
         };
 
-        // TODO: implement custom error type which maps to HTTP status codes.
         const startController = pipe(
             controller(controllerHttpRequest),
             TE.mapLeft(
@@ -83,10 +95,12 @@ export const expressToController = <VT>(
             const response = controllerResponse.right;
             const statusCode = StatusCodes.OK;
 
-            res.status(statusCode).json({
-                status: statusCode,
-                ...response,
-            });
+            if (!response.responseHandled) {
+                res.status(statusCode).json({
+                    status: statusCode,
+                    body: response.body,
+                });
+            }
         } else if (E.isLeft(controllerResponse)) {
             const error = T.fst(controllerResponse.left);
             const statusCode = T.snd(controllerResponse.left);
@@ -105,8 +119,13 @@ export const expressToController = <VT>(
 /**
  * Utility function that maps a TaskEither right part to a valid controller response.
  */
-export const mapToControllerResponse: <A, E>(
+export const mapToControllerResponse: (
+    responseHandled: boolean,
+) => <E, A>(
     fa: TE.TaskEither<E, A>,
-) => TE.TaskEither<E, IControllerResponse<A>> = TE.map((response) => ({
-    body: response,
-}));
+) => TE.TaskEither<E, IControllerResponse<A>> = (responseHandled = false) => {
+    return TE.map((response) => ({
+        body: response,
+        responseHandled: responseHandled,
+    }));
+};

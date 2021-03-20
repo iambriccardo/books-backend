@@ -11,4 +11,9 @@ import { AppError } from '../../errors/base';
 export const sellBookController: Controller<AppError, void> = (
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     request: IControllerRequest,
-) => pipe(sellBookUseCase(request.body), toTaskEither, mapToControllerResponse);
+) =>
+    pipe(
+        sellBookUseCase(request.body),
+        toTaskEither,
+        mapToControllerResponse(false),
+    );

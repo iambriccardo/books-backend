@@ -1,9 +1,8 @@
 import { Lazy } from 'fp-ts/function';
-import { IUser, User } from '../../../entities/user';
+import { UserDocument, UserModel } from '../../../entities/user';
 
-export const signupUseCase = (user: IUser): Lazy<Promise<void>> => {
+export const signupUseCase = (user: UserDocument): Lazy<Promise<void>> => {
     return async () => {
-        const userModel = new User(user);
-        await userModel.save();
+        await new UserModel(user).save();
     };
 };

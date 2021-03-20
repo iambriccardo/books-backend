@@ -1,9 +1,11 @@
 import { Lazy } from 'fp-ts/function';
-import { IUser } from '../../../entities/user';
+import { UserDocument } from '../../../entities/user';
 
-export const validateSignupUseCase = (user: IUser): Lazy<Promise<IUser>> => {
+export const validateSignupUseCase = (
+    user: UserDocument,
+): Lazy<Promise<UserDocument>> => {
     return async () => {
-        console.log('validating signup');
+        console.log('Validating signup');
         return user;
     };
 };

@@ -1,12 +1,12 @@
 import { Document, Error, model, Model, Schema } from 'mongoose';
 import { compare, genSalt, hash } from 'bcrypt-nodejs';
 
-export interface IUserBase {
+export interface UserBase {
     username: string;
     password: string;
 }
 
-export interface IUser extends IUserBase, Document {
+export interface User extends UserBase {
     name: string;
     surname: string;
     contactInformation: {
@@ -17,6 +17,8 @@ export interface IUser extends IUserBase, Document {
     };
     comparePassword: ComparePasswordFunction;
 }
+
+export interface UserDocument extends User, Document {}
 
 const UserSchema: Schema = new Schema(
     {
@@ -37,7 +39,7 @@ const UserSchema: Schema = new Schema(
 );
 
 UserSchema.pre('save', function save(next) {
-    const user = this as IUser;
+    const user = this as UserDocument;
     if (!user.isModified('password')) return next();
 
     genSalt(10, (err, salt) => {
@@ -72,4 +74,4 @@ const comparePassword: ComparePasswordFunction = function (
 
 UserSchema.methods.comparePassword = comparePassword;
 
-export const User: Model<IUser> = model('User', UserSchema);
+export const UserModel: Model<UserDocument> = model('User', UserSchema);

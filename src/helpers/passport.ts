@@ -1,23 +1,23 @@
 import passportLocal from 'passport-local';
 import { NextFunction, Request, Response } from 'express';
 import { NativeError } from 'mongoose';
-import { IUser, User } from '../entities/user';
+import { UserDocument, UserModel } from '../entities/user';
 
 export const userSerializer = (req: any, user: any, done: any) => {
     done(undefined, user);
 };
 
 export const userDeserializer = (id: any, done: any) => {
-    User.findById(id, (err: NativeError, user: IUser) => {
+    UserModel.findById(id, (err: NativeError, user: UserDocument) => {
         done(err, user.id);
     });
 };
 
 export const LocalStrategy = new passportLocal.Strategy(
     (username, password, done) => {
-        User.findOne(
+        UserModel.findOne(
             { username: username.toLowerCase() },
-            (err: NativeError, user: IUser) => {
+            (err: NativeError, user: UserDocument) => {
                 if (err) {
                     return done(err);
                 }

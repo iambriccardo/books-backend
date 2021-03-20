@@ -1,11 +1,10 @@
 import { Lazy } from 'fp-ts/function';
-import { IUserBase } from '../../../entities/user';
+import { IControllerContext } from '../../../controllers/base';
 
 export const validateLoginUseCase = (
-    user: IUserBase,
-): Lazy<Promise<IUserBase>> => {
+    context: IControllerContext,
+): Lazy<Promise<void>> => {
     return async () => {
-        console.log('login');
-        return user;
+        console.log('Validating login');
     };
 };

@@ -6,11 +6,13 @@ interface IErrorToStatusCode {
 
 const ERROR_TO_STATUS_CODE: IErrorToStatusCode = {
     GenericError: StatusCodes.INTERNAL_SERVER_ERROR,
-    MalformedDataError: StatusCodes.UNPROCESSABLE_ENTITY,
+    InvalidBodyError: StatusCodes.UNPROCESSABLE_ENTITY,
 };
 
 export const errorToStatusCode = (error: AppError): StatusCodes => {
-    return ERROR_TO_STATUS_CODE[error.type];
+    return (
+        ERROR_TO_STATUS_CODE[error.type] || StatusCodes.INTERNAL_SERVER_ERROR
+    );
 };
 
 export class AppError {
@@ -31,12 +33,12 @@ export class GenericError extends AppError {
     }
 }
 
-export class MalformedDataError extends AppError {
-    constructor() {
+export class InvalidBodyError extends AppError {
+    constructor(message: string) {
         super(
-            'MalformedDataError',
-            'Malformed data',
-            'The data looks like to be malformed',
+            'InvalidBodyError',
+            'Invalid body error',
+            `The body of the request is not conforming to the defined schema: ${message}`,
         );
     }
 }

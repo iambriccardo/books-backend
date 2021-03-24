@@ -1,7 +1,7 @@
-import { connect } from 'mongoose';
+import { connect, Mongoose } from 'mongoose';
 
-export const connectToMongo = async (url: string): Promise<void> => {
-    await connect(url, {
+export const connectToMongo = async (url: string): Promise<Mongoose> => {
+    return await connect(url, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useFindAndModify: false,

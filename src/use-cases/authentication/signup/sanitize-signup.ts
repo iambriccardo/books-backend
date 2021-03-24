@@ -1,11 +1,8 @@
 import { Lazy } from 'fp-ts/function';
-import { UserDocument } from '../../../entities/user';
+import { User } from '../../../entities/user';
 
-export const sanitizeSignupUseCase = (
-    user: UserDocument,
-): Lazy<Promise<UserDocument>> => {
+export const sanitizeSignupUseCase = (user: User): Lazy<Promise<User>> => {
     return async () => {
-        console.log('Sanitizing signup');
         return user;
     };
 };

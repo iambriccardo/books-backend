@@ -1,24 +1,52 @@
 import { Document, Error, model, Model, Schema } from 'mongoose';
 import { compare, genSalt, hash } from 'bcrypt-nodejs';
+import { JTDSchemaType } from 'ajv/dist/jtd';
 
-export interface UserBase {
+export interface BaseUser {
     username: string;
     password: string;
 }
 
-export interface User extends UserBase {
+export const BaseUserJDTSchema: JTDSchemaType<BaseUser> = {
+    properties: {
+        username: { type: 'string' },
+        password: { type: 'string' },
+    },
+};
+
+export interface User extends BaseUser {
     name: string;
     surname: string;
     contactInformation: {
         phoneNumber: string;
         email: string;
-        telegramUsername: string;
-        facebookUsername: string;
+        telegramUsername?: string;
+        facebookUsername?: string;
     };
-    comparePassword: ComparePasswordFunction;
 }
 
-export interface UserDocument extends User, Document {}
+export const UserJDTSchema: JTDSchemaType<User> = {
+    properties: {
+        username: { type: 'string' },
+        password: { type: 'string' },
+        name: { type: 'string' },
+        surname: { type: 'string' },
+        contactInformation: {
+            properties: {
+                phoneNumber: { type: 'string' },
+                email: { type: 'string' },
+            },
+            optionalProperties: {
+                telegramUsername: { type: 'string' },
+                facebookUsername: { type: 'string' },
+            },
+        },
+    },
+};
+
+export interface UserDocument extends User, Document {
+    comparePassword: ComparePasswordFunction;
+}
 
 const UserSchema: Schema = new Schema(
     {

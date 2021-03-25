@@ -10,14 +10,19 @@ export const initTestMongoose = async (): Promise<Mongoose> => {
 };
 
 export const destroyTestMongoose = (...models: [Model<any>]) => {
+    console.log('Destroy');
     return async (): Promise<void> => {
-        models.forEach((model) => model.collection.deleteMany({}));
+        for (const model of models) {
+            await model.collection.deleteMany({});
+        }
         await disconnect();
     };
 };
 
 export const deleteCollections = (...models: [Model<any>]) => {
     return async (): Promise<void> => {
-        models.forEach((model) => model.collection.deleteMany({}));
+        for (const model of models) {
+            await model.collection.deleteMany({});
+        }
     };
 };

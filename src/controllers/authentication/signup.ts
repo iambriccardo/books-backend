@@ -11,6 +11,7 @@ import { sanitizeSignupUseCase } from '../../use-cases/authentication/signup/san
 import { AppError } from '../../errors/base';
 import { validateBodyUseCase } from '../../use-cases/validate-body';
 import { UserJDTSchema } from '../../entities/user';
+import { validateSignupUseCase } from '../../use-cases/authentication/signup/validate-signup';
 
 export const signupController: Controller<AppError, void> = (
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -20,6 +21,7 @@ export const signupController: Controller<AppError, void> = (
         validateBodyUseCase(request, UserJDTSchema),
         toTaskEither,
         chain((user) => pipe(sanitizeSignupUseCase(user), toTaskEither)),
+        chain((user) => pipe(validateSignupUseCase(user), toTaskEither)),
         chain((user) => pipe(signupUseCase(user), toTaskEither)),
         mapToControllerResponse(false),
     );

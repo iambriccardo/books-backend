@@ -88,6 +88,7 @@ type ComparePasswordFunction = (
 ) => void;
 
 const comparePassword: ComparePasswordFunction = function (
+    this: UserDocument,
     candidatePassword,
     cb,
 ) {

@@ -42,3 +42,13 @@ export class InvalidBodyError extends AppError {
         );
     }
 }
+
+export class InvalidFieldFormatError extends AppError {
+    constructor(fieldName: string) {
+        super(
+            'InvalidFieldFormatError',
+            'Invalid field format error',
+            `The field ${fieldName} has not the correct format`,
+        );
+    }
+}

@@ -1,14 +1,14 @@
 import { Lazy } from 'fp-ts/function';
 import { IControllerRequest } from '../controllers/base';
-import Ajv, { JTDSchemaType } from 'ajv/dist/jtd';
+import { JTDSchemaType } from 'ajv/dist/jtd';
 import { InvalidBodyError } from '../errors/base';
+import { ajv } from '../helpers/ajv';
 
 export const validateBodyUseCase = <T>(
     request: IControllerRequest,
     schema: JTDSchemaType<T>,
 ): Lazy<Promise<T>> => {
     return async () => {
-        const ajv = new Ajv();
         const parse = ajv.compileParser(schema);
 
         const data = parse(JSON.stringify(request.body));

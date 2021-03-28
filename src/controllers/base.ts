@@ -5,6 +5,7 @@ import * as T from 'fp-ts/Tuple';
 import { pipe } from 'fp-ts/lib/function';
 import { AppError, errorToStatusCode } from '../errors/base';
 import { StatusCodes } from 'http-status-codes';
+import { logger } from '../helpers/logging';
 
 /**
  * Interface describing the context of the controller, as a
@@ -67,6 +68,11 @@ export const expressToController = <VT>(
         res: Response,
         next: NextFunction,
     ): Promise<void> => {
+        logger.info(`Handling request ${req.originalUrl} with:`);
+        logger.info(`* body -> ${JSON.stringify(req.body)}`);
+        logger.info(`* query -> ${JSON.stringify(req.query)}`);
+        logger.info(`* params -> ${JSON.stringify(req.params)}`);
+
         const controllerHttpRequest = {
             body: req.body,
             query: req.query,
@@ -95,6 +101,8 @@ export const expressToController = <VT>(
             const response = controllerResponse.right;
             const statusCode = StatusCodes.OK;
 
+            logger.info(`Request ${req.originalUrl} successfully handled.`);
+
             if (!response.responseHandled) {
                 res.status(statusCode).json({
                     status: statusCode,
@@ -104,6 +112,10 @@ export const expressToController = <VT>(
         } else if (E.isLeft(controllerResponse)) {
             const error = T.fst(controllerResponse.left);
             const statusCode = T.snd(controllerResponse.left);
+
+            logger.warn(
+                `Request ${req.originalUrl} cannot be handled because of ${error.title} -> ${statusCode}`,
+            );
 
             res.status(statusCode).json({
                 type: error.type,

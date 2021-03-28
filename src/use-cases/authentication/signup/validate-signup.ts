@@ -5,7 +5,6 @@ import { check } from '../../../helpers/validation';
 
 export const validateSignupUseCase = (user: User): Lazy<Promise<User>> => {
     return async () => {
-        console.log('Validating signup');
         check('password', user.password, (value) =>
             validator.isLength(value, { min: 1, max: 128 }),
         );

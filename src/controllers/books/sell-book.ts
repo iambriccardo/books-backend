@@ -7,13 +7,17 @@ import { pipe } from 'fp-ts/function';
 import { toTaskEither } from '../../helpers/fp-extensions';
 import { sellBookUseCase } from '../../use-cases/books/sell-book';
 import { AppError } from '../../errors/base';
+import { validateBodyUseCase } from '../../use-cases/validate-body';
+import { BookJTDSchemaType } from '../../entities/book';
+import { chain } from 'fp-ts/TaskEither';
 
 export const sellBookController: Controller<AppError, void> = (
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     request: IControllerRequest,
 ) =>
     pipe(
-        sellBookUseCase(request.body),
+        validateBodyUseCase(request, BookJTDSchemaType),
         toTaskEither,
+        chain((book) => pipe(sellBookUseCase(book), toTaskEither)),
         mapToControllerResponse(false),
     );

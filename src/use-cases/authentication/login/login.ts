@@ -4,7 +4,6 @@ import { UserDocument } from '../../../entities/user';
 import { IVerifyOptions } from 'passport-local';
 import { API_VERSION } from '../../../helpers/environment';
 import { IControllerContext } from '../../../controllers/base';
-import { logger } from '../../../helpers/logging';
 
 export const loginUseCase = (
     context: IControllerContext,

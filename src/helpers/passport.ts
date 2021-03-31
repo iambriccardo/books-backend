@@ -2,14 +2,15 @@ import passportLocal from 'passport-local';
 import { NextFunction, Request, Response } from 'express';
 import { NativeError } from 'mongoose';
 import { UserDocument, UserModel } from '../entities/user';
+import { API_VERSION } from './environment';
 
 export const userSerializer = (req: any, user: any, done: any) => {
-    done(undefined, user);
+    done(undefined, user.id);
 };
 
 export const userDeserializer = (id: any, done: any) => {
     UserModel.findById(id, (err: NativeError, user: UserDocument) => {
-        done(err, user.id);
+        done(err, user);
     });
 };
 
@@ -57,5 +58,6 @@ export const isAuthenticated = (
     if (req.isAuthenticated()) {
         return next();
     }
-    res.redirect('/login');
+
+    res.redirect(`${API_VERSION}/auth/login`);
 };

@@ -8,6 +8,7 @@ import passport from 'passport';
 import MongoStore from 'connect-mongo';
 import { LocalStrategy, userDeserializer } from './helpers/passport';
 import { MONGO_DB_URL, PORT, SESSION_SECRET_KEY } from './helpers/environment';
+import { logger } from './helpers/logging';
 
 class Server {
     app = express();
@@ -21,12 +22,6 @@ class Server {
             autoRemove: 'interval',
         }),
     };
-
-    initResources() {
-        connectToMongo(MONGO_DB_URL).catch((reason) =>
-            console.log(`Error while connecting to mongoDB: ${reason}`),
-        );
-    }
 
     configurePassport() {
         passport.serializeUser(userDeserializer);
@@ -45,14 +40,29 @@ class Server {
         this.app.use('/v1', v1Routes);
     }
 
-    start() {
-        this.initResources();
+    configure() {
+        logger.info('Configuring web service.');
         this.configurePassport();
         this.applyMiddlewares();
+        logger.info('Configuration finished.');
 
         this.app.listen(PORT, () => {
-            console.log(`Listening on port: ${PORT}`);
+            logger.info(`Listening on port ${PORT} 🚀.`);
         });
+    }
+
+    async start() {
+        try {
+            logger.info('Starting web service.');
+            await connectToMongo(MONGO_DB_URL);
+            this.configure();
+            logger.info('Web service started.');
+        } catch (error) {
+            logger.fatal(
+                `An error occurred and the web service cannot be started: ${error}`,
+            );
+            process.exit(1);
+        }
     }
 }
 

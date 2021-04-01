@@ -4,7 +4,6 @@ import validator from 'validator';
 
 export const sanitizeSignupUseCase = (user: User): Lazy<Promise<User>> => {
     return async () => {
-        console.log('Sanitizing signup');
         const sanitizedUser: User = {
             username: validator.trim(user.username),
             password: validator.trim(user.password),

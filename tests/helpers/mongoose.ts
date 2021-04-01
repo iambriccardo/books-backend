@@ -10,7 +10,6 @@ export const initTestMongoose = async (): Promise<Mongoose> => {
 };
 
 export const destroyTestMongoose = (...models: [Model<any>]) => {
-    console.log('Destroy');
     return async (): Promise<void> => {
         for (const model of models) {
             await model.collection.deleteMany({});

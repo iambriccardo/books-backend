@@ -1,14 +1,15 @@
 import { Lazy } from 'fp-ts/function';
 import { Explore } from '../../entities/explore';
-import { User } from '../../entities/user';
+import { Book } from '../../entities/book';
 
-export const exploreBooksUseCase = (user: User): Lazy<Promise<Explore>> => {
+export const exploreBooksUseCase = (
+    recentlyViewedBooks: Book[],
+    mayInterestYouBooks: Book[],
+): Lazy<Promise<Explore>> => {
     return async () => {
-        console.log(user);
         return {
-            trending: [],
-            newest: [],
-            mayInterestYou: [],
+            recentlyViewed: recentlyViewedBooks,
+            mayInterestYou: mayInterestYouBooks,
         };
     };
 };

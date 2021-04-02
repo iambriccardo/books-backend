@@ -6,7 +6,11 @@ import { connectToMongo } from './helpers/mongoose';
 import session from 'express-session';
 import passport from 'passport';
 import MongoStore from 'connect-mongo';
-import { LocalStrategy, userDeserializer } from './helpers/passport';
+import {
+    LocalStrategy,
+    userDeserializer,
+    userSerializer,
+} from './helpers/passport';
 import { MONGO_DB_URL, PORT, SESSION_SECRET_KEY } from './helpers/environment';
 import { logger } from './helpers/logging';
 
@@ -24,7 +28,7 @@ class Server {
     };
 
     configurePassport() {
-        passport.serializeUser(userDeserializer);
+        passport.serializeUser(userSerializer);
         passport.deserializeUser(userDeserializer);
         passport.use(LocalStrategy);
     }

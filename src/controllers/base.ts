@@ -6,6 +6,7 @@ import { pipe } from 'fp-ts/lib/function';
 import { AppError, errorToStatusCode } from '../errors/base';
 import { StatusCodes } from 'http-status-codes';
 import { logger } from '../helpers/logging';
+import { User } from '../entities/user';
 
 /**
  * Interface describing the context of the controller, as a
@@ -140,4 +141,10 @@ export const mapToControllerResponse: (
         body: response,
         responseHandled: responseHandled,
     }));
+};
+
+export const getUserFromRequest: (request: IControllerRequest) => User = (
+    request: IControllerRequest,
+) => {
+    return request.context.expressRequest.user as User;
 };

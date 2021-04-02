@@ -9,7 +9,7 @@ export interface Book {
     condition: 'bad' | 'ok' | 'good' | 'great' | 'na';
     pictures: string[];
     seller: string;
-    sellerLocation: string;
+    location: string;
     publicationDate: Date;
     saleDate?: Date;
     buyer?: string;
@@ -28,7 +28,7 @@ export const BookJTDSchemaType: JTDSchemaType<Book> = {
             },
         },
         seller: { type: 'string' },
-        sellerLocation: { type: 'string' },
+        location: { type: 'string' },
         publicationDate: { type: 'timestamp' },
     },
     optionalProperties: {
@@ -53,7 +53,7 @@ const BookSchema: Schema = new Schema(
         },
         pictures: { type: [String], required: true },
         seller: { type: String, required: true },
-        sellerLocation: { type: String, required: true },
+        location: { type: String, required: true },
         publicationDate: { type: Date, required: true },
         saleDate: { type: Date, required: false },
         buyer: { type: String, required: false },
@@ -61,6 +61,10 @@ const BookSchema: Schema = new Schema(
     {
         versionKey: false,
     },
-);
+).index({
+    isbn: 'text',
+    title: 'text',
+    description: 'text',
+});
 
 export const BookModel: Model<BookDocument> = model('Book', BookSchema);

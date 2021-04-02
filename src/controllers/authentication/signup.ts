@@ -14,7 +14,6 @@ import { UserJDTSchema } from '../../entities/user';
 import { validateSignupUseCase } from '../../use-cases/authentication/signup/validate-signup';
 
 export const signupController: Controller<AppError, void> = (
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     request: IControllerRequest,
 ) =>
     pipe(

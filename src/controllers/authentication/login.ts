@@ -12,7 +12,6 @@ import { validateBodyUseCase } from '../../use-cases/validate-body';
 import { BaseUserJDTSchema } from '../../entities/user';
 
 export const loginController: Controller<AppError, void> = (
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     request: IControllerRequest,
 ) =>
     pipe(

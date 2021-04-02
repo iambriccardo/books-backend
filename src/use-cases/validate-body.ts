@@ -19,3 +19,5 @@ export const validateBodyUseCase = <T>(
         }
     };
 };
+
+// TODO: implement body validator with custom properties.

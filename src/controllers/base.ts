@@ -7,6 +7,7 @@ import { AppError, errorToStatusCode } from '../errors/base';
 import { StatusCodes } from 'http-status-codes';
 import { logger } from '../helpers/logging';
 import { User } from '../entities/user';
+import { Middleware } from '../middlewares/base';
 
 /**
  * Interface describing the context of the controller, as a
@@ -16,7 +17,6 @@ export interface IControllerContext {
     expressRequest: Request;
     expressResponse: Response;
     expressNext: NextFunction;
-    [key: string]: unknown;
 }
 
 /**
@@ -58,11 +58,11 @@ export type Controller<ET, VT> = (
  * allows for a centralized representation of the json responses.
  *
  * @param controller, the controller which will handle the communication.
- * @param context, the context of the controller.
+ * @param middlewares, the list of middlewares used to transform the request.
  */
 export const expressToController = <VT>(
     controller: Controller<AppError, VT>,
-    context?: IControllerContext,
+    ...middlewares: Middleware<IControllerRequest>[]
 ) => {
     return async (
         req: Request,
@@ -74,7 +74,7 @@ export const expressToController = <VT>(
         logger.info(`* query -> ${JSON.stringify(req.query)}`);
         logger.info(`* params -> ${JSON.stringify(req.params)}`);
 
-        const controllerHttpRequest = {
+        let controllerHttpRequest = {
             body: req.body,
             query: req.query,
             params: req.params,
@@ -82,9 +82,12 @@ export const expressToController = <VT>(
                 expressRequest: req,
                 expressResponse: res,
                 expressNext: next,
-                ...context,
             },
         };
+
+        middlewares.forEach((transformer) => {
+            controllerHttpRequest = transformer(controllerHttpRequest);
+        });
 
         const startController = pipe(
             controller(controllerHttpRequest),
@@ -143,6 +146,9 @@ export const mapToControllerResponse: (
     }));
 };
 
+/**
+ * Utility function that extracts the User from the request.
+ */
 export const getUserFromRequest: (request: IControllerRequest) => User = (
     request: IControllerRequest,
 ) => {

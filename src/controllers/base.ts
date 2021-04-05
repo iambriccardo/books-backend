@@ -142,6 +142,7 @@ export const mapToControllerResponse: (
 ) => TE.TaskEither<E, IControllerResponse<A>> = (responseHandled = false) => {
     return TE.map((response) => ({
         body: response,
+        // TODO: find better way to handle this.
         responseHandled: responseHandled,
     }));
 };

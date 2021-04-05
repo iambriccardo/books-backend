@@ -1,8 +1,4 @@
-import {
-    Controller,
-    IControllerRequest,
-    mapToControllerResponse,
-} from '../base';
+import { Controller, IControllerRequest, toResponse } from '../base';
 import { AppError } from '../../errors/base';
 import { pipe } from 'fp-ts/function';
 import { toTaskEither } from '../../helpers/fp-extensions';
@@ -18,5 +14,5 @@ export const loginController: Controller<AppError, void> = (
         validateBodyUseCase(request, BaseUserJDTSchema),
         toTaskEither,
         chain(() => pipe(loginUseCase(request.context), toTaskEither)),
-        mapToControllerResponse(true),
+        toResponse(true),
     );

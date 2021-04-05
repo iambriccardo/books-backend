@@ -6,7 +6,6 @@ import { pipe } from 'fp-ts/lib/function';
 import { AppError, errorToStatusCode } from '../errors/base';
 import { StatusCodes } from 'http-status-codes';
 import { logger } from '../helpers/logging';
-import { User } from '../entities/user';
 import { Middleware } from '../middlewares/base';
 
 /**
@@ -85,9 +84,10 @@ export const expressToController = <VT>(
             },
         };
 
-        middlewares.forEach((transformer) => {
-            controllerHttpRequest = transformer(controllerHttpRequest);
-        });
+        for (const middleware of middlewares) {
+            // TODO: add error handling for middlewares.
+            controllerHttpRequest = await middleware(controllerHttpRequest);
+        }
 
         const startController = pipe(
             controller(controllerHttpRequest),
@@ -135,7 +135,7 @@ export const expressToController = <VT>(
 /**
  * Utility function that maps a TaskEither right part to a valid controller response.
  */
-export const mapToControllerResponse: (
+export const toResponse: (
     responseHandled: boolean,
 ) => <E, A>(
     fa: TE.TaskEither<E, A>,
@@ -145,13 +145,4 @@ export const mapToControllerResponse: (
         // TODO: find better way to handle this.
         responseHandled: responseHandled,
     }));
-};
-
-/**
- * Utility function that extracts the User from the request.
- */
-export const getUserFromRequest: (request: IControllerRequest) => User = (
-    request: IControllerRequest,
-) => {
-    return request.context.expressRequest.user as User;
 };

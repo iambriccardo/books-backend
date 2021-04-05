@@ -1,9 +1,4 @@
-import {
-    Controller,
-    getUserFromRequest,
-    IControllerRequest,
-    mapToControllerResponse,
-} from '../base';
+import { Controller, IControllerRequest, toResponse } from '../base';
 import { AppError } from '../../errors/base';
 import { Explore } from '../../entities/explore';
 import { pipe } from 'fp-ts/function';
@@ -15,23 +10,22 @@ import { chain } from 'fp-ts/TaskEither';
 import { getRecentlyViewedBooksUseCase } from '../../use-cases/books/get-recently-viewed-books';
 import { getMayInterestYouBooksUseCase } from '../../use-cases/books/get-may-interest-you-books';
 import { Book } from '../../entities/book';
+import { getUserFromRequestUseCase } from '../../use-cases/get-user-from-request';
 
 export const exploreBooksController: Controller<AppError, Explore> = (
     request: IControllerRequest,
 ) =>
     pipe(
-        sequenceT(TE.taskEither)(
-            pipe(
-                getRecentlyViewedBooksUseCase(getUserFromRequest(request)),
-                toTaskEither,
-            ),
-            pipe(
-                getMayInterestYouBooksUseCase(getUserFromRequest(request)),
-                toTaskEither,
+        getUserFromRequestUseCase(request),
+        toTaskEither,
+        chain((user) =>
+            sequenceT(TE.taskEither)(
+                pipe(getRecentlyViewedBooksUseCase(user), toTaskEither),
+                pipe(getMayInterestYouBooksUseCase(user), toTaskEither),
             ),
         ),
         chain((result: [Book[], Book[]]) =>
             pipe(exploreBooksUseCase(result[0], result[1]), toTaskEither),
         ),
-        mapToControllerResponse(false),
+        toResponse(false),
     );

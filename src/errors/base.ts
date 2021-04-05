@@ -5,8 +5,10 @@ interface IErrorToStatusCode {
 }
 
 const ERROR_TO_STATUS_CODE: IErrorToStatusCode = {
-    GenericError: StatusCodes.INTERNAL_SERVER_ERROR,
+    ServerError: StatusCodes.INTERNAL_SERVER_ERROR,
     InvalidBodyError: StatusCodes.UNPROCESSABLE_ENTITY,
+    InvalidFieldFormatError: StatusCodes.UNPROCESSABLE_ENTITY,
+    UnauthenticatedUserError: StatusCodes.UNAUTHORIZED,
 };
 
 export const errorToStatusCode = (error: AppError): StatusCodes => {
@@ -27,9 +29,9 @@ export class AppError {
     }
 }
 
-export class GenericError extends AppError {
+export class ServerError extends AppError {
     constructor(error: string) {
-        super('GenericError', 'Generic error', error);
+        super('ServerError', 'Server error', error);
     }
 }
 
@@ -49,6 +51,16 @@ export class InvalidFieldFormatError extends AppError {
             'InvalidFieldFormatError',
             'Invalid field format error',
             `The field ${fieldName} has not the correct format`,
+        );
+    }
+}
+
+export class UnauthenticatedUserError extends AppError {
+    constructor() {
+        super(
+            'UnauthenticatedUserError',
+            'Unauthenticated user error',
+            'The user is not authenticated, thus this request cannot be authorized.',
         );
     }
 }

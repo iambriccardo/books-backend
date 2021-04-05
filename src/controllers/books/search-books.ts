@@ -1,8 +1,4 @@
-import {
-    Controller,
-    IControllerRequest,
-    mapToControllerResponse,
-} from '../base';
+import { Controller, IControllerRequest, toResponse } from '../base';
 import { pipe } from 'fp-ts/function';
 import { toTaskEither } from '../../helpers/fp-extensions';
 import { AppError } from '../../errors/base';
@@ -15,5 +11,5 @@ export const searchBooksController: Controller<AppError, Book[]> = (
     pipe(
         searchBooksUseCase(request.body.searchQuery),
         toTaskEither,
-        mapToControllerResponse(false),
+        toResponse(false),
     );

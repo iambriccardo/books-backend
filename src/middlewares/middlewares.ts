@@ -1,11 +1,12 @@
 import { Middleware } from './base';
-import { getUserFromRequest, IControllerRequest } from '../controllers/base';
+import { IControllerRequest } from '../controllers/base';
+import { getUserFromRequestUseCase } from '../use-cases/get-user-from-request';
 
-export const injectIntoRequestBodyMiddleware = <E>(
+export const useInjectIntoRequestBody = <E>(
     fieldName: string,
     fieldValue: E,
 ): Middleware<IControllerRequest> => {
-    return (request: IControllerRequest): IControllerRequest => {
+    return async (request: IControllerRequest) => {
         return {
             ...request,
             body: {
@@ -16,13 +17,11 @@ export const injectIntoRequestBodyMiddleware = <E>(
     };
 };
 
-export const injectUserIntoRequestBodyMiddleware = (
+export const useInjectUserIntoRequestBody = (
     fieldName: string,
 ): Middleware<IControllerRequest> => {
-    return (request: IControllerRequest): IControllerRequest => {
-        return injectIntoRequestBodyMiddleware(
-            fieldName,
-            getUserFromRequest(request).username,
-        )(request);
+    return async (request: IControllerRequest) => {
+        const user = await getUserFromRequestUseCase(request)();
+        return useInjectIntoRequestBody(fieldName, user.username)(request);
     };
 };

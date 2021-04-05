@@ -1,8 +1,4 @@
-import {
-    Controller,
-    IControllerRequest,
-    mapToControllerResponse,
-} from '../base';
+import { Controller, IControllerRequest, toResponse } from '../base';
 import { pipe } from 'fp-ts/function';
 import { toTaskEither } from '../../helpers/fp-extensions';
 import { sellBookUseCase } from '../../use-cases/books/sell-book';
@@ -18,5 +14,5 @@ export const sellBookController: Controller<AppError, void> = (
         validateBodyUseCase(request, BookJTDSchemaType),
         toTaskEither,
         chain((book) => pipe(sellBookUseCase(book), toTaskEither)),
-        mapToControllerResponse(false),
+        toResponse(false),
     );

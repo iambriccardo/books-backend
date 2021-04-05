@@ -1,8 +1,4 @@
-import {
-    Controller,
-    IControllerRequest,
-    mapToControllerResponse,
-} from '../base';
+import { Controller, IControllerRequest, toResponse } from '../base';
 import { pipe } from 'fp-ts/function';
 import { toTaskEither } from '../../helpers/fp-extensions';
 import { chain } from 'fp-ts/TaskEither';
@@ -22,5 +18,5 @@ export const signupController: Controller<AppError, void> = (
         chain((user) => pipe(sanitizeSignupUseCase(user), toTaskEither)),
         chain((user) => pipe(validateSignupUseCase(user), toTaskEither)),
         chain((user) => pipe(signupUseCase(user), toTaskEither)),
-        mapToControllerResponse(false),
+        toResponse(false),
     );

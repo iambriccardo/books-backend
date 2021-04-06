@@ -1,8 +1,4 @@
-import {
-    Controller,
-    IControllerRequest,
-    mapToControllerResponse,
-} from '../base';
+import { Controller, IControllerRequest, toResponse } from '../base';
 import { pipe } from 'fp-ts/function';
 import { toTaskEither } from '../../helpers/fp-extensions';
 import { sellBookUseCase } from '../../use-cases/books/sell-book';
@@ -12,12 +8,11 @@ import { BookJTDSchemaType } from '../../entities/book';
 import { chain } from 'fp-ts/TaskEither';
 
 export const sellBookController: Controller<AppError, void> = (
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     request: IControllerRequest,
 ) =>
     pipe(
         validateBodyUseCase(request, BookJTDSchemaType),
         toTaskEither,
         chain((book) => pipe(sellBookUseCase(book), toTaskEither)),
-        mapToControllerResponse(false),
+        toResponse(false),
     );

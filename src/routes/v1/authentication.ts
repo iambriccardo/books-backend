@@ -7,6 +7,7 @@ import { loginController } from '../../controllers/authentication/login';
 const router = Router();
 
 router.post('/login', expressToController(loginController));
+
 router.post('/signup', expressToController(signupController));
 
 export default router;

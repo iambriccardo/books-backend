@@ -1,6 +1,6 @@
 import { Lazy } from 'fp-ts/function';
 import { TaskEither, tryCatch } from 'fp-ts/TaskEither';
-import { AppError, GenericError } from '../errors/base';
+import { AppError, ServerError } from '../errors/base';
 
 export const toTaskEither = <T>(
     lazyPromise: Lazy<Promise<T>>,
@@ -12,7 +12,7 @@ export const toAppError = (error: unknown): AppError => {
     if (error instanceof AppError) {
         return error;
     } else if (error instanceof Error) {
-        return new GenericError(error.message);
+        return new ServerError(error.message);
     } else {
         return error as AppError;
     }

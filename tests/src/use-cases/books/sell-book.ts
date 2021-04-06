@@ -28,7 +28,7 @@ describe('sellBookUseCase', function () {
             condition: 'ok',
             pictures: ['alice_in_wonderland_cover.png'],
             seller: 'riccardo',
-            sellerLocation: 'Trento',
+            location: 'Trento',
             publicationDate: new Date(),
             saleDate: new Date(),
             buyer: 'marco',
@@ -37,6 +37,8 @@ describe('sellBookUseCase', function () {
         const useCase = sellBookUseCase(book);
 
         expect(useCase()).to.not.be.rejected;
+
+        await useCase();
         expect(await BookModel.findOne({ isbn: '978-1-56619-909-4' })).to.exist;
     });
 
@@ -50,13 +52,15 @@ describe('sellBookUseCase', function () {
             condition: 'ok',
             pictures: ['alice_in_wonderland_cover.png'],
             seller: 'riccardo',
-            sellerLocation: 'Trento',
+            location: 'Trento',
             publicationDate: new Date(),
         };
 
         const useCase = sellBookUseCase(book);
 
         expect(useCase()).to.not.be.rejected;
+
+        await useCase();
         expect(await BookModel.findOne({ isbn: '978-1-56619-909-4' })).to.exist;
     });
 

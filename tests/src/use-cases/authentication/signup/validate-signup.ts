@@ -3,7 +3,6 @@ import { expect, use } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { User } from '../../../../../src/entities/user';
 import { validateSignupUseCase } from '../../../../../src/use-cases/authentication/signup/validate-signup';
-import { InvalidFieldFormatError } from '../../../../../src/errors/base';
 
 use(chaiAsPromised);
 
@@ -24,7 +23,7 @@ describe('validateSignupUseCase', function () {
 
         const useCase = validateSignupUseCase(user);
 
-        expect(useCase()).to.not.be.rejected;
+        await expect(useCase()).to.not.be.rejected;
         expect(await useCase()).to.be.deep.equal(user);
     });
 
@@ -44,7 +43,7 @@ describe('validateSignupUseCase', function () {
 
         const useCase = validateSignupUseCase(user);
 
-        expect(useCase()).to.be.rejectedWith(InvalidFieldFormatError);
+        await expect(useCase()).to.be.rejected;
     });
 
     it('should throw an error if password field is invalid', async function () {
@@ -63,6 +62,6 @@ describe('validateSignupUseCase', function () {
 
         const useCase = validateSignupUseCase(user);
 
-        expect(useCase()).to.be.rejectedWith(InvalidFieldFormatError);
+        await expect(useCase()).to.be.rejected;
     });
 });

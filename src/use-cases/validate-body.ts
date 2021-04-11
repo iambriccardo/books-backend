@@ -4,6 +4,7 @@ import { JTDSchemaType } from 'ajv/dist/jtd';
 import { InvalidBodyError } from '../errors/base';
 import { ajv } from '../helpers/ajv';
 
+// TODO: implement body validator with custom properties.
 export const validateBodyUseCase = <T>(
     request: IControllerRequest,
     schema: JTDSchemaType<T>,
@@ -19,5 +20,3 @@ export const validateBodyUseCase = <T>(
         }
     };
 };
-
-// TODO: implement body validator with custom properties.

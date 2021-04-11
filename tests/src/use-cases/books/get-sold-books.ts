@@ -44,7 +44,7 @@ describe('getSoldBooksUseCase', function () {
         await sellBookUseCase(book)();
 
         const useCase = getSoldBooksUseCase(user);
-        expect(useCase()).to.not.be.rejected;
+        await expect(useCase()).to.not.be.rejected;
 
         expect(await useCase()).to.have.length.above(0);
     });
@@ -56,7 +56,7 @@ describe('getSoldBooksUseCase', function () {
         };
 
         const useCase = getSoldBooksUseCase(user);
-        expect(useCase()).to.not.be.rejected;
+        await expect(useCase()).to.not.be.rejected;
 
         expect(await useCase()).to.have.length.below(1);
     });

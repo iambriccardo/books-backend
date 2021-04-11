@@ -19,6 +19,7 @@ describe('sanitizeSignupUseCase', function () {
                 telegramUsername: 'mario2000',
                 facebookUsername: 'mario2000',
             },
+            profilePicture: ' https://picsum.photos/536/354  ',
         };
 
         const sanitizedUser: User = {
@@ -32,6 +33,7 @@ describe('sanitizeSignupUseCase', function () {
                 telegramUsername: 'mario2000',
                 facebookUsername: 'mario2000',
             },
+            profilePicture: 'https://picsum.photos/536/354',
         };
 
         const useCase = sanitizeSignupUseCase(user);

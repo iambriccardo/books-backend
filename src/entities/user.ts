@@ -23,6 +23,7 @@ export interface User extends BaseUser {
         telegramUsername?: string;
         facebookUsername?: string;
     };
+    profilePicture?: string;
 }
 
 export const UserJDTSchema: JTDSchemaType<User> = {
@@ -42,6 +43,9 @@ export const UserJDTSchema: JTDSchemaType<User> = {
             },
         },
     },
+    optionalProperties: {
+        profilePicture: { type: 'string' },
+    },
 };
 
 export interface UserDocument extends User, Document {
@@ -60,6 +64,7 @@ const UserSchema: Schema = new Schema(
             telegramUsername: String,
             facebookUsername: String,
         },
+        profilePicture: String,
     },
     {
         versionKey: false,

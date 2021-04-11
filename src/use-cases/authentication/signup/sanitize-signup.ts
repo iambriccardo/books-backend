@@ -23,6 +23,7 @@ export const sanitizeSignupUseCase = (user: User): Lazy<Promise<User>> => {
                     user.contactInformation.facebookUsername || '',
                 ),
             },
+            profilePicture: validator.trim(user.profilePicture || ''),
         };
 
         // TODO: explore a better implementation of this.
@@ -32,6 +33,10 @@ export const sanitizeSignupUseCase = (user: User): Lazy<Promise<User>> => {
 
         if (sanitizedUser.contactInformation.facebookUsername == '') {
             delete sanitizedUser.contactInformation.facebookUsername;
+        }
+
+        if (sanitizedUser.profilePicture == '') {
+            delete sanitizedUser.profilePicture;
         }
 
         return sanitizedUser;

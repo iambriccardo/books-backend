@@ -64,4 +64,24 @@ describe('validateSignupUseCase', function () {
 
         await expect(useCase()).to.be.rejected;
     });
+
+    it('should throw an error if profilePicture field is invalid', async function () {
+        const user: User = {
+            username: 'mario',
+            password: '1234',
+            name: 'Mario',
+            surname: 'Rossi',
+            contactInformation: {
+                phoneNumber: '3719483759',
+                email: 'marco@domain.com',
+                telegramUsername: 'mario2000',
+                facebookUsername: 'mario2000',
+            },
+            profilePicture: 'profile_picture.png',
+        };
+
+        const useCase = validateSignupUseCase(user);
+
+        await expect(useCase()).to.be.rejected;
+    });
 });

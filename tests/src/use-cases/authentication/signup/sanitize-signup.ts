@@ -36,7 +36,7 @@ describe('sanitizeSignupUseCase', function () {
 
         const useCase = sanitizeSignupUseCase(user);
 
-        expect(useCase()).to.not.be.rejected;
+        await expect(useCase()).to.not.be.rejected;
         expect(await useCase()).to.deep.equal(sanitizedUser);
     });
 
@@ -65,7 +65,7 @@ describe('sanitizeSignupUseCase', function () {
 
         const useCase = sanitizeSignupUseCase(user);
 
-        expect(useCase()).to.not.be.rejected;
+        await expect(useCase()).to.not.be.rejected;
         expect(await useCase()).to.deep.equal(sanitizedUser);
     });
 
@@ -77,6 +77,6 @@ describe('sanitizeSignupUseCase', function () {
 
         const useCase = sanitizeSignupUseCase(user);
 
-        expect(useCase()).to.be.rejectedWith(Error);
+        await expect(useCase()).to.be.rejected;
     });
 });

@@ -7,7 +7,10 @@ export const getUserFromRequestUseCase: (
     request: IControllerRequest,
 ) => Lazy<Promise<User>> = (request: IControllerRequest) => {
     return async () => {
-        if (request.context.expressRequest.user === undefined)
+        if (
+            request.context.expressRequest.user === undefined ||
+            request.context.expressRequest.user === null
+        )
             throw new UnauthenticatedUserError();
 
         return request.context.expressRequest.user as User;

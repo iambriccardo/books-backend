@@ -34,7 +34,7 @@ describe('signupUseCase', function () {
 
         const useCase = signupUseCase(user);
 
-        expect(useCase()).to.not.be.rejected;
+        await expect(useCase()).to.not.be.rejected;
         expect(await UserModel.findOne({ username: 'mario' })).to.exist;
     });
 
@@ -46,6 +46,6 @@ describe('signupUseCase', function () {
 
         const useCase = signupUseCase(user);
 
-        expect(useCase()).to.be.rejectedWith(Error);
+        await expect(useCase()).to.be.rejected;
     });
 });

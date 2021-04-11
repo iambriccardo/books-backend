@@ -36,7 +36,7 @@ describe('sellBookUseCase', function () {
 
         const useCase = sellBookUseCase(book);
 
-        expect(useCase()).to.not.be.rejected;
+        await expect(useCase()).to.not.be.rejected;
 
         await useCase();
         expect(await BookModel.findOne({ isbn: '978-1-56619-909-4' })).to.exist;
@@ -58,7 +58,7 @@ describe('sellBookUseCase', function () {
 
         const useCase = sellBookUseCase(book);
 
-        expect(useCase()).to.not.be.rejected;
+        await expect(useCase()).to.not.be.rejected;
 
         await useCase();
         expect(await BookModel.findOne({ isbn: '978-1-56619-909-4' })).to.exist;
@@ -74,6 +74,6 @@ describe('sellBookUseCase', function () {
 
         const useCase = sellBookUseCase(book);
 
-        expect(useCase()).to.be.rejectedWith(Error);
+        await expect(useCase()).to.be.rejected;
     });
 });

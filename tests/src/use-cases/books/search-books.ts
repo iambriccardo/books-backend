@@ -55,7 +55,7 @@ describe('sellBookUseCase', function () {
         }
 
         const useCase = searchBooksUseCase('Alice in Wonderland');
-        expect(useCase()).to.not.be.rejected;
+        await expect(useCase()).to.not.be.rejected;
 
         expect(await useCase()).to.have.length.above(0);
     });
@@ -66,9 +66,8 @@ describe('sellBookUseCase', function () {
         }
 
         const useCase = searchBooksUseCase('Invisible Man');
-        expect(useCase()).to.not.be.rejected;
+        await expect(useCase()).to.not.be.rejected;
 
-        console.log(await useCase());
         expect(await useCase()).to.have.length.below(1);
     });
 });

@@ -8,6 +8,8 @@ export const searchBooksUseCase = (
         return BookModel.find(
             { $text: { $search: searchQuery } },
             { score: { $meta: 'textScore' } },
-        ).sort({ score: { $meta: 'textScore' } });
+        )
+            .sort({ score: { $meta: 'textScore' } })
+            .lean();
     };
 };

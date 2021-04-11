@@ -10,7 +10,7 @@ import {
 } from '../../../helpers/mongoose';
 import { getSoldBooksUseCase } from '../../../../src/use-cases/books/get-sold-books';
 import { BaseUser } from '../../../../src/entities/user';
-import { getSellingBooksUseCase } from '../../../../src/use-cases/books/get-sellings-books';
+import { getSellingBooksUseCase } from '../../../../src/use-cases/books/get-selling-books';
 
 use(chaiAsPromised);
 

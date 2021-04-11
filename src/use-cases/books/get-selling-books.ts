@@ -10,6 +10,6 @@ export const getSellingBooksUseCase = (
             seller: user.username,
             buyer: { $exists: false },
             saleDate: { $exists: false },
-        });
+        }).lean();
     };
 };

@@ -8,6 +8,6 @@ export const getSoldBooksUseCase = (user: BaseUser): Lazy<Promise<Book[]>> => {
             seller: user.username,
             buyer: { $exists: true },
             saleDate: { $exists: true },
-        });
+        }).lean();
     };
 };

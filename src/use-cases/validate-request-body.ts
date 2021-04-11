@@ -5,7 +5,7 @@ import { InvalidBodyError } from '../errors/base';
 import { ajv } from '../helpers/ajv';
 
 // TODO: implement body validator with custom properties.
-export const validateBodyUseCase = <T>(
+export const validateRequestBodyUseCase = <T>(
     request: IControllerRequest,
     schema: JTDSchemaType<T>,
 ): Lazy<Promise<T>> => {

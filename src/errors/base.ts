@@ -9,6 +9,8 @@ const ERROR_TO_STATUS_CODE: IErrorToStatusCode = {
     InvalidBodyError: StatusCodes.UNPROCESSABLE_ENTITY,
     InvalidFieldFormatError: StatusCodes.UNPROCESSABLE_ENTITY,
     UnauthenticatedUserError: StatusCodes.UNAUTHORIZED,
+    InvalidParamError: StatusCodes.UNPROCESSABLE_ENTITY,
+    UserNotFoundError: StatusCodes.INTERNAL_SERVER_ERROR,
 };
 
 export const errorToStatusCode = (error: AppError): StatusCodes => {
@@ -61,6 +63,26 @@ export class UnauthenticatedUserError extends AppError {
             'UnauthenticatedUserError',
             'Unauthenticated user error',
             'The user is not authenticated, thus this request cannot be authorized.',
+        );
+    }
+}
+
+export class InvalidParamError extends AppError {
+    constructor(paramName: string) {
+        super(
+            'InvalidParamError',
+            'Invalid param error',
+            `The parameter ${paramName} is invalid or missing.`,
+        );
+    }
+}
+
+export class UserNotFoundError extends AppError {
+    constructor(username: string) {
+        super(
+            'UserNotFoundError',
+            'User not found error',
+            `The user ${username} doesn't exist.`,
         );
     }
 }

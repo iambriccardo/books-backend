@@ -2,12 +2,12 @@ import { describe } from 'mocha';
 import { expect, use } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { IControllerRequest } from '../../../src/controllers/base';
-import { validateBodyUseCase } from '../../../src/use-cases/validate-body';
+import { validateRequestBodyUseCase } from '../../../src/use-cases/validate-request-body';
 import { JTDSchemaType } from 'ajv/dist/jtd';
 
 use(chaiAsPromised);
 
-describe('validateBodyUseCase', function () {
+describe('validateRequestBodyUseCase', function () {
     interface SimpleUser {
         name: string;
         surname: string;
@@ -30,7 +30,7 @@ describe('validateBodyUseCase', function () {
             body: simpleUser,
         };
 
-        const useCase = validateBodyUseCase(
+        const useCase = validateRequestBodyUseCase(
             request as IControllerRequest,
             simpleUserSchema,
         );
@@ -49,7 +49,7 @@ describe('validateBodyUseCase', function () {
             body: simpleUser,
         };
 
-        const useCase = validateBodyUseCase(
+        const useCase = validateRequestBodyUseCase(
             request as IControllerRequest,
             simpleUserSchema,
         );

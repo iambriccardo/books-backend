@@ -5,7 +5,7 @@ import { AppError } from '../../errors/base';
 import { Book } from '../../entities/book';
 import { chain } from 'fp-ts/TaskEither';
 import { getUserFromRequestUseCase } from '../../use-cases/get-user-from-request';
-import { getSellingBooksUseCase } from '../../use-cases/books/get-sellings-books';
+import { getSellingBooksUseCase } from '../../use-cases/books/get-selling-books';
 
 export const getSellingBooksController: Controller<AppError, Book[]> = (
     request: IControllerRequest,

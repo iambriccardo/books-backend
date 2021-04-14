@@ -3,7 +3,11 @@ import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Tuple';
 import { pipe } from 'fp-ts/lib/function';
-import { AppError, errorToStatusCode } from '../errors/base';
+import {
+    AppError,
+    errorToJsonResponse,
+    errorToStatusCode,
+} from '../errors/base';
 import { StatusCodes } from 'http-status-codes';
 import { logger } from '../helpers/logging';
 import { Middleware } from '../middlewares/base';
@@ -59,7 +63,7 @@ export type Controller<ET, VT> = (
  * @param controller, the controller which will handle the communication.
  * @param middlewares, the list of middlewares used to transform the request.
  */
-export const expressToController = <VT>(
+export const connectsToController = <VT>(
     controller: Controller<AppError, VT>,
     ...middlewares: Middleware<IControllerRequest>[]
 ) => {
@@ -121,13 +125,9 @@ export const expressToController = <VT>(
                 `Request ${req.originalUrl} cannot be handled because of ${error.title} -> ${statusCode}`,
             );
 
-            res.status(statusCode).json({
-                type: error.type,
-                title: error.title,
-                status: statusCode,
-                detail: error.detail,
-                instance: req.originalUrl,
-            });
+            res.status(statusCode).json(
+                errorToJsonResponse(statusCode, req.originalUrl, error),
+            );
         }
     };
 };

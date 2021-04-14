@@ -1,4 +1,5 @@
 import { StatusCodes } from 'http-status-codes';
+import { GenericObject } from '../helpers/types';
 
 interface IErrorToStatusCode {
     [key: string]: StatusCodes;
@@ -11,12 +12,27 @@ const ERROR_TO_STATUS_CODE: IErrorToStatusCode = {
     UnauthenticatedUserError: StatusCodes.UNAUTHORIZED,
     InvalidParamError: StatusCodes.UNPROCESSABLE_ENTITY,
     UserNotFoundError: StatusCodes.INTERNAL_SERVER_ERROR,
+    FileUploadError: StatusCodes.INTERNAL_SERVER_ERROR,
 };
 
 export const errorToStatusCode = (error: AppError): StatusCodes => {
     return (
         ERROR_TO_STATUS_CODE[error.type] || StatusCodes.INTERNAL_SERVER_ERROR
     );
+};
+
+export const errorToJsonResponse = (
+    status: StatusCodes,
+    instance: string,
+    error: AppError,
+): GenericObject => {
+    return {
+        type: error.type,
+        title: error.title,
+        status: status,
+        detail: error.detail,
+        instance: instance,
+    };
 };
 
 export class AppError {
@@ -83,6 +99,16 @@ export class UserNotFoundError extends AppError {
             'UserNotFoundError',
             'User not found error',
             `The user ${username} doesn't exist.`,
+        );
+    }
+}
+
+export class FileUploadError extends AppError {
+    constructor(filename: string, error: string) {
+        super(
+            'FileUploadError',
+            'File upload error',
+            `The file ${filename} cannot be uploaded because ${error}.`,
         );
     }
 }

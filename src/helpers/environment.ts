@@ -14,3 +14,5 @@ export const SESSION_SECRET_KEY = process.env.SESSION_SECRET_KEY as string;
 export const ENABLE_LOGGING = process.env.ENABLE_LOGGING == 'true';
 
 export const API_VERSION = 'v1';
+
+export const APP_NAME = (process.env.APP_NAME as string) || 'books';

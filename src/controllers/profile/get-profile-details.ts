@@ -6,10 +6,11 @@ import { chain, map, orElse } from 'fp-ts/TaskEither';
 import { getUserFromRequestUseCase } from '../../use-cases/get-user-from-request';
 import { getProfileDetailsUseCase } from '../../use-cases/profile/get-profile-details';
 import { validateRequestParamUseCase } from '../../use-cases/validate-request-param';
+import { GenericObject } from '../../helpers/types';
 
 export const getProfileDetailsController: Controller<
     AppError,
-    Record<string, unknown>
+    GenericObject
 > = (request: IControllerRequest) =>
     pipe(
         validateRequestParamUseCase(request, 'username'),

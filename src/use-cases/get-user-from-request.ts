@@ -3,16 +3,13 @@ import { UnauthenticatedUserError } from '../errors/base';
 import { IControllerRequest } from '../controllers/base';
 import { Lazy } from 'fp-ts/function';
 
-export const getUserFromRequestUseCase: (
+export const getUserFromRequestUseCase = (
     request: IControllerRequest,
-) => Lazy<Promise<User>> = (request: IControllerRequest) => {
+): Lazy<Promise<User>> => {
     return async () => {
-        if (
-            request.context.expressRequest.user === undefined ||
-            request.context.expressRequest.user === null
-        )
-            throw new UnauthenticatedUserError();
+        const user = request.context.expressRequest.user;
+        if (!user) throw new UnauthenticatedUserError();
 
-        return request.context.expressRequest.user as User;
+        return user as User;
     };
 };

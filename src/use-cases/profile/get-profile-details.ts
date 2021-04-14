@@ -1,10 +1,11 @@
 import { Lazy } from 'fp-ts/function';
 import { UserModel } from '../../entities/user';
 import { UserNotFoundError } from '../../errors/base';
+import { GenericObject } from '../../helpers/types';
 
 export const getProfileDetailsUseCase = (
     username: string,
-): Lazy<Promise<Record<string, unknown>>> => {
+): Lazy<Promise<GenericObject>> => {
     return async () => {
         const user = await UserModel.findOne(
             { username: username },

@@ -8,7 +8,6 @@ import { sequenceT } from 'fp-ts/Apply';
 import { chain, taskEither } from 'fp-ts/TaskEither';
 import { getRecentlyViewedBooksUseCase } from '../../use-cases/books/get-recently-viewed-books';
 import { getMayInterestYouBooksUseCase } from '../../use-cases/books/get-may-interest-you-books';
-import { Book } from '../../entities/book';
 import { getUserFromRequestUseCase } from '../../use-cases/get-user-from-request';
 
 export const exploreBooksController: Controller<AppError, Explore> = (
@@ -23,8 +22,11 @@ export const exploreBooksController: Controller<AppError, Explore> = (
                 pipe(getMayInterestYouBooksUseCase(user), toTaskEither),
             ),
         ),
-        chain((result: [Book[], Book[]]) =>
-            pipe(exploreBooksUseCase(result[0], result[1]), toTaskEither),
+        chain(([recentlyViewed, mayInterestYou]) =>
+            pipe(
+                exploreBooksUseCase(recentlyViewed, mayInterestYou),
+                toTaskEither,
+            ),
         ),
         toResponse(false),
     );

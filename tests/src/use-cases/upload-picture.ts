@@ -4,4 +4,4 @@ import chaiAsPromised from 'chai-as-promised';
 
 use(chaiAsPromised);
 
-describe('uploadProfilePictureUseCase', function () {});
+describe('uploadPictureUseCase', function () {});

@@ -26,6 +26,7 @@ describe('getSoldBooksUseCase', function () {
             title: 'Alice in Wonderland',
             description:
                 'Alice in Wonderland has been known for its curious story.',
+            currency: 'EUR',
             price: 20,
             condition: 'ok',
             pictures: ['alice_in_wonderland_cover.png'],

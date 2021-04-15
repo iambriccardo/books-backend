@@ -24,6 +24,7 @@ describe('sellBookUseCase', function () {
             title: 'Alice in Wonderland',
             description:
                 'Lorem ipsum dolor sit amet, consectetur adipisci elit.',
+            currency: 'EUR',
             price: 20,
             condition: 'ok',
             pictures: ['alice_in_wonderland_cover.png'],
@@ -48,6 +49,7 @@ describe('sellBookUseCase', function () {
             title: 'Alice in Wonderland',
             description:
                 'Lorem ipsum dolor sit amet, consectetur adipisci elit.',
+            currency: 'EUR',
             price: 20,
             condition: 'ok',
             pictures: ['alice_in_wonderland_cover.png'],

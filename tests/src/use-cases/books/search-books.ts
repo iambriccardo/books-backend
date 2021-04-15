@@ -25,6 +25,7 @@ describe('sellBookUseCase', function () {
             title: 'Alice in Wonderland',
             description:
                 'Alice in Wonderland has been known for its curious story.',
+            currency: 'EUR',
             price: 20,
             condition: 'ok',
             pictures: ['alice_in_wonderland_cover.png'],
@@ -38,6 +39,7 @@ describe('sellBookUseCase', function () {
             isbn: '968-1-56319-809-6',
             title: 'Lord of the Rings',
             description: 'Lord of the Rings is an amazing book.',
+            currency: 'EUR',
             price: 20,
             condition: 'ok',
             pictures: ['lord_of_the_rings_cover.png'],

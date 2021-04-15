@@ -5,6 +5,7 @@ export interface Book {
     isbn: string;
     title: string;
     description: string;
+    currency: string;
     price: number;
     condition: 'bad' | 'ok' | 'good' | 'great' | 'na';
     pictures: string[];
@@ -20,6 +21,7 @@ export const BookJTDSchemaType: JTDSchemaType<Book> = {
         isbn: { type: 'string' },
         title: { type: 'string' },
         description: { type: 'string' },
+        currency: { type: 'string' },
         price: { type: 'float32' },
         condition: { enum: ['bad', 'ok', 'good', 'great', 'na'] },
         pictures: {
@@ -44,6 +46,7 @@ const BookSchema: Schema = new Schema(
         isbn: { type: String, required: true },
         title: { type: String, required: true },
         description: { type: String, required: true },
+        currency: { type: String, required: true },
         price: { type: Number, required: true },
         condition: {
             type: String,

@@ -47,7 +47,7 @@ class Server {
         this.app.use(
             '/api-docs',
             swaggerUi.serve,
-            swaggerUi.setup(readJsonFile('swagger.json'), { explorer: true }),
+            swaggerUi.setup(readJsonFile('swagger.json')),
         );
 
         this.app.use('/v1', v1Routes);

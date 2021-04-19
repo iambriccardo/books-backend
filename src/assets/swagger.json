@@ -29,8 +29,70 @@
     }
   ],
   "paths": {
+    "/auth/check": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Checks whether the user exists or not",
+        "parameters": [{
+          "in": "body",
+          "name": "username or email",
+          "required": true,
+          "schema": {
+            "type": "object",
+            "properties": {
+              "usernameOrEmail": {
+                "type": "string"
+              }
+            }
+          }
+        }],
+        "responses": {
+          "302": {
+            "description": "Login successful"
+          },
+          "401": {
+            "description": "Login unsuccessful"
+          },
+          "422": {
+            "description": "There are some errors in the request"
+          },
+          "500": {
+            "description": "There was an error in the server or the user has not been found"
+          }
+        }
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Creates user in the system",
+        "parameters": [{
+          "in": "body",
+          "name": "user",
+          "required": true,
+          "schema": {
+            "$ref": "#/models/User"
+          }
+        }],
+        "responses": {
+          "302": {
+            "description": "Signup successful"
+          },
+          "422": {
+            "description": "There are some errors in the request"
+          },
+          "500": {
+            "description": "There was an error in the server"
+          }
+        }
+      }
+    },
     "/auth/login": {
-      "get": {
+      "post": {
         "tags": [
           "auth"
         ],
@@ -38,34 +100,23 @@
         "parameters": [{
           "in": "body",
           "name": "user",
+          "required": true,
           "schema": {
-            "type": "object",
-            "required": ["username", "password"],
-            "properties": {
-              "username": {
-                "type": "string",
-                "example": "riccardo"
-              },
-              "password": {
-                "type": "string",
-                "example": "1234"
-              }
-            }
+            "$ref": "#/models/BaseUser"
           }
         }],
         "responses": {
           "302": {
-            "description": "Login successful",
-            "schema": {
-              "type": "string",
-              "example": "Found. Redirecting to v1/books/explore"
-            }
+            "description": "Login successful"
           },
           "401": {
             "description": "Login unsuccessful"
           },
+          "422": {
+            "description": "There are some errors in the request"
+          },
           "500": {
-            "$ref": "#/components/responses/ServerError"
+            "description": "There was an error in the server"
           }
         }
       }
@@ -74,12 +125,13 @@
   "components": {
     "responses": {
       "ServerError": {
-        "description": "An error has occurred in the server",
-        "content": {
-          "schema": {
-            "$ref": "#/components/schemas/AppError"
-          }
-        }
+        "description": "An error has occurred in the server"
+      },
+      "InvalidBodyError": {
+        "description": "The body of the request is not valid"
+      },
+      "InvalidFieldFormatError": {
+        "description": "One or more fields are not valid"
       }
     },
     "schemas": {
@@ -101,6 +153,70 @@
           "instance": {
             "type": "string"
           }
+        }
+      }
+    }
+  },
+  "models": {
+    "BaseUser": {
+      "type": "object",
+      "required": ["username", "password"],
+      "properties": {
+        "username": {
+          "type": "string",
+          "example": "riccardo"
+        },
+        "password": {
+          "type": "string",
+          "example": "1234"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "required": ["username", "password", "name", "surname"],
+      "properties": {
+        "username": {
+          "type": "string",
+          "example": "riccardo"
+        },
+        "password": {
+          "type": "string",
+          "example": "1234"
+        },
+        "name": {
+          "type": "string",
+          "example": "Riccardo"
+        },
+        "surname": {
+          "type": "string",
+          "example": "Busetti"
+        },
+        "contactInformation": {
+          "type": "object",
+          "required": ["phoneNumber", "email"],
+          "properties": {
+            "phoneNumber": {
+              "type": "string",
+              "example": "2384492571"
+            },
+            "email": {
+              "type": "string",
+              "example": "riccardo@domain.com"
+            },
+            "telegramUsername": {
+              "type": "string",
+              "example": "riccardo"
+            },
+            "facebookUsername": {
+              "type": "string",
+              "example": "riccardo"
+            }
+          }
+        },
+        "profilePicture": {
+          "type": "string",
+          "example": "riccardo.png"
         }
       }
     }

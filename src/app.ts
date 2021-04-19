@@ -13,6 +13,10 @@ import {
 } from './helpers/passport';
 import { MONGO_DB_URL, PORT, SESSION_SECRET_KEY } from './helpers/environment';
 import { logger } from './helpers/logging';
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+import { swaggerOptions } from './helpers/swagger';
+import { readJsonFile } from './helpers/files';
 
 class Server {
     app = express();
@@ -40,6 +44,11 @@ class Server {
         this.app.use(session(this.sessionOptions));
         this.app.use(passport.initialize());
         this.app.use(passport.session());
+        this.app.use(
+            '/api-docs',
+            swaggerUi.serve,
+            swaggerUi.setup(readJsonFile('swagger.json'), { explorer: true }),
+        );
 
         this.app.use('/v1', v1Routes);
     }

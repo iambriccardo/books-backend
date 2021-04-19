@@ -1,0 +1,108 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is the documentation for the backend of Books.",
+    "version": "0.1.0",
+    "title": "Books Backend",
+    "contact": {
+      "email": "rbusetti@unibz.it"
+    }
+  },
+  "host": "localhost:7000",
+  "basePath": "/v1",
+  "tags": [
+    {
+      "name": "auth",
+      "description": "Authentication related endpoints"
+    },
+    {
+      "name": "books",
+      "description": "Books related endpoints"
+    },
+    {
+      "name": "currencies",
+      "description": "Currencies related endpoints"
+    },
+    {
+      "name": "profile",
+      "description": "Profile related endpoints"
+    }
+  ],
+  "paths": {
+    "/auth/login": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Logs user into the system",
+        "parameters": [{
+          "in": "body",
+          "name": "user",
+          "schema": {
+            "type": "object",
+            "required": ["username", "password"],
+            "properties": {
+              "username": {
+                "type": "string",
+                "example": "riccardo"
+              },
+              "password": {
+                "type": "string",
+                "example": "1234"
+              }
+            }
+          }
+        }],
+        "responses": {
+          "302": {
+            "description": "Login successful",
+            "schema": {
+              "type": "string",
+              "example": "Found. Redirecting to v1/books/explore"
+            }
+          },
+          "401": {
+            "description": "Login unsuccessful"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ServerError": {
+        "description": "An error has occurred in the server",
+        "content": {
+          "schema": {
+            "$ref": "#/components/schemas/AppError"
+          }
+        }
+      }
+    },
+    "schemas": {
+      "AppError": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "number"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "instance": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

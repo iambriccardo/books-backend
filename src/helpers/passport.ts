@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { NativeError } from 'mongoose';
 import { UserDocument, UserModel } from '../entities/user';
 import { API_VERSION } from './environment';
+import { StatusCodes } from 'http-status-codes';
 
 export const userSerializer = (req: any, user: any, done: any) => {
     done(undefined, user.id);
@@ -59,5 +60,5 @@ export const isAuthenticated = (
         return next();
     }
 
-    res.redirect(`${API_VERSION}/auth/login`);
+    return res.status(StatusCodes.UNAUTHORIZED).json();
 };

@@ -1,0 +1,702 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Books Backend",
+    "description": "This is the documentation for the backend of Books. However note that it is still a work in progress.",
+    "contact": {
+      "email": "rbusetti@unibz.it"
+    },
+    "version": "0.1.0"
+  },
+  "servers": [
+    {
+      "url": "localhost:7000/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "auth",
+      "description": "Authentication related endpoints"
+    },
+    {
+      "name": "books",
+      "description": "Books related endpoints"
+    },
+    {
+      "name": "currencies",
+      "description": "Currencies related endpoints"
+    },
+    {
+      "name": "profile",
+      "description": "Profile related endpoints"
+    }
+  ],
+  "paths": {
+    "/auth/check": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Checks whether the user exists or not",
+        "security": [
+          {
+            "CookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "usernameOrEmail": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "302": {
+            "$ref": "#/components/status/Found"
+          },
+          "401": {
+            "$ref": "#/components/status/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/status/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/status/InternalServerError"
+          }
+        }
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Creates user in the system",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "302": {
+            "$ref": "#/components/status/Found"
+          },
+          "422": {
+            "$ref": "#/components/status/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/status/InternalServerError"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Logs user into the system",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BaseUser"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "302": {
+            "$ref": "#/components/status/Found"
+          },
+          "401": {
+            "$ref": "#/components/status/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/status/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/status/InternalServerError"
+          }
+        }
+      }
+    },
+    "/books/selling": {
+      "get": {
+        "tags": [
+          "books"
+        ],
+        "summary": "Lists the books that the user is selling",
+        "security": [
+          {
+            "CookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "body": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/models/Book"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/status/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/status/InternalServerError"
+          }
+        }
+      }
+    },
+    "/books/sold": {
+      "get": {
+        "tags": [
+          "books"
+        ],
+        "summary": "Lists the books that the user has sold",
+        "security": [
+          {
+            "CookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "body": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Book"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/status/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/status/InternalServerError"
+          }
+        }
+      }
+    },
+    "/books/search": {
+      "post": {
+        "tags": [
+          "books"
+        ],
+        "summary": "Searches books with a search query",
+        "security": [
+          {
+            "CookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "searchQuery": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "body": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/models/Book"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/status/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/status/InternalServerError"
+          }
+        }
+      }
+    },
+    "/books/sell": {
+      "post": {
+        "tags": [
+          "books"
+        ],
+        "summary": "Puts for sale a given book",
+        "security": [
+          {
+            "CookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Book"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/status/Ok"
+          },
+          "500": {
+            "$ref": "#/components/status/InternalServerError"
+          }
+        }
+      }
+    },
+    "/profile/details": {
+      "get": {
+        "tags": [
+          "profile"
+        ],
+        "summary": "Shows the details of the user's profile",
+        "security": [
+          {
+            "CookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "body": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/status/InternalServerError"
+          }
+        }
+      }
+    },
+    "/profile/details/{username}": {
+      "get": {
+        "tags": [
+          "profile"
+        ],
+        "summary": "Shows the details of a given user",
+        "security": [
+          {
+            "CookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "body": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/status/InternalServerError"
+          }
+        }
+      }
+    },
+    "/upload/profile-picture": {
+      "get": {
+        "tags": [
+          "profile"
+        ],
+        "summary": "Uploads the profile picture of the user",
+        "security": [
+          {
+            "CookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "profile-picture": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "body": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string",
+                          "example": "image.png"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/currencies/all": {
+      "get": {
+        "tags": [
+          "currencies"
+        ],
+        "summary": "Lists all the currencies supported",
+        "security": [
+          {
+            "CookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Currency"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/status/InternalServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "CookieAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "connect.sid"
+      }
+    },
+    "status": {
+      "Ok": {
+        "description": "Ok"
+      },
+      "Found": {
+        "description": "Found"
+      },
+      "UnprocessableEntity": {
+        "description": "Unprocessable entity"
+      },
+      "Unauthorized": {
+        "description": "Unauthorized"
+      },
+      "InternalServerError": {
+        "description": "Internal server error",
+        "$ref": "#/components/responses/ServerError"
+      }
+    },
+    "responses": {
+      "ServerError": {
+        "description": "An error has occurred in the server",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/AppError"
+            }
+          }
+        }
+      },
+      "InvalidBodyError": {
+        "description": "The body of the request is not valid",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/components/schemas/AppError"
+            }
+          }
+        }
+      },
+      "InvalidFieldFormatError": {
+        "description": "One or more fields are not valid",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/components/schemas/AppError"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "AppError": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "ErrorName"
+          },
+          "title": {
+            "type": "string",
+            "example": "Error name"
+          },
+          "status": {
+            "type": "number",
+            "example": "000"
+          },
+          "detail": {
+            "type": "string",
+            "example": "This error was caused by a component."
+          },
+          "instance": {
+            "type": "string",
+            "example": "/example/endpoint"
+          }
+        }
+      },
+      "BaseUser": {
+        "type": "object",
+        "required": [
+          "username",
+          "password"
+        ],
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "riccardo"
+          },
+          "password": {
+            "type": "string",
+            "example": "1234"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "required": [
+          "username",
+          "password",
+          "name",
+          "surname"
+        ],
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "riccardo"
+          },
+          "password": {
+            "type": "string",
+            "example": "1234"
+          },
+          "name": {
+            "type": "string",
+            "example": "Riccardo"
+          },
+          "surname": {
+            "type": "string",
+            "example": "Busetti"
+          },
+          "contactInformation": {
+            "type": "object",
+            "required": [
+              "phoneNumber",
+              "email"
+            ],
+            "properties": {
+              "phoneNumber": {
+                "type": "string",
+                "example": "2384492571"
+              },
+              "email": {
+                "type": "string",
+                "example": "riccardo@domain.com"
+              },
+              "telegramUsername": {
+                "type": "string",
+                "example": "riccardo"
+              },
+              "facebookUsername": {
+                "type": "string",
+                "example": "riccardo"
+              }
+            }
+          },
+          "profilePicture": {
+            "type": "string",
+            "example": "riccardo.png"
+          }
+        }
+      },
+      "Currency": {
+        "type": "object",
+        "properties": {
+          "symbol": {
+            "type": "string",
+            "example": "$"
+          },
+          "code": {
+            "type": "string",
+            "example": "USD"
+          },
+          "name": {
+            "type": "string",
+            "example": "US Dollar"
+          }
+        }
+      },
+      "Book": {
+        "type": "object",
+        "properties": {
+          "isbn": {
+            "type": "string",
+            "example": "978-1-56619-909-4"
+          },
+          "title": {
+            "type": "string",
+            "example": "Alice in Wonderland"
+          },
+          "description": {
+            "type": "string",
+            "example": "Alice in Wonderland has been known for its curious story."
+          },
+          "currency": {
+            "type": "string",
+            "example": "EUR"
+          },
+          "price": {
+            "type": "number",
+            "example": 20
+          },
+          "condition": {
+            "type": "string",
+            "enum": [
+              "bad",
+              "ok",
+              "good",
+              "great",
+              "na"
+            ],
+            "example": "good"
+          },
+          "pictures": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "image_1.png",
+              "image_2.png"
+            ]
+          },
+          "seller": {
+            "type": "string",
+            "example": "riccardo"
+          },
+          "location": {
+            "type": "string",
+            "example": "New York"
+          },
+          "publicationDate": {
+            "type": "string",
+            "example": "2021-04-01T07:13:32.186Z"
+          },
+          "saleDate": {
+            "type": "string",
+            "example": "2021-10-01T07:13:32.186Z"
+          },
+          "buyer": {
+            "type": "string",
+            "example": "gioele"
+          }
+        }
+      }
+    }
+  }
+}

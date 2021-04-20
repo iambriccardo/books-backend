@@ -38,11 +38,6 @@
           "auth"
         ],
         "summary": "Checks whether the user exists or not",
-        "security": [
-          {
-            "CookieAuth": []
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -61,9 +56,6 @@
         "responses": {
           "302": {
             "$ref": "#/components/status/Found"
-          },
-          "401": {
-            "$ref": "#/components/status/Unauthorized"
           },
           "422": {
             "$ref": "#/components/status/UnprocessableEntity"

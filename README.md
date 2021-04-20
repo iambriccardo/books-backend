@@ -11,6 +11,7 @@ or not up to date._
 * [Installation](#installation)
 * [How to run](#how-to-run)
 * [How to test](#how-to-test)
+* [Documentation](#documentation)
 * [Authors](#authors)
 
 ### Installation
@@ -49,6 +50,10 @@ Execute:
 ```shell
 npm test
 ```
+
+### Documentation
+
+Start the server and go to `/api-docs` endpoint or open the file `src/assets/openapi.json` on GitLab.
 
 ### Authors
 

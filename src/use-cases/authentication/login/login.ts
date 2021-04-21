@@ -2,10 +2,8 @@ import { Lazy } from 'fp-ts/function';
 import { authenticate } from 'passport';
 import { UserDocument } from '../../../entities/user';
 import { IVerifyOptions } from 'passport-local';
-import { API_VERSION } from '../../../helpers/environment';
 import { IControllerContext } from '../../../controllers/base';
 import { StatusCodes } from 'http-status-codes';
-import { ServerError } from '../../../errors/base';
 
 export const loginUseCase = (
     context: IControllerContext,
@@ -16,6 +14,7 @@ export const loginUseCase = (
             (err: Error, user: UserDocument, info: IVerifyOptions) => {
                 if (err) return context.expressNext(err);
 
+                // TODO: handle error propagation through the controller.
                 if (!user)
                     return context.expressResponse
                         .status(StatusCodes.UNAUTHORIZED)
@@ -24,9 +23,9 @@ export const loginUseCase = (
                 context.expressRequest.logIn(user, (err) => {
                     if (err) return context.expressNext(err);
 
-                    return context.expressResponse.redirect(
-                        `${API_VERSION}/books/explore`,
-                    );
+                    return context.expressResponse
+                        .status(StatusCodes.OK)
+                        .json();
                 });
             },
         )(context.expressRequest, context.expressResponse, context.expressNext);

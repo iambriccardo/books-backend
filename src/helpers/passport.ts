@@ -15,9 +15,15 @@ export const userDeserializer = (id: any, done: any) => {
 };
 
 export const LocalStrategy = new passportLocal.Strategy(
+    { usernameField: 'usernameOrEmail' },
     (username, password, done) => {
         UserModel.findOne(
-            { username: username.toLowerCase() },
+            {
+                $or: [
+                    { username: username },
+                    { 'contactInformation.email': username },
+                ],
+            },
             (err: NativeError, user: UserDocument) => {
                 if (err) {
                     return done(err);

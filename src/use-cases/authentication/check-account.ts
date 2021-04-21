@@ -1,5 +1,4 @@
 import { Lazy } from 'fp-ts/function';
-import { CheckAccountBody } from '../../controllers/authentication/check-account';
 import { UserModel } from '../../entities/user';
 import { UserNotFoundError } from '../../errors/base';
 import { GenericObject } from '../../helpers/types';

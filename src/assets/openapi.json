@@ -54,8 +54,8 @@
           "required": true
         },
         "responses": {
-          "302": {
-            "$ref": "#/components/status/Found"
+          "200": {
+            "$ref": "#/components/status/Ok"
           },
           "422": {
             "$ref": "#/components/status/UnprocessableEntity"
@@ -83,8 +83,8 @@
           "required": true
         },
         "responses": {
-          "302": {
-            "$ref": "#/components/status/Found"
+          "200": {
+            "$ref": "#/components/status/Ok"
           },
           "422": {
             "$ref": "#/components/status/UnprocessableEntity"
@@ -105,15 +105,15 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/BaseUser"
+                "$ref": "#/components/schemas/LoginBody"
               }
             }
           },
           "required": true
         },
         "responses": {
-          "302": {
-            "$ref": "#/components/status/Found"
+          "200": {
+            "$ref": "#/components/status/Ok"
           },
           "401": {
             "$ref": "#/components/status/Unauthorized"
@@ -288,6 +288,9 @@
           "200": {
             "$ref": "#/components/status/Ok"
           },
+          "401": {
+            "$ref": "#/components/status/Unauthorized"
+          },
           "500": {
             "$ref": "#/components/status/InternalServerError"
           }
@@ -320,6 +323,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/status/Unauthorized"
           },
           "500": {
             "$ref": "#/components/status/InternalServerError"
@@ -363,6 +369,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/status/Unauthorized"
           },
           "422": {
             "$ref": "#/components/status/UnprocessableEntity"
@@ -421,6 +430,9 @@
               }
             }
           },
+          "401": {
+            "$ref": "#/components/status/Unauthorized"
+          },
           "500": {
             "$ref": "#/components/status/InternalServerError"
           }
@@ -452,6 +464,9 @@
               }
             }
           },
+          "401": {
+            "$ref": "#/components/status/Unauthorized"
+          },
           "500": {
             "$ref": "#/components/status/InternalServerError"
           }
@@ -470,9 +485,6 @@
     "status": {
       "Ok": {
         "description": "Ok"
-      },
-      "Found": {
-        "description": "Found"
       },
       "UnprocessableEntity": {
         "description": "Unprocessable entity"
@@ -543,14 +555,14 @@
           }
         }
       },
-      "BaseUser": {
+      "LoginBody": {
         "type": "object",
         "required": [
           "username",
           "password"
         ],
         "properties": {
-          "username": {
+          "usernameOrEmail": {
             "type": "string",
             "example": "riccardo"
           },

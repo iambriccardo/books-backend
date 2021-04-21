@@ -30,9 +30,11 @@ describe('getSoldBooksUseCase', function () {
             price: 20,
             condition: 'ok',
             pictures: ['alice_in_wonderland_cover.png'],
-            seller: 'riccardo',
-            location: 'Trento',
             publicationDate: new Date(),
+            seller: 'riccardo',
+            locationName: 'Trento',
+            locationLatitude: 46.0747793,
+            locationLongitude: 11.3547582,
             saleDate: new Date(),
             buyer: 'marco',
         };

@@ -99,7 +99,7 @@ export const connectsToController = <VT>(
             };
         };
 
-        const startController = pipe(
+        const start = pipe(
             applyMiddlewares(),
             toTaskEither,
             TE.chain((request) => controller(request)),
@@ -112,7 +112,7 @@ export const connectsToController = <VT>(
             ),
         );
 
-        const controllerResponse = await startController();
+        const controllerResponse = await start();
         if (E.isRight(controllerResponse)) {
             const response = controllerResponse.right;
             const statusCode = StatusCodes.OK;

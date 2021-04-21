@@ -11,6 +11,7 @@ import {
 import { StatusCodes } from 'http-status-codes';
 import { logger } from '../helpers/logging';
 import { Middleware } from '../middlewares/base';
+import { toTaskEither } from '../helpers/fp-extensions';
 
 /**
  * Interface describing the context of the controller, as a
@@ -77,7 +78,7 @@ export const connectsToController = <VT>(
         logger.info(`* query -> ${JSON.stringify(req.query)}`);
         logger.info(`* params -> ${JSON.stringify(req.params)}`);
 
-        let controllerHttpRequest = {
+        const controllerHttpRequest: IControllerRequest = {
             body: req.body,
             query: req.query,
             params: req.params,
@@ -88,13 +89,20 @@ export const connectsToController = <VT>(
             },
         };
 
-        for (const middleware of middlewares) {
-            // TODO: add error handling for middlewares.
-            controllerHttpRequest = await middleware(controllerHttpRequest);
-        }
+        const applyMiddlewares = () => {
+            return async () => {
+                return await asyncReduce(
+                    middlewares,
+                    async (prevRequest, middleware) => middleware(prevRequest),
+                    controllerHttpRequest,
+                );
+            };
+        };
 
         const startController = pipe(
-            controller(controllerHttpRequest),
+            applyMiddlewares(),
+            toTaskEither,
+            TE.chain((request) => controller(request)),
             TE.mapLeft(
                 (error) =>
                     [error, errorToStatusCode(error)] as [
@@ -145,4 +153,22 @@ export const toResponse: (
         // TODO: find better way to handle this.
         responseHandled: responseHandled,
     }));
+};
+
+/**
+ * Custom reduce function which reduces an array to an item of equal of different type,
+ * via an asynchronous set of computations.
+ */
+export const asyncReduce = async <U, T>(
+    elements: T[],
+    block: (acc: U, element: T) => Promise<U>,
+    initialValue: U,
+): Promise<U> => {
+    let acc = initialValue;
+
+    for (const element of elements) {
+        acc = await block(acc, element);
+    }
+
+    return acc;
 };

@@ -5,16 +5,16 @@ import { UserNotFoundError } from '../../errors/base';
 import { GenericObject } from '../../helpers/types';
 
 export const checkAccountUseCase = (
-    body: CheckAccountBody,
+    usernameOrEmail: string,
 ): Lazy<Promise<GenericObject>> => {
     return async () => {
         const user = await UserModel.findOne({
             $or: [
-                { username: body.usernameOrEmail },
-                { 'contactInformation.email': body.usernameOrEmail },
+                { username: usernameOrEmail },
+                { 'contactInformation.email': usernameOrEmail },
             ],
         });
-        if (!user) throw new UserNotFoundError(body.usernameOrEmail);
+        if (!user) throw new UserNotFoundError(usernameOrEmail);
 
         return {};
     };

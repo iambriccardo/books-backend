@@ -8,7 +8,7 @@ import { JTDSchemaType } from 'ajv/dist/jtd';
 import { GenericObject } from '../../helpers/types';
 import { checkAccountUseCase } from '../../use-cases/authentication/check-account';
 
-export interface CheckAccountBody {
+interface CheckAccountBody {
     usernameOrEmail: string;
 }
 
@@ -24,6 +24,8 @@ export const checkAccountController: Controller<AppError, GenericObject> = (
     pipe(
         validateRequestBodyUseCase(request, CheckAccountJTDSchemaType),
         toTaskEither,
-        chain((body) => pipe(checkAccountUseCase(body), toTaskEither)),
+        chain((body) =>
+            pipe(checkAccountUseCase(body.usernameOrEmail), toTaskEither),
+        ),
         toResponse(false),
     );

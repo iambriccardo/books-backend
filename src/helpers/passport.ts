@@ -2,7 +2,6 @@ import passportLocal from 'passport-local';
 import { NextFunction, Request, Response } from 'express';
 import { NativeError } from 'mongoose';
 import { UserDocument, UserModel } from '../entities/user';
-import { API_VERSION } from './environment';
 import { StatusCodes } from 'http-status-codes';
 
 export const userSerializer = (req: any, user: any, done: any) => {

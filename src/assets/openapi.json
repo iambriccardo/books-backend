@@ -253,6 +253,9 @@
           "401": {
             "$ref": "#/components/status/Unauthorized"
           },
+          "422": {
+            "$ref": "#/components/status/UnprocessableEntity"
+          },
           "500": {
             "$ref": "#/components/status/InternalServerError"
           }
@@ -360,6 +363,9 @@
               }
             }
           },
+          "422": {
+            "$ref": "#/components/status/UnprocessableEntity"
+          },
           "500": {
             "$ref": "#/components/status/InternalServerError"
           }
@@ -413,6 +419,9 @@
                 }
               }
             }
+          },
+          "500": {
+            "$ref": "#/components/status/InternalServerError"
           }
         }
       }

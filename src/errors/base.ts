@@ -6,11 +6,11 @@ interface IErrorToStatusCode {
 }
 
 const ERROR_TO_STATUS_CODE: IErrorToStatusCode = {
-    ServerError: StatusCodes.INTERNAL_SERVER_ERROR,
     InvalidBodyError: StatusCodes.UNPROCESSABLE_ENTITY,
     InvalidFieldFormatError: StatusCodes.UNPROCESSABLE_ENTITY,
-    UnauthenticatedUserError: StatusCodes.UNAUTHORIZED,
     InvalidParamError: StatusCodes.UNPROCESSABLE_ENTITY,
+    UnauthenticatedUserError: StatusCodes.UNAUTHORIZED,
+    ServerError: StatusCodes.INTERNAL_SERVER_ERROR,
     UserNotFoundError: StatusCodes.INTERNAL_SERVER_ERROR,
     FileUploadError: StatusCodes.INTERNAL_SERVER_ERROR,
 };

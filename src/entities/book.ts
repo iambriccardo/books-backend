@@ -9,9 +9,11 @@ export interface Book {
     price: number;
     condition: 'bad' | 'ok' | 'good' | 'great' | 'na';
     pictures: string[];
-    seller: string;
-    location: string;
     publicationDate: Date;
+    seller: string;
+    locationName: string;
+    locationLatitude: number;
+    locationLongitude: number;
     saleDate?: Date;
     buyer?: string;
 }
@@ -29,9 +31,11 @@ export const BookJTDSchemaType: JTDSchemaType<Book> = {
                 type: 'string',
             },
         },
-        seller: { type: 'string' },
-        location: { type: 'string' },
         publicationDate: { type: 'timestamp' },
+        seller: { type: 'string' },
+        locationName: { type: 'string' },
+        locationLatitude: { type: 'float32' },
+        locationLongitude: { type: 'float32' },
     },
     optionalProperties: {
         saleDate: { type: 'timestamp' },
@@ -55,9 +59,11 @@ const BookSchema: Schema = new Schema(
             required: true,
         },
         pictures: { type: [String], required: true },
-        seller: { type: String, required: true },
-        location: { type: String, required: true },
         publicationDate: { type: Date, required: true },
+        seller: { type: String, required: true },
+        locationName: { type: String, required: true },
+        locationLatitude: { type: Number, required: true },
+        locationLongitude: { type: Number, required: true },
         saleDate: { type: Date, required: false },
         buyer: { type: String, required: false },
     },

@@ -1,6 +1,6 @@
 import { Controller, IControllerRequest, toResponse } from '../base';
 import { pipe } from 'fp-ts/function';
-import { toTaskEither } from '../../helpers/fp-extensions';
+import { toTaskEither } from '../../helpers/extensions';
 import { chain } from 'fp-ts/TaskEither';
 import { signupUseCase } from '../../use-cases/authentication/signup/signup';
 import { sanitizeSignupUseCase } from '../../use-cases/authentication/signup/sanitize-signup';

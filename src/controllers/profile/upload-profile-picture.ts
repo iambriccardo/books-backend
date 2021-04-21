@@ -1,7 +1,7 @@
 import { Controller, IControllerRequest, toResponse } from '../base';
 import { AppError } from '../../errors/base';
 import { pipe } from 'fp-ts/function';
-import { toTaskEither } from '../../helpers/fp-extensions';
+import { toTaskEither } from '../../helpers/extensions';
 import { convertFileToBase64UseCase } from '../../use-cases/convert-file-to-base64';
 import { chain, map, orElse, taskEither } from 'fp-ts/TaskEither';
 import { GenericObject } from '../../helpers/types';

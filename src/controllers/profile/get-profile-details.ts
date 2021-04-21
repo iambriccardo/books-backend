@@ -1,7 +1,7 @@
 import { Controller, IControllerRequest, toResponse } from '../base';
 import { AppError } from '../../errors/base';
 import { pipe } from 'fp-ts/function';
-import { toTaskEither } from '../../helpers/fp-extensions';
+import { toTaskEither } from '../../helpers/extensions';
 import { chain, map, orElse } from 'fp-ts/TaskEither';
 import { getUserFromRequestUseCase } from '../../use-cases/get-user-from-request';
 import { getProfileDetailsUseCase } from '../../use-cases/profile/get-profile-details';

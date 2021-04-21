@@ -1,6 +1,6 @@
 import { Controller, IControllerRequest, toResponse } from '../base';
 import { pipe } from 'fp-ts/function';
-import { toTaskEither } from '../../helpers/fp-extensions';
+import { toTaskEither } from '../../helpers/extensions';
 import { sellBookUseCase } from '../../use-cases/books/sell-book';
 import { AppError } from '../../errors/base';
 import { validateRequestBodyUseCase } from '../../use-cases/validate-request-body';

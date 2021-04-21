@@ -268,6 +268,7 @@
           "books"
         ],
         "summary": "Puts for sale a given book",
+        "description": "seller, locationLatitude, locationLongitude are not mandatory because they are injected by the backend.",
         "security": [
           {
             "CookieAuth": []
@@ -676,17 +677,25 @@
               "image_2.png"
             ]
           },
+          "publicationDate": {
+            "type": "string",
+            "example": "2021-04-01T07:13:32.186Z"
+          },
           "seller": {
             "type": "string",
             "example": "riccardo"
           },
-          "location": {
+          "locationName": {
             "type": "string",
             "example": "New York"
           },
-          "publicationDate": {
-            "type": "string",
-            "example": "2021-04-01T07:13:32.186Z"
+          "locationLatitude": {
+            "type": "number",
+            "example": 46.0747793
+          },
+          "locationLongitude": {
+            "type": "number",
+            "example": 11.1217486
           },
           "saleDate": {
             "type": "string",

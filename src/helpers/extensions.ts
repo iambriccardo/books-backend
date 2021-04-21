@@ -17,3 +17,21 @@ export const toAppError = (error: unknown): AppError => {
         return error as AppError;
     }
 };
+
+/**
+ * Custom reduce function which reduces an array to an item of equal of different type,
+ * via an asynchronous set of computations.
+ */
+export const asyncReduce = async <U, T>(
+    elements: T[],
+    block: (acc: U, element: T) => Promise<U>,
+    initialValue: U,
+): Promise<U> => {
+    let acc = initialValue;
+
+    for (const element of elements) {
+        acc = await block(acc, element);
+    }
+
+    return acc;
+};

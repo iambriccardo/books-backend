@@ -3,7 +3,10 @@ import { connectsToController } from '../../controllers/base';
 import { sellBookController } from '../../controllers/books/sell-book';
 import { isAuthenticated } from '../../helpers/passport';
 import { exploreBooksController } from '../../controllers/books/explore-books';
-import { useInjectUserIntoRequestBody } from '../../middlewares/middlewares';
+import {
+    useInjectLocationCoordinatesIntoRequestBody,
+    useInjectUserIntoRequestBody,
+} from '../../middlewares/middlewares';
 import { searchBooksController } from '../../controllers/books/search-books';
 import { getSellingBooksController } from '../../controllers/books/get-selling-books';
 import { getSoldBookController } from '../../controllers/books/get-sold-books';
@@ -40,6 +43,7 @@ router.post(
     connectsToController(
         sellBookController,
         useInjectUserIntoRequestBody('seller'),
+        useInjectLocationCoordinatesIntoRequestBody(),
     ),
 );
 

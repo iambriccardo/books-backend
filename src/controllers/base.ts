@@ -11,7 +11,7 @@ import {
 import { StatusCodes } from 'http-status-codes';
 import { logger } from '../helpers/logging';
 import { Middleware } from '../middlewares/base';
-import { toTaskEither } from '../helpers/fp-extensions';
+import { asyncReduce, toTaskEither } from '../helpers/extensions';
 
 /**
  * Interface describing the context of the controller, as a
@@ -153,22 +153,4 @@ export const toResponse: (
         // TODO: find better way to handle this.
         responseHandled: responseHandled,
     }));
-};
-
-/**
- * Custom reduce function which reduces an array to an item of equal of different type,
- * via an asynchronous set of computations.
- */
-export const asyncReduce = async <U, T>(
-    elements: T[],
-    block: (acc: U, element: T) => Promise<U>,
-    initialValue: U,
-): Promise<U> => {
-    let acc = initialValue;
-
-    for (const element of elements) {
-        acc = await block(acc, element);
-    }
-
-    return acc;
 };

@@ -6,14 +6,28 @@ import { signupUseCase } from '../../use-cases/authentication/signup/signup';
 import { sanitizeSignupUseCase } from '../../use-cases/authentication/signup/sanitize-signup';
 import { AppError } from '../../errors/base';
 import { validateRequestBodyUseCase } from '../../use-cases/validate-request-body';
-import { UserJDTSchema } from '../../entities/user';
 import { validateSignupUseCase } from '../../use-cases/authentication/signup/validate-signup';
+import { JTDSchemaType } from 'ajv/dist/jtd';
+
+export interface SignupBody {
+    email: string;
+    username: string;
+    password: string;
+}
+
+const SignupBodyJTDSchema: JTDSchemaType<SignupBody> = {
+    properties: {
+        email: { type: 'string' },
+        username: { type: 'string' },
+        password: { type: 'string' },
+    },
+};
 
 export const signupController: Controller<AppError, void> = (
     request: IControllerRequest,
 ) =>
     pipe(
-        validateRequestBodyUseCase(request, UserJDTSchema),
+        validateRequestBodyUseCase(request, SignupBodyJTDSchema),
         toTaskEither,
         chain((user) => pipe(sanitizeSignupUseCase(user), toTaskEither)),
         chain((user) => pipe(validateSignupUseCase(user), toTaskEither)),

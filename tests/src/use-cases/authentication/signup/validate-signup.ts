@@ -1,86 +1,45 @@
 import { describe } from 'mocha';
 import { expect, use } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { User } from '../../../../../src/entities/user';
 import { validateSignupUseCase } from '../../../../../src/use-cases/authentication/signup/validate-signup';
+import { SignupBody } from '../../../../../src/controllers/authentication/signup';
 
 use(chaiAsPromised);
 
 describe('validateSignupUseCase', function () {
-    it('should return the user if the validation has been successful', async function () {
-        const user: User = {
+    it('should return the body if the validation has been successful', async function () {
+        const body: SignupBody = {
+            email: 'mario@domain.com',
             username: 'mario',
             password: '1234',
-            name: 'Mario',
-            surname: 'Rossi',
-            contactInformation: {
-                phoneNumber: '3719483759',
-                email: 'marco@domain.com',
-                telegramUsername: 'mario2000',
-                facebookUsername: 'mario2000',
-            },
         };
 
-        const useCase = validateSignupUseCase(user);
+        const useCase = validateSignupUseCase(body);
 
         await expect(useCase()).to.not.be.rejected;
-        expect(await useCase()).to.be.deep.equal(user);
+        expect(await useCase()).to.be.deep.equal(body);
     });
 
     it('should throw an error if email field is invalid', async function () {
-        const user: User = {
+        const body: SignupBody = {
+            email: 'marioatdomain.com',
             username: 'mario',
             password: '1234',
-            name: 'Mario',
-            surname: 'Rossi',
-            contactInformation: {
-                phoneNumber: '3719483759',
-                email: 'marcoatdomain.com',
-                telegramUsername: 'mario2000',
-                facebookUsername: 'mario2000',
-            },
         };
 
-        const useCase = validateSignupUseCase(user);
+        const useCase = validateSignupUseCase(body);
 
         await expect(useCase()).to.be.rejected;
     });
 
     it('should throw an error if password field is invalid', async function () {
-        const user: User = {
+        const body: SignupBody = {
+            email: 'mario@domain.com',
             username: 'mario',
             password: '',
-            name: 'Mario',
-            surname: 'Rossi',
-            contactInformation: {
-                phoneNumber: '3719483759',
-                email: 'marco@domain.com',
-                telegramUsername: 'mario2000',
-                facebookUsername: 'mario2000',
-            },
         };
 
-        const useCase = validateSignupUseCase(user);
-
-        await expect(useCase()).to.be.rejected;
-    });
-
-    it('should throw an error if profilePicture field is invalid', async function () {
-        const user: User = {
-            username: 'mario',
-            password: '1234',
-            name: 'Mario',
-            surname: 'Rossi',
-            contactInformation: {
-                phoneNumber: '3719483759',
-                email: 'marco@domain.com',
-                telegramUsername: 'mario2000',
-                facebookUsername: 'mario2000',
-            },
-            profilePicture: 'profile_picture.png',
-        };
-
-        const useCase = validateSignupUseCase(user);
+        const useCase = validateSignupUseCase(body);
 
         await expect(useCase()).to.be.rejected;
     });

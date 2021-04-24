@@ -1,52 +1,22 @@
 import { Document, Error, model, Model, Schema } from 'mongoose';
 import { compare, genSalt, hash } from 'bcrypt-nodejs';
-import { JTDSchemaType } from 'ajv/dist/jtd';
 
 export interface BaseUser {
+    email: string;
     username: string;
     password: string;
 }
 
-export const BaseUserJDTSchema: JTDSchemaType<BaseUser> = {
-    properties: {
-        username: { type: 'string' },
-        password: { type: 'string' },
-    },
-};
-
 export interface User extends BaseUser {
-    name: string;
-    surname: string;
+    name?: string;
+    surname?: string;
     contactInformation: {
-        phoneNumber: string;
-        email: string;
+        phoneNumber?: string;
         telegramUsername?: string;
         facebookUsername?: string;
     };
     profilePicture?: string;
 }
-
-export const UserJDTSchema: JTDSchemaType<User> = {
-    properties: {
-        username: { type: 'string' },
-        password: { type: 'string' },
-        name: { type: 'string' },
-        surname: { type: 'string' },
-        contactInformation: {
-            properties: {
-                phoneNumber: { type: 'string' },
-                email: { type: 'string' },
-            },
-            optionalProperties: {
-                telegramUsername: { type: 'string' },
-                facebookUsername: { type: 'string' },
-            },
-        },
-    },
-    optionalProperties: {
-        profilePicture: { type: 'string' },
-    },
-};
 
 export interface UserDocument extends User, Document {
     comparePassword: ComparePasswordFunction;
@@ -56,11 +26,11 @@ const UserSchema: Schema = new Schema(
     {
         username: { type: String, required: true, unique: true },
         password: { type: String, required: true },
-        name: { type: String, required: true },
-        surname: { type: String, required: true },
+        email: { type: String, required: true, unique: true },
+        name: String,
+        surname: String,
         contactInformation: {
-            phoneNumber: { type: String, required: true, unique: true },
-            email: { type: String, required: true, unique: true },
+            phoneNumber: { type: String, unique: true },
             telegramUsername: String,
             facebookUsername: String,
         },

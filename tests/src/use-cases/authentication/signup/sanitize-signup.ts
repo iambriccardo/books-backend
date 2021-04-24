@@ -2,73 +2,47 @@ import { describe } from 'mocha';
 import { expect, use } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { sanitizeSignupUseCase } from '../../../../../src/use-cases/authentication/signup/sanitize-signup';
-import { User } from '../../../../../src/entities/user';
+import { SignupBody } from '../../../../../src/controllers/authentication/signup';
 
 use(chaiAsPromised);
 
 describe('sanitizeSignupUseCase', function () {
-    it('should return the sanitized user if the optional fields are set', async function () {
-        const user: User = {
+    it('should return the sanitized body if the optional fields are set', async function () {
+        const body: SignupBody = {
+            email: 'mario@domain.com  ',
             username: ' mario ',
             password: '1234 ',
-            name: 'Mario',
-            surname: 'Rossi ',
-            contactInformation: {
-                phoneNumber: '  3719483759',
-                email: 'marco@domain.com  ',
-                telegramUsername: 'mario2000',
-                facebookUsername: 'mario2000',
-            },
-            profilePicture: ' https://picsum.photos/536/354  ',
         };
 
-        const sanitizedUser: User = {
+        const sanitizedBody: SignupBody = {
+            email: 'mario@domain.com',
             username: 'mario',
             password: '1234',
-            name: 'Mario',
-            surname: 'Rossi',
-            contactInformation: {
-                phoneNumber: '3719483759',
-                email: 'marco@domain.com',
-                telegramUsername: 'mario2000',
-                facebookUsername: 'mario2000',
-            },
-            profilePicture: 'https://picsum.photos/536/354',
         };
 
-        const useCase = sanitizeSignupUseCase(user);
+        const useCase = sanitizeSignupUseCase(body);
 
         await expect(useCase()).to.not.be.rejected;
-        expect(await useCase()).to.deep.equal(sanitizedUser);
+        expect(await useCase()).to.deep.equal(sanitizedBody);
     });
 
-    it('should return the sanitized user if the optional fields are not set', async function () {
-        const user: User = {
+    it('should return the sanitized body if the optional fields are not set', async function () {
+        const body: SignupBody = {
+            email: 'mario@domain.com  ',
             username: ' mario ',
             password: '1234 ',
-            name: 'Mario',
-            surname: 'Rossi ',
-            contactInformation: {
-                phoneNumber: '  3719483759',
-                email: 'marco@domain.com  ',
-            },
         };
 
-        const sanitizedUser: User = {
+        const sanitizedBody: SignupBody = {
+            email: 'mario@domain.com',
             username: 'mario',
             password: '1234',
-            name: 'Mario',
-            surname: 'Rossi',
-            contactInformation: {
-                phoneNumber: '3719483759',
-                email: 'marco@domain.com',
-            },
         };
 
-        const useCase = sanitizeSignupUseCase(user);
+        const useCase = sanitizeSignupUseCase(body);
 
         await expect(useCase()).to.not.be.rejected;
-        expect(await useCase()).to.deep.equal(sanitizedUser);
+        expect(await useCase()).to.deep.equal(sanitizedBody);
     });
 
     it('should throw an error if the input is invalid', async function () {

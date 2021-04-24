@@ -19,10 +19,7 @@ export const LocalStrategy = new passportLocal.Strategy(
     (username, password, done) => {
         UserModel.findOne(
             {
-                $or: [
-                    { username: username },
-                    { 'contactInformation.email': username },
-                ],
+                $or: [{ username: username }, { email: username }],
             },
             (err: NativeError, user: UserDocument) => {
                 if (err) {

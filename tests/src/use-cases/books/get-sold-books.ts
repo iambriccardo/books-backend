@@ -40,6 +40,7 @@ describe('getSoldBooksUseCase', function () {
         };
 
         const user: BaseUser = {
+            email: 'riccardo@gmail.com',
             username: 'riccardo',
             password: '1234',
         };
@@ -54,6 +55,7 @@ describe('getSoldBooksUseCase', function () {
 
     it('should return nothing if the user has not sold any books', async function () {
         const user: BaseUser = {
+            email: 'riccardo@gmail.com',
             username: 'riccardo',
             password: '1234',
         };

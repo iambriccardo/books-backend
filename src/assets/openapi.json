@@ -76,7 +76,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/User"
+                "$ref": "#/components/schemas/SignupBody"
               }
             }
           },
@@ -558,11 +558,33 @@
       "LoginBody": {
         "type": "object",
         "required": [
-          "username",
+          "usernameOrEmail",
           "password"
         ],
         "properties": {
           "usernameOrEmail": {
+            "type": "string",
+            "example": "riccardo | riccardo@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "1234"
+          }
+        }
+      },
+      "SignupBody": {
+        "type": "object",
+        "required": [
+          "email",
+          "username",
+          "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "riccardo@gmail.com"
+          },
+          "username": {
             "type": "string",
             "example": "riccardo"
           },

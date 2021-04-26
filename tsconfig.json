@@ -3,10 +3,10 @@
     "target": "es5",
     "module": "commonjs",
     "strict": true,
-//    "baseUrl": "./src",
-//    "paths": {
-//      "@helpers/*": ["helpers/*"]
-//    },
+    //    "baseUrl": "./src",
+    //    "paths": {
+    //      "@helpers/*": ["helpers/*"]
+    //    },
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true

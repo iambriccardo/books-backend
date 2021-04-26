@@ -2,6 +2,12 @@ import { Lazy } from 'fp-ts/function';
 import { TaskEither, tryCatch } from 'fp-ts/TaskEither';
 import { AppError, ServerError } from '../errors/base';
 
+export const withValue = <T>(value: T): Lazy<Promise<T>> => {
+    return async () => {
+        return value;
+    };
+};
+
 export const toTaskEither = <T>(
     lazyPromise: Lazy<Promise<T>>,
 ): TaskEither<AppError, T> => {

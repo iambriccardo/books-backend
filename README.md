@@ -1,10 +1,8 @@
 # books-backend
 
-This repository contains the backend logic that powers the Books platform via a 
-RESTful API.
+This repository contains the backend logic that powers the Books platform via a RESTful API.
 
-_Note that this document is still in WIP, thus some information might be missed 
-or not up to date._
+_Note that this document is still in WIP, thus some information might be missed or not up to date._
 
 ## Table of contents
 
@@ -17,18 +15,20 @@ or not up to date._
 ### Installation
 
 Before proceeding with the installation, you will need the following software:
+
 * [NodeJS](https://nodejs.org)
 * [MongoDB](https://www.mongodb.com/try/download/community)
 
 In order to install this application you will need to use the following commands:
+
 ```shell
 git clone https://gitlab.inf.unibz.it/Riccardo.Busetti/books-backend.git
 git checkout [branch-name]
 npm install
 ```
 
-Last but not least, put a `.env` file in the root folder,
-containing the following:
+Last but not least, put a `.env` file in the root folder, containing the following:
+
 ```dotenv
 APP_NAME=[The name of the app]
 PORT=[The port where to listen for http request]
@@ -42,6 +42,7 @@ GCP_API_KEY=[The API key for the Google Cloud Platform]
 ### How to run
 
 Execute:
+
 ```shell
 npm run dev
 ```

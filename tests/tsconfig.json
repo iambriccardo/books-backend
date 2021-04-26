@@ -8,7 +8,7 @@
     "isolatedModules": false,
     "strict": false,
     "noImplicitAny": false,
-    "typeRoots" : [
+    "typeRoots": [
       "../node_modules/@types"
     ]
   },

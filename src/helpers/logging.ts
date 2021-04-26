@@ -42,7 +42,7 @@ import { ENABLE_LOGGING } from './environment';
  able to connect to a crucial data store like a database or all the payment
  systems are not available and users can’t checkout their
  baskets in your e-commerce.
-*/
+ */
 
 export const logger = pino({
     enabled: ENABLE_LOGGING,

@@ -11,7 +11,12 @@ import {
     userDeserializer,
     userSerializer,
 } from './helpers/passport';
-import { MONGO_DB_URL, PORT, SESSION_SECRET_KEY } from './helpers/environment';
+import {
+    DEBUG,
+    MONGO_DB_URL,
+    PORT,
+    SESSION_SECRET_KEY,
+} from './helpers/environment';
 import { logger } from './helpers/logging';
 import swaggerUi from 'swagger-ui-express';
 import { readJsonFile } from './helpers/files';

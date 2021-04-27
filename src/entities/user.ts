@@ -30,7 +30,7 @@ const UserSchema: Schema = new Schema(
         name: String,
         surname: String,
         contactInformation: {
-            phoneNumber: { type: String, unique: true },
+            phoneNumber: String,
             telegramUsername: String,
             facebookUsername: String,
         },

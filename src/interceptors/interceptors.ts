@@ -1,4 +1,4 @@
-import { Middleware } from './base';
+import { Interceptor } from './base';
 import { IControllerRequest } from '../controllers/base';
 import { getUserFromRequestUseCase } from '../use-cases/get-user-from-request';
 import { getCoordinatesFromAddressUseCase } from '../use-cases/get-coordinates-from-address';
@@ -7,7 +7,7 @@ import { GenericObject } from '../helpers/types';
 export const useInjectIntoRequestBody = <E>(
     fieldName: string,
     fieldValue: E,
-): Middleware<IControllerRequest> => {
+): Interceptor<IControllerRequest> => {
     return async (request: IControllerRequest) => {
         return {
             ...request,
@@ -21,7 +21,7 @@ export const useInjectIntoRequestBody = <E>(
 
 export const useInjectMultipleIntoRequestBody = (
     fields: GenericObject,
-): Middleware<IControllerRequest> => {
+): Interceptor<IControllerRequest> => {
     return async (request: IControllerRequest) => {
         return {
             ...request,
@@ -35,7 +35,7 @@ export const useInjectMultipleIntoRequestBody = (
 
 export const useInjectUserIntoRequestBody = (
     fieldName: string,
-): Middleware<IControllerRequest> => {
+): Interceptor<IControllerRequest> => {
     return async (request: IControllerRequest) => {
         const user = await getUserFromRequestUseCase(request)();
         return await useInjectIntoRequestBody(
@@ -45,7 +45,7 @@ export const useInjectUserIntoRequestBody = (
     };
 };
 
-export const useInjectLocationCoordinatesIntoRequestBody = (): Middleware<IControllerRequest> => {
+export const useInjectLocationCoordinatesIntoRequestBody = (): Interceptor<IControllerRequest> => {
     return async (request: IControllerRequest) => {
         const [latitude, longitude] = await getCoordinatesFromAddressUseCase(
             request.body.locationName,
@@ -55,5 +55,18 @@ export const useInjectLocationCoordinatesIntoRequestBody = (): Middleware<IContr
             locationLatitude: latitude,
             locationLongitude: longitude,
         })(request);
+    };
+};
+
+export const useInjectQueryParameter = (
+    name: string,
+    value: string,
+): Interceptor<IControllerRequest> => {
+    return async (request: IControllerRequest) => {
+        request.query[name] = value;
+
+        return {
+            ...request,
+        };
     };
 };

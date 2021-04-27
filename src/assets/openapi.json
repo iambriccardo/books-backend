@@ -27,6 +27,10 @@
       "description": "Currencies related endpoints"
     },
     {
+      "name": "landing",
+      "description": "Landing related endpoints"
+    },
+    {
       "name": "profile",
       "description": "Profile related endpoints"
     }
@@ -206,7 +210,7 @@
       }
     },
     "/books/search": {
-      "post": {
+      "get": {
         "tags": [
           "books"
         ],
@@ -469,6 +473,50 @@
           },
           "401": {
             "$ref": "#/components/status/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/status/InternalServerError"
+          }
+        }
+      }
+    },
+    "/landing/search": {
+      "get": {
+        "tags": [
+          "landing"
+        ],
+        "summary": "Searches books with a search query to be shown in the landing page",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "searchQuery",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "body": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Book"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/status/UnprocessableEntity"
           },
           "500": {
             "$ref": "#/components/status/InternalServerError"

@@ -6,7 +6,7 @@ import { exploreBooksController } from '../../controllers/books/explore-books';
 import {
     useInjectLocationCoordinatesIntoRequestBody,
     useInjectUserIntoRequestBody,
-} from '../../middlewares/middlewares';
+} from '../../interceptors/interceptors';
 import { searchBooksController } from '../../controllers/books/search-books';
 import { getSellingBooksController } from '../../controllers/books/get-selling-books';
 import { getSoldBookController } from '../../controllers/books/get-sold-books';
@@ -31,7 +31,7 @@ router.get(
     connectsToController(getSoldBookController),
 );
 
-router.post(
+router.get(
     '/search',
     isAuthenticated,
     connectsToController(searchBooksController),

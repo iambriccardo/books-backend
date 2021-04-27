@@ -10,7 +10,7 @@ import {
 } from '../errors/base';
 import { StatusCodes } from 'http-status-codes';
 import { logger } from '../helpers/logging';
-import { Middleware } from '../middlewares/base';
+import { Interceptor } from '../interceptors/base';
 import { asyncReduce, toTaskEither } from '../helpers/extensions';
 
 /**
@@ -62,11 +62,11 @@ export type Controller<ET, VT> = (
  * allows for a centralized representation of the json responses.
  *
  * @param controller, the controller which will handle the communication.
- * @param middlewares, the list of middlewares used to transform the request.
+ * @param interceptors, the list of interceptors used to transform the request.
  */
 export const connectsToController = <VT>(
     controller: Controller<AppError, VT>,
-    ...middlewares: Middleware<IControllerRequest>[]
+    ...interceptors: Interceptor<IControllerRequest>[]
 ) => {
     return async (
         req: Request,
@@ -89,18 +89,18 @@ export const connectsToController = <VT>(
             },
         };
 
-        const applyMiddlewares = () => {
+        const applyInterceptors = () => {
             return async () => {
                 return await asyncReduce(
-                    middlewares,
-                    async (prevRequest, middleware) => middleware(prevRequest),
+                    interceptors,
+                    async (prevRequest, intercept) => intercept(prevRequest),
                     controllerHttpRequest,
                 );
             };
         };
 
         const start = pipe(
-            applyMiddlewares(),
+            applyInterceptors(),
             toTaskEither,
             TE.chain((request) => controller(request)),
             TE.mapLeft(

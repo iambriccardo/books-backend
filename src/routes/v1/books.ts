@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { connectsToController } from '../../controllers/base';
 import { sellBookController } from '../../controllers/books/sell-book';
-import { isAuthenticated } from '../../helpers/passport';
+import { isAuthenticated } from '../../helpers/authentication';
 import { exploreBooksController } from '../../controllers/books/explore-books';
 import {
     useInjectLocationCoordinatesIntoRequestBody,

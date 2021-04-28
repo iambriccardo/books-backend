@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { isAuthenticated } from '../../helpers/passport';
+import { isAuthenticated } from '../../helpers/authentication';
 import { connectsToController } from '../../controllers/base';
 import { getProfileDetailsController } from '../../controllers/profile/get-profile-details';
 import { uploadProfilePictureController } from '../../controllers/profile/upload-profile-picture';

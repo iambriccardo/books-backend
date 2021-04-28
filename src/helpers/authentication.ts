@@ -59,8 +59,13 @@ export const isAuthenticated = (
     next: NextFunction,
 ) => {
     if (req.isAuthenticated()) {
-        return next();
+        next();
+    } else {
+        // TODO: better handle cookie destroy.
+        // req.session.destroy(() => {
+        //     res.clearCookie('connect.sid');
+        //     res.status(StatusCodes.UNAUTHORIZED).json();
+        // });
+        res.status(StatusCodes.UNAUTHORIZED).json();
     }
-
-    return res.status(StatusCodes.UNAUTHORIZED).json();
 };

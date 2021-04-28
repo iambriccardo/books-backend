@@ -10,13 +10,8 @@ import {
     LocalStrategy,
     userDeserializer,
     userSerializer,
-} from './helpers/passport';
-import {
-    DEBUG,
-    MONGO_DB_URL,
-    PORT,
-    SESSION_SECRET_KEY,
-} from './helpers/environment';
+} from './helpers/authentication';
+import { MONGO_DB_URL, PORT, SESSION_SECRET_KEY } from './helpers/environment';
 import { logger } from './helpers/logging';
 import swaggerUi from 'swagger-ui-express';
 import { readJsonFile } from './helpers/files';
@@ -30,6 +25,7 @@ class Server {
         secret: SESSION_SECRET_KEY,
         store: MongoStore.create({
             mongoUrl: MONGO_DB_URL,
+            ttl: 24 * 60 * 60, // 1 day
             autoRemove: 'interval',
         }),
     };

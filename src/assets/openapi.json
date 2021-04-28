@@ -104,7 +104,7 @@
         "tags": [
           "auth"
         ],
-        "summary": "Logs user into the system",
+        "summary": "Logs in the user into the system",
         "requestBody": {
           "content": {
             "application/json": {
@@ -124,6 +124,22 @@
           },
           "422": {
             "$ref": "#/components/status/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/status/InternalServerError"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Logs out the user from the system",
+        "responses": {
+          "200": {
+            "$ref": "#/components/status/Ok"
           },
           "500": {
             "$ref": "#/components/status/InternalServerError"

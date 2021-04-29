@@ -4,6 +4,7 @@ import { sellBookController } from '../../controllers/books/sell-book';
 import { isAuthenticated } from '../../helpers/authentication';
 import { exploreBooksController } from '../../controllers/books/explore-books';
 import {
+    useInjectIntoRequestBody,
     useInjectLocationCoordinatesIntoRequestBody,
     useInjectUserIntoRequestBody,
 } from '../../interceptors/interceptors';
@@ -42,6 +43,7 @@ router.post(
     isAuthenticated,
     connectsToController(
         sellBookController,
+        useInjectIntoRequestBody('publicationDate', new Date()),
         useInjectUserIntoRequestBody('seller'),
         useInjectLocationCoordinatesIntoRequestBody(),
     ),

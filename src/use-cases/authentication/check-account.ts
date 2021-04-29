@@ -13,8 +13,7 @@ export const checkAccountUseCase = (
                 { 'contactInformation.email': usernameOrEmail },
             ],
         });
-        if (!user) throw new UserNotFoundError(usernameOrEmail);
 
-        return {};
+        return user ? { username: user.username } : {};
     };
 };

@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "localhost:7000/v1"
+      "url": "http://localhost:7000/v1"
     }
   ],
   "tags": [
@@ -117,29 +117,31 @@
         },
         "responses": {
           "200": {
-            "$ref": "#/components/status/Ok"
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "body": {
+                      "type": "object",
+                      "properties": {
+                        "token": {
+                          "type": "string",
+                          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
             "$ref": "#/components/status/Unauthorized"
           },
           "422": {
             "$ref": "#/components/status/UnprocessableEntity"
-          },
-          "500": {
-            "$ref": "#/components/status/InternalServerError"
-          }
-        }
-      }
-    },
-    "/auth/logout": {
-      "get": {
-        "tags": [
-          "auth"
-        ],
-        "summary": "Logs out the user from the system",
-        "responses": {
-          "200": {
-            "$ref": "#/components/status/Ok"
           },
           "500": {
             "$ref": "#/components/status/InternalServerError"
@@ -155,7 +157,7 @@
         "summary": "Lists the books that the user is selling",
         "security": [
           {
-            "CookieAuth": []
+            "BearerAuth": []
           }
         ],
         "responses": {
@@ -194,7 +196,7 @@
         "summary": "Lists the books that the user has sold",
         "security": [
           {
-            "CookieAuth": []
+            "BearerAuth": []
           }
         ],
         "responses": {
@@ -233,7 +235,7 @@
         "summary": "Searches books with a search query",
         "security": [
           {
-            "CookieAuth": []
+            "BearerAuth": []
           }
         ],
         "parameters": [
@@ -294,7 +296,7 @@
         "description": "seller, locationLatitude, locationLongitude are not mandatory because they are injected by the backend.",
         "security": [
           {
-            "CookieAuth": []
+            "BearerAuth": []
           }
         ],
         "requestBody": {
@@ -328,7 +330,7 @@
         "summary": "Shows the details of the user's profile",
         "security": [
           {
-            "CookieAuth": []
+            "BearerAuth": []
           }
         ],
         "responses": {
@@ -364,7 +366,7 @@
         "summary": "Shows the details of a given user",
         "security": [
           {
-            "CookieAuth": []
+            "BearerAuth": []
           }
         ],
         "parameters": [
@@ -413,7 +415,7 @@
         "summary": "Uploads the profile picture of the user",
         "security": [
           {
-            "CookieAuth": []
+            "BearerAuth": []
           }
         ],
         "requestBody": {
@@ -470,7 +472,7 @@
         "summary": "Lists all the currencies supported",
         "security": [
           {
-            "CookieAuth": []
+            "BearerAuth": []
           }
         ],
         "responses": {
@@ -543,10 +545,10 @@
   },
   "components": {
     "securitySchemes": {
-      "CookieAuth": {
-        "type": "apiKey",
-        "in": "cookie",
-        "name": "connect.sid"
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     },
     "status": {

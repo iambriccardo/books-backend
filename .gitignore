@@ -37,8 +37,11 @@ Thumbs.db
 # Ignore built ts files
 dist/**/*
 
-# ignore yarn.lock
+# Ignore yarn.lock
 yarn.lock
 
-# tests
+# Tests
 .nyc_output
+
+# Other
+/api_test.paw

@@ -3,15 +3,9 @@ import v1Routes from './routes/v1';
 import helmet from 'helmet';
 import cors from 'cors';
 import { connectToMongo } from './helpers/mongoose';
-import session from 'express-session';
 import passport from 'passport';
-import MongoStore from 'connect-mongo';
-import {
-    LocalStrategy,
-    userDeserializer,
-    userSerializer,
-} from './helpers/authentication';
-import { MONGO_DB_URL, PORT, SESSION_SECRET_KEY } from './helpers/environment';
+import { AuthJwtStrategy, AuthLocalStrategy } from './helpers/authentication';
+import { MONGO_DB_URL, PORT } from './helpers/environment';
 import { logger } from './helpers/logging';
 import swaggerUi from 'swagger-ui-express';
 import { readJsonFile } from './helpers/files';
@@ -19,30 +13,16 @@ import { readJsonFile } from './helpers/files';
 class Server {
     app = express();
 
-    sessionOptions = {
-        resave: true,
-        saveUninitialized: true,
-        secret: SESSION_SECRET_KEY,
-        store: MongoStore.create({
-            mongoUrl: MONGO_DB_URL,
-            ttl: 24 * 60 * 60, // 1 day
-            autoRemove: 'interval',
-        }),
-    };
-
     configurePassport() {
-        passport.serializeUser(userSerializer);
-        passport.deserializeUser(userDeserializer);
-        passport.use(LocalStrategy);
+        passport.use('login', AuthLocalStrategy);
+        passport.use(AuthJwtStrategy);
     }
 
     applyMiddlewares() {
         this.app.use(helmet());
         this.app.use(cors());
         this.app.use(express.json());
-        this.app.use(session(this.sessionOptions));
         this.app.use(passport.initialize());
-        this.app.use(passport.session());
         this.app.use(
             '/api-docs',
             swaggerUi.serve,

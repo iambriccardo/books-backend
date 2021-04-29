@@ -1,25 +1,20 @@
-import passportLocal from 'passport-local';
-import { NextFunction, Request, Response } from 'express';
+import { Strategy as LocalStrategy } from 'passport-local';
 import { NativeError } from 'mongoose';
 import { UserDocument, UserModel } from '../entities/user';
-import { StatusCodes } from 'http-status-codes';
+import { ExtractJwt, Strategy as JwtStrategy } from 'passport-jwt';
+import { SECRET_KEY } from './environment';
+import { authenticate } from 'passport';
+import fromAuthHeaderAsBearerToken = ExtractJwt.fromAuthHeaderAsBearerToken;
 
-export const userSerializer = (req: any, user: any, done: any) => {
-    done(undefined, user.id);
-};
-
-export const userDeserializer = (id: any, done: any) => {
-    UserModel.findById(id, (err: NativeError, user: UserDocument) => {
-        done(err, user);
-    });
-};
-
-export const LocalStrategy = new passportLocal.Strategy(
+export const AuthLocalStrategy = new LocalStrategy(
     { usernameField: 'usernameOrEmail' },
-    (username, password, done) => {
+    (usernameOrEmail, password, done) => {
         UserModel.findOne(
             {
-                $or: [{ username: username }, { email: username }],
+                $or: [
+                    { username: usernameOrEmail },
+                    { email: usernameOrEmail },
+                ],
             },
             (err: NativeError, user: UserDocument) => {
                 if (err) {
@@ -28,7 +23,7 @@ export const LocalStrategy = new passportLocal.Strategy(
 
                 if (!user) {
                     return done(undefined, false, {
-                        message: `Username ${username} not found.`,
+                        message: `Username/email ${usernameOrEmail} not found.`,
                     });
                 }
 
@@ -44,7 +39,7 @@ export const LocalStrategy = new passportLocal.Strategy(
                         }
 
                         return done(undefined, false, {
-                            message: 'Invalid username or password.',
+                            message: 'Invalid username/email or password.',
                         });
                     },
                 );
@@ -53,19 +48,29 @@ export const LocalStrategy = new passportLocal.Strategy(
     },
 );
 
-export const isAuthenticated = (
-    req: Request,
-    res: Response,
-    next: NextFunction,
-) => {
-    if (req.isAuthenticated()) {
-        next();
-    } else {
-        // TODO: better handle cookie destroy.
-        // req.session.destroy(() => {
-        //     res.clearCookie('connect.sid');
-        //     res.status(StatusCodes.UNAUTHORIZED).json();
-        // });
-        res.status(StatusCodes.UNAUTHORIZED).json();
-    }
-};
+export const AuthJwtStrategy = new JwtStrategy(
+    {
+        secretOrKey: SECRET_KEY,
+        jwtFromRequest: fromAuthHeaderAsBearerToken(),
+    },
+    async (token, done) => {
+        UserModel.findOne(
+            { username: token.user.username },
+            (err: NativeError, user: UserDocument) => {
+                if (err) {
+                    return done(err);
+                }
+
+                if (!user) {
+                    return done(undefined, false, {
+                        message: `Username ${token.user.username} not found.`,
+                    });
+                }
+
+                return done(null, user);
+            },
+        );
+    },
+);
+
+export const isAuthenticated = authenticate('jwt', { session: false });

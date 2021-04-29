@@ -3,11 +3,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as E from 'fp-ts/Either';
 import * as T from 'fp-ts/Tuple';
 import { pipe } from 'fp-ts/lib/function';
-import {
-    AppError,
-    errorToJsonResponse,
-    errorToStatusCode,
-} from '../errors/base';
+import { AppError, errorToStatusCode, respondWithError } from '../errors/base';
 import { StatusCodes } from 'http-status-codes';
 import { logger } from '../helpers/logging';
 import { Interceptor } from '../interceptors/base';
@@ -133,9 +129,7 @@ export const connectsToController = <VT>(
                 `Request ${req.originalUrl} cannot be handled because of ${error.title} -> ${statusCode}`,
             );
 
-            res.status(statusCode).json(
-                errorToJsonResponse(statusCode, req.originalUrl, error),
-            );
+            respondWithError(req, res, error);
         }
     };
 };

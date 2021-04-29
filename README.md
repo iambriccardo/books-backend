@@ -33,7 +33,7 @@ Last but not least, put a `.env` file in the root folder, containing the followi
 APP_NAME=[The name of the app]
 PORT=[The port where to listen for http request]
 MONGO_DB_URL=[The databse url for mongo db]
-SESSION_SECRET_KEY=[The secret key used to encrypt sessions]
+SECRET_KEY=[The secret key used to encrypt jwt tokens]
 ENABLE_LOGGING=[The boolean value representing if you want or not to enable logging]
 CLOUDINARY_URL=[The url of the cloudinary store]
 GCP_API_KEY=[The API key for the Google Cloud Platform]

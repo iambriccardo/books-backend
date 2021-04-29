@@ -1,5 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import { GenericObject } from '../helpers/types';
+import { Request, Response } from 'express';
 
 interface IErrorToStatusCode {
     [key: string]: StatusCodes;
@@ -13,6 +14,8 @@ const ERROR_TO_STATUS_CODE: IErrorToStatusCode = {
     ServerError: StatusCodes.INTERNAL_SERVER_ERROR,
     UserNotFoundError: StatusCodes.INTERNAL_SERVER_ERROR,
     FileUploadError: StatusCodes.INTERNAL_SERVER_ERROR,
+    UnauthorizedError: StatusCodes.UNAUTHORIZED,
+    AuthenticationError: StatusCodes.UNAUTHORIZED,
 };
 
 export const errorToStatusCode = (error: AppError): StatusCodes => {
@@ -33,6 +36,17 @@ export const errorToJsonResponse = (
         detail: error.detail,
         instance: instance,
     };
+};
+
+export const respondWithError = (
+    req: Request,
+    res: Response,
+    error: AppError,
+): void => {
+    const statusCode = errorToStatusCode(error);
+    const body = errorToJsonResponse(statusCode, req.originalUrl, error);
+
+    res.status(statusCode).json(body);
 };
 
 export class AppError {
@@ -109,6 +123,26 @@ export class FileUploadError extends AppError {
             'FileUploadError',
             'File upload error',
             `The file ${filename} cannot be uploaded because ${error}.`,
+        );
+    }
+}
+
+export class UnauthorizedError extends AppError {
+    constructor() {
+        super(
+            'UnauthorizedError',
+            'Unauthorized error',
+            'You are not authorized to perform this action.',
+        );
+    }
+}
+
+export class AuthenticationError extends AppError {
+    constructor() {
+        super(
+            'AuthenticationError',
+            'Authentication error',
+            'There was a problem with the authentication.',
         );
     }
 }

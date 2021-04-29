@@ -4,6 +4,7 @@ import { IControllerContext } from '../../../controllers/base';
 import { sign } from 'jsonwebtoken';
 import { SECRET_KEY } from '../../../helpers/environment';
 import { StatusCodes } from 'http-status-codes';
+import { AuthenticationError, respondWithError } from '../../../errors/base';
 
 export const loginUseCase = (
     context: IControllerContext,
@@ -20,7 +21,11 @@ export const loginUseCase = (
                 }
 
                 if (!user) {
-                    return res.status(StatusCodes.UNAUTHORIZED).json();
+                    return respondWithError(
+                        req,
+                        res,
+                        new AuthenticationError(),
+                    );
                 }
 
                 req.login(user, { session: false }, async (error) => {

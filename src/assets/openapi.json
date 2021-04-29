@@ -59,7 +59,25 @@
         },
         "responses": {
           "200": {
-            "$ref": "#/components/status/Ok"
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "body": {
+                      "type": "object",
+                      "properties": {
+                        "username": {
+                          "type": "string",
+                          "example": "riccardo"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "422": {
             "$ref": "#/components/status/UnprocessableEntity"

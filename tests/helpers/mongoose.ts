@@ -9,7 +9,7 @@ export const initTestMongoose = async (): Promise<Mongoose> => {
     });
 };
 
-export const destroyTestMongoose = (...models: [Model<any>]) => {
+export const destroyTestMongoose = (...models: Model<any>[]) => {
     return async (): Promise<void> => {
         for (const model of models) {
             await model.collection.deleteMany({});
@@ -18,7 +18,7 @@ export const destroyTestMongoose = (...models: [Model<any>]) => {
     };
 };
 
-export const deleteCollections = (...models: [Model<any>]) => {
+export const deleteCollections = (...models: Model<any>[]) => {
     return async (): Promise<void> => {
         for (const model of models) {
             await model.collection.deleteMany({});

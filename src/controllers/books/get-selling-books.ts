@@ -13,6 +13,8 @@ export const getSellingBooksController: Controller<AppError, Book[]> = (
     pipe(
         getUserFromRequestUseCase(request),
         toTaskEither,
-        chain((user) => pipe(getSellingBooksUseCase(user), toTaskEither)),
+        chain((user) =>
+            pipe(getSellingBooksUseCase(user.userId), toTaskEither),
+        ),
         toResponse(false),
     );

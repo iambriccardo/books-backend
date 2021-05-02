@@ -7,9 +7,9 @@ import { APP_NAME } from './environment';
  */
 
 export interface UploadResult {
-    public_id: string;
+    publicId: string;
     url: string;
-    secure_url: string;
+    secureUrl: string;
 }
 
 export const upload = async (
@@ -34,5 +34,8 @@ export const imageOptions = {
         width: 500,
         height: 500,
         crop: 'fill',
+    },
+    bookPicture: {
+        // TODO: investigate best settings for book pictures.
     },
 };

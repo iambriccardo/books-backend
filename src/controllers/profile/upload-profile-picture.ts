@@ -42,7 +42,7 @@ export const uploadProfilePictureController: Controller<
                 toTaskEither,
                 orElse(() =>
                     pipe(
-                        deletePictureUseCase(uploadResult.public_id),
+                        deletePictureUseCase(uploadResult.publicId),
                         toTaskEither,
                     ),
                 ),

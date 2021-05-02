@@ -1,7 +1,7 @@
-import { Document, Model, model, Schema } from 'mongoose';
-import { JTDSchemaType } from 'ajv/dist/jtd';
+import { Document, Model, model, Schema, Types } from 'mongoose';
 
 export interface Book {
+    bookId: string;
     isbn: string;
     title: string;
     description: string;
@@ -18,35 +18,16 @@ export interface Book {
     buyer?: string;
 }
 
-export const BookJTDSchemaType: JTDSchemaType<Book> = {
-    properties: {
-        isbn: { type: 'string' },
-        title: { type: 'string' },
-        description: { type: 'string' },
-        currency: { type: 'string' },
-        price: { type: 'float32' },
-        condition: { enum: ['bad', 'ok', 'good', 'great', 'na'] },
-        pictures: {
-            elements: {
-                type: 'string',
-            },
-        },
-        publicationDate: { type: 'timestamp' },
-        seller: { type: 'string' },
-        locationName: { type: 'string' },
-        locationLatitude: { type: 'float32' },
-        locationLongitude: { type: 'float32' },
-    },
-    optionalProperties: {
-        saleDate: { type: 'timestamp' },
-        buyer: { type: 'string' },
-    },
-};
-
 export interface BookDocument extends Book, Document {}
 
 const BookSchema: Schema = new Schema(
     {
+        bookId: {
+            type: String,
+            required: true,
+            unique: true,
+            default: () => new Types.ObjectId(),
+        },
         isbn: { type: String, required: true },
         title: { type: String, required: true },
         description: { type: String, required: true },

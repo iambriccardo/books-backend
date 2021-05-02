@@ -11,7 +11,7 @@ describe('validateSignupUseCase', function () {
         const body: SignupBody = {
             email: 'mario@domain.com',
             username: 'mario',
-            password: '1234',
+            password: '1234567',
         };
 
         const useCase = validateSignupUseCase(body);
@@ -25,6 +25,18 @@ describe('validateSignupUseCase', function () {
             email: 'marioatdomain.com',
             username: 'mario',
             password: '1234',
+        };
+
+        const useCase = validateSignupUseCase(body);
+
+        await expect(useCase()).to.be.rejected;
+    });
+
+    it('should throw an error if username field is invalid', async function () {
+        const body: SignupBody = {
+            email: 'mario@domain.com',
+            username: 'MARIO',
+            password: '1234567',
         };
 
         const useCase = validateSignupUseCase(body);

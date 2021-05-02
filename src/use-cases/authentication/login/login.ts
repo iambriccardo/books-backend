@@ -32,6 +32,7 @@ export const loginUseCase = (
                     if (error) return next(error);
 
                     const body = {
+                        userId: user.userId,
                         username: user.username,
                     };
                     const token = sign({ user: body }, SECRET_KEY, {

@@ -38,10 +38,7 @@ export const useInjectUserIntoRequestBody = (
 ): Interceptor<IControllerRequest> => {
     return async (request: IControllerRequest) => {
         const user = await getUserFromRequestUseCase(request)();
-        return await useInjectIntoRequestBody(
-            fieldName,
-            user.username,
-        )(request);
+        return await useInjectIntoRequestBody(fieldName, user.userId)(request);
     };
 };
 
@@ -67,6 +64,21 @@ export const useInjectQueryParameter = (
 
         return {
             ...request,
+        };
+    };
+};
+
+export const useApplyFunctionToRequestBodyField = (
+    fieldName: string,
+    block: (fieldValue: string) => string,
+): Interceptor<IControllerRequest> => {
+    return async (request: IControllerRequest) => {
+        return {
+            ...request,
+            body: {
+                ...request.body,
+                [fieldName]: block(request.body[fieldName]),
+            },
         };
     };
 };

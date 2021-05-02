@@ -1,13 +1,11 @@
-import { Document, Error, model, Model, Schema } from 'mongoose';
+import { Document, Error, model, Model, Schema, Types } from 'mongoose';
 import { compare, genSalt, hash } from 'bcrypt-nodejs';
 
-export interface BaseUser {
+export interface User {
+    userId: string;
     email: string;
     username: string;
     password: string;
-}
-
-export interface User extends BaseUser {
     name?: string;
     surname?: string;
     contactInformation: {
@@ -24,6 +22,12 @@ export interface UserDocument extends User, Document {
 
 const UserSchema: Schema = new Schema(
     {
+        userId: {
+            type: String,
+            required: true,
+            unique: true,
+            default: () => new Types.ObjectId(),
+        },
         username: { type: String, required: true, unique: true },
         password: { type: String, required: true },
         email: { type: String, required: true, unique: true },

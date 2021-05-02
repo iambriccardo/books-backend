@@ -118,7 +118,7 @@ export const connectsToController = <VT>(
             if (!response.responseHandled) {
                 res.status(statusCode).json({
                     status: statusCode,
-                    body: response.body,
+                    body: response.body ? response.body : {},
                 });
             }
         } else if (E.isLeft(controllerResponse)) {
@@ -126,7 +126,7 @@ export const connectsToController = <VT>(
             const statusCode = T.snd(controllerResponse.left);
 
             logger.warn(
-                `Request ${req.originalUrl} cannot be handled because of ${error.title} -> ${statusCode}`,
+                `Request ${req.originalUrl} cannot be handled: [${statusCode}] ${error.title} -> ${error.detail}`,
             );
 
             respondWithError(req, res, error);

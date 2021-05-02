@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "Books Backend",
-    "description": "This is the documentation for the backend of Books. However note that it is still a work in progress.",
+    "description": "This is the documentation for the backend of Books, which is still a work in progress. If you find any errors or you have doubts, don't esitate to contact the developer.",
     "contact": {
       "email": "rbusetti@unibz.it"
     },
@@ -321,7 +321,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Book"
+                "$ref": "#/components/schemas/SellBookBody"
               }
             }
           },
@@ -329,10 +329,306 @@
         },
         "responses": {
           "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Book"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/status/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/status/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/status/InternalServerError"
+          }
+        }
+      }
+    },
+    "/books/edit/{bookId}": {
+      "put": {
+        "tags": [
+          "books"
+        ],
+        "summary": "Edits the book with a given bookId",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "608eb8c5059e3117c0dbc371"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditBookBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "body": {
+                      "$ref": "#/components/schemas/Book"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/status/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/status/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/status/InternalServerError"
+          }
+        }
+      }
+    },
+    "/books/remove/{bookId}": {
+      "delete": {
+        "tags": [
+          "books"
+        ],
+        "summary": "Removes the book with a given bookId",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "608eb8c5059e3117c0dbc371"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
             "$ref": "#/components/status/Ok"
           },
           "401": {
             "$ref": "#/components/status/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/status/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/status/InternalServerError"
+          }
+        }
+      }
+    },
+    "/books/picture/upload": {
+      "post": {
+        "tags": [
+          "books"
+        ],
+        "summary": "Uploads the profile picture of the user",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "book-picture": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/status/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/status/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/status/InternalServerError"
+          }
+        }
+      }
+    },
+    "/books/sell/link/{bookId}": {
+      "get": {
+        "tags": [
+          "books"
+        ],
+        "summary": "Generates the sell link for a given bookId",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "608eb8c5059e3117c0dbc371"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "body": {
+                      "type": "object",
+                      "properties": {
+                        "link": {
+                          "type": "string",
+                          "example": "localhost:3000/confirm/6090e726f813ef05660dc5e5"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/status/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/status/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/status/InternalServerError"
+          }
+        }
+      }
+    },
+    "/books/sell/confirm/{transactionId}": {
+      "post": {
+        "tags": [
+          "books"
+        ],
+        "summary": "Confirms the selling of a given book via its transactionId",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "transactionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "608eb8c5059e3117c0dbc371"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/status/Ok"
+          },
+          "401": {
+            "$ref": "#/components/status/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/status/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/status/InternalServerError"
+          }
+        }
+      }
+    },
+    "/books/by-transaction/{transactionId}": {
+      "get": {
+        "tags": [
+          "books"
+        ],
+        "summary": "Gets the book linked to a transactionId",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "transactionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "608eb8c5059e3117c0dbc371"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Book"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/status/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/status/UnprocessableEntity"
           },
           "500": {
             "$ref": "#/components/status/InternalServerError"
@@ -393,7 +689,8 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "riccardo"
             }
           }
         ],
@@ -425,8 +722,8 @@
         }
       }
     },
-    "/upload/profile-picture": {
-      "get": {
+    "/profile/picture/upload": {
+      "post": {
         "tags": [
           "profile"
         ],
@@ -681,6 +978,130 @@
           }
         }
       },
+      "SellBookBody": {
+        "type": "object",
+        "required": [
+          "isbn",
+          "title",
+          "description",
+          "currency",
+          "price",
+          "condition",
+          "pictures",
+          "locationName"
+        ],
+        "properties": {
+          "isbn": {
+            "type": "string",
+            "example": "978-1-56619-909-4"
+          },
+          "title": {
+            "type": "string",
+            "example": "Alice in Wonderland"
+          },
+          "description": {
+            "type": "string",
+            "example": "Alice in Wonderland has been known for its curious story."
+          },
+          "currency": {
+            "type": "string",
+            "example": "EUR"
+          },
+          "price": {
+            "type": "number",
+            "example": 20
+          },
+          "condition": {
+            "type": "string",
+            "enum": [
+              "bad",
+              "ok",
+              "good",
+              "great",
+              "na"
+            ],
+            "example": "good"
+          },
+          "pictures": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "image_1.png",
+              "image_2.png"
+            ]
+          },
+          "locationName": {
+            "type": "string",
+            "example": "New York"
+          }
+        }
+      },
+      "EditBookBody": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Alice in Wonderland"
+          },
+          "description": {
+            "type": "string",
+            "example": "Alice in Wonderland has been known for its curious story."
+          },
+          "currency": {
+            "type": "string",
+            "example": "EUR"
+          },
+          "price": {
+            "type": "number",
+            "example": 20
+          },
+          "pictures": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "image_1.png",
+              "image_2.png"
+            ]
+          },
+          "condition": {
+            "type": "string",
+            "enum": [
+              "bad",
+              "ok",
+              "good",
+              "great",
+              "na"
+            ],
+            "example": "good"
+          }
+        }
+      },
+      "UploadResult": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "object",
+            "properties": {
+              "publicId": {
+                "type": "string",
+                "example": "books-backend-dev/tfxtpkrilwnnr7wjbq5y"
+              },
+              "url": {
+                "type": "string",
+                "example": "http://res.cloudinary.com/ddprvzpep/image/upload/v1620046108/books-backend-dev/tfxtpkrilwnnr7wjbq5y.jpg"
+              },
+              "secureUrl": {
+                "type": "string",
+                "example": "https://res.cloudinary.com/ddprvzpep/image/upload/v1620046108/books-backend-dev/tfxtpkrilwnnr7wjbq5y.jpg"
+              }
+            }
+          }
+        }
+      },
       "User": {
         "type": "object",
         "required": [
@@ -757,6 +1178,10 @@
       "Book": {
         "type": "object",
         "properties": {
+          "bookId": {
+            "type": "string",
+            "example": "608e519d8c2f4a0a88aa8216"
+          },
           "isbn": {
             "type": "string",
             "example": "978-1-56619-909-4"

@@ -20,7 +20,7 @@ router.get(
 );
 
 router.post(
-    '/upload/profile-picture',
+    '/picture/upload',
     isAuthenticated,
     acceptsSingleFile('profile-picture'),
     connectsToController(uploadProfilePictureController),

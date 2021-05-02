@@ -7,11 +7,19 @@ export const validateSignupUseCase = (
     body: SignupBody,
 ): Lazy<Promise<SignupBody>> => {
     return async () => {
-        check('email', (value) => validator.isEmail(value), body.email);
+        check('email', (email) => validator.isEmail(email), body.email);
+
+        check(
+            'username',
+            (username) =>
+                validator.isLength(username, { min: 3, max: 128 }) &&
+                validator.isLowercase(username),
+            body.username,
+        );
 
         check(
             'password',
-            (value) => validator.isLength(value, { min: 1, max: 128 }),
+            (password) => validator.isLength(password, { min: 7, max: 128 }),
             body.password,
         );
 

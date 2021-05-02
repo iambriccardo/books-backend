@@ -55,7 +55,7 @@ export const AuthJwtStrategy = new JwtStrategy(
     },
     async (token, done) => {
         UserModel.findOne(
-            { username: token.user.username },
+            { userId: token.user.userId },
             (err: NativeError, user: UserDocument) => {
                 if (err) {
                     return done(err);

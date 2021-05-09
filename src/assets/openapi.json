@@ -636,6 +636,55 @@
         }
       }
     },
+    "/profile/edit": {
+      "put": {
+        "tags": [
+          "profile"
+        ],
+        "summary": "Edits the profile information of the logged in user",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditProfileBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "body": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/status/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/status/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/status/InternalServerError"
+          }
+        }
+      }
+    },
     "/profile/details": {
       "get": {
         "tags": [
@@ -1080,6 +1129,44 @@
           }
         }
       },
+      "EditProfileBody": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "riccardo@domain.com"
+          },
+          "name": {
+            "type": "string",
+            "example": "Riccardo"
+          },
+          "surname": {
+            "type": "string",
+            "example": "Busetti"
+          },
+          "contactInformation": {
+            "type": "object",
+            "required": [
+              "phoneNumber",
+              "email"
+            ],
+            "properties": {
+              "phoneNumber": {
+                "type": "string",
+                "example": "2384492571"
+              },
+              "telegramUsername": {
+                "type": "string",
+                "example": "riccardo"
+              },
+              "facebookUsername": {
+                "type": "string",
+                "example": "riccardo"
+              }
+            }
+          }
+        }
+      },
       "UploadResult": {
         "type": "object",
         "properties": {
@@ -1104,13 +1191,15 @@
       },
       "User": {
         "type": "object",
-        "required": [
-          "username",
-          "password",
-          "name",
-          "surname"
-        ],
         "properties": {
+          "userId": {
+            "type": "string",
+            "example": "608e519d8c2f4a0a88aa8216"
+          },
+          "email": {
+            "type": "string",
+            "example": "riccardo@domain.com"
+          },
           "username": {
             "type": "string",
             "example": "riccardo"
@@ -1137,10 +1226,6 @@
               "phoneNumber": {
                 "type": "string",
                 "example": "2384492571"
-              },
-              "email": {
-                "type": "string",
-                "example": "riccardo@domain.com"
               },
               "telegramUsername": {
                 "type": "string",

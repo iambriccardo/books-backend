@@ -8,7 +8,7 @@ export interface User {
     password: string;
     name?: string;
     surname?: string;
-    contactInformation: {
+    contactInformation?: {
         phoneNumber?: string;
         telegramUsername?: string;
         facebookUsername?: string;

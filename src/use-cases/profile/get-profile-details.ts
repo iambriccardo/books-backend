@@ -4,15 +4,15 @@ import { UserNotFoundError } from '../../errors/base';
 import { GenericObject } from '../../helpers/types';
 
 export const getProfileDetailsUseCase = (
-    username: string,
+    userId: string,
 ): Lazy<Promise<GenericObject>> => {
     return async () => {
         const user = await UserModel.findOne(
-            { username: username },
+            { userId },
             { password: 0 },
         ).lean();
 
-        if (user == null) throw new UserNotFoundError(username);
+        if (user == null) throw new UserNotFoundError(userId);
 
         return user;
     };

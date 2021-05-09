@@ -13,17 +13,15 @@ export const getProfileDetailsController: Controller<
     GenericObject
 > = (request: IControllerRequest) =>
     pipe(
-        validateRequestParamUseCase(request, 'username'),
+        validateRequestParamUseCase(request, 'userId'),
         toTaskEither,
         orElse(() =>
             pipe(
                 getUserFromRequestUseCase(request),
                 toTaskEither,
-                map((user) => user.username),
+                map((user) => user.userId),
             ),
         ),
-        chain((username) =>
-            pipe(getProfileDetailsUseCase(username), toTaskEither),
-        ),
+        chain((userId) => pipe(getProfileDetailsUseCase(userId), toTaskEither)),
         toResponse(false),
     );

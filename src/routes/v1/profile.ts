@@ -4,8 +4,15 @@ import { connectsToController } from '../../controllers/base';
 import { getProfileDetailsController } from '../../controllers/profile/get-profile-details';
 import { uploadProfilePictureController } from '../../controllers/profile/upload-profile-picture';
 import { acceptsSingleFile } from '../../helpers/multer';
+import { editProfileController } from '../../controllers/profile/edit-profile';
 
 const router = Router();
+
+router.put(
+    '/edit',
+    isAuthenticated,
+    connectsToController(editProfileController),
+);
 
 router.get(
     '/details',
@@ -14,7 +21,7 @@ router.get(
 );
 
 router.get(
-    '/details/:username',
+    '/details/:userId',
     isAuthenticated,
     connectsToController(getProfileDetailsController),
 );

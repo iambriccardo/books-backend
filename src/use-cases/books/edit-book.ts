@@ -7,9 +7,13 @@ export const editBookUseCase = (
     body: EditBookBody,
 ): Lazy<Promise<Book>> => {
     return async () => {
-        await BookModel.findOneAndUpdate({ bookId }, body);
-
-        const modifiedBook = await BookModel.findOne({ bookId }).lean();
+        const modifiedBook = await BookModel.findOneAndUpdate(
+            { bookId },
+            body,
+            {
+                new: true,
+            },
+        ).lean();
         if (modifiedBook == null)
             throw new Error('Error while modifying the book.');
 

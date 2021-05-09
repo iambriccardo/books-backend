@@ -30,8 +30,6 @@ describe('editBookUseCase', function () {
         };
         const useCase = editBookUseCase(book.bookId, updates);
 
-        await expect(useCase()).to.not.be.rejected;
-
         const editedBook = await useCase();
         expect(editedBook.description).to.eq(updates.description);
     });

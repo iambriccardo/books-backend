@@ -37,6 +37,7 @@ SECRET_KEY=[The secret key used to encrypt jwt tokens]
 ENABLE_LOGGING=[The boolean value representing if you want or not to enable logging]
 CLOUDINARY_URL=[The url of the cloudinary store]
 GCP_API_KEY=[The API key for the Google Cloud Platform]
+SELL_BOOK_CONFIRM_BASE_URL=[The base url for the confirming of a sell (e.g. the frontend url)]
 ```
 
 ### How to run

@@ -21,5 +21,5 @@ export const ENABLE_LOGGING = process.env.ENABLE_LOGGING === 'true';
 
 export const GCP_API_KEY = process.env.GCP_API_KEY as string;
 
-export const SELL_LINK_CONFIRMATION_BASE_URL = process.env
-    .SELL_LINK_CONFIRMATION_BASE_URL as string;
+export const SELL_BOOK_CONFIRM_BASE_URL = process.env
+    .SELL_BOOK_CONFIRM_BASE_URL as string;

@@ -8,7 +8,7 @@ import { GenericObject } from '../../helpers/types';
 import { getTransactionUseCase } from '../../use-cases/books/get-transaction';
 import { createTransactionUseCase } from '../../use-cases/books/create-transaction';
 import { sellBookLinkUseCase } from '../../use-cases/books/sell-book-link';
-import { SELL_LINK_CONFIRMATION_BASE_URL } from '../../helpers/environment';
+import { SELL_BOOK_CONFIRM_BASE_URL } from '../../helpers/environment';
 
 export const sellBookLinkController: Controller<AppError, GenericObject> = (
     request: IControllerRequest,
@@ -27,10 +27,7 @@ export const sellBookLinkController: Controller<AppError, GenericObject> = (
         ),
         chain((transaction) =>
             pipe(
-                sellBookLinkUseCase(
-                    SELL_LINK_CONFIRMATION_BASE_URL,
-                    transaction,
-                ),
+                sellBookLinkUseCase(SELL_BOOK_CONFIRM_BASE_URL, transaction),
                 toTaskEither,
             ),
         ),

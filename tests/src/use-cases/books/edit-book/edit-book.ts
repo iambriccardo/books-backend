@@ -1,15 +1,15 @@
 import { describe } from 'mocha';
 import { expect, use } from 'chai';
-import { sellBookUseCase } from '../../../../src/use-cases/books/sell-book/sell-book';
+import { sellBookUseCase } from '../../../../../src/use-cases/books/sell-book/sell-book';
 import chaiAsPromised from 'chai-as-promised';
-import { BookModel } from '../../../../src/entities/book';
+import { BookModel } from '../../../../../src/entities/book';
 import {
     deleteCollections,
     destroyTestMongoose,
     initTestMongoose,
-} from '../../../helpers/mongoose';
-import { sellBookBodyFixture } from '../../../helpers/fixtures';
-import { editBookUseCase } from '../../../../src/use-cases/books/edit-book';
+} from '../../../../helpers/mongoose';
+import { sellBookBodyFixture } from '../../../../helpers/fixtures';
+import { editBookUseCase } from '../../../../../src/use-cases/books/edit-book/edit-book';
 
 use(chaiAsPromised);
 

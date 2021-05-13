@@ -6,9 +6,10 @@ import { validateRequestBodyUseCase } from '../../use-cases/validate-request-bod
 import { Book } from '../../entities/book';
 import { chain, taskEither } from 'fp-ts/TaskEither';
 import { JTDSchemaType } from 'ajv/dist/jtd';
-import { editBookUseCase } from '../../use-cases/books/edit-book';
+import { editBookUseCase } from '../../use-cases/books/edit-book/edit-book';
 import { sequenceT } from 'fp-ts/Apply';
 import { validateRequestParamUseCase } from '../../use-cases/validate-request-param';
+import { validateEditBookUseCase } from '../../use-cases/books/edit-book/validate-edit-book';
 
 export interface EditBookBody {
     description?: string;
@@ -44,7 +45,16 @@ export const editBookController: Controller<AppError, Book> = (
             ),
         ),
         chain(([bookId, bookModifications]) =>
-            pipe(editBookUseCase(bookId, bookModifications), toTaskEither),
+            pipe(
+                validateEditBookUseCase(bookModifications),
+                toTaskEither,
+                chain(() =>
+                    pipe(
+                        editBookUseCase(bookId, bookModifications),
+                        toTaskEither,
+                    ),
+                ),
+            ),
         ),
         toResponse(false),
     );

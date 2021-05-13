@@ -2,13 +2,14 @@ import { Controller, IControllerRequest, toResponse } from '../base';
 import { AppError } from '../../errors/base';
 import { pipe } from 'fp-ts/function';
 import { toTaskEither } from '../../helpers/extensions';
-import { chain, map, orElse, taskEither } from 'fp-ts/TaskEither';
+import { chain, map, taskEither } from 'fp-ts/TaskEither';
 import { getUserFromRequestUseCase } from '../../use-cases/get-user-from-request';
 import { validateRequestBodyUseCase } from '../../use-cases/validate-request-body';
 import { JTDSchemaType } from 'ajv/dist/jtd';
-import { editProfileUseCase } from '../../use-cases/profile/edit-profile';
+import { editProfileUseCase } from '../../use-cases/profile/edit-profile/edit-profile';
 import { sequenceT } from 'fp-ts/Apply';
 import { User } from '../../entities/user';
+import { validateEditProfileUseCase } from '../../use-cases/profile/edit-profile/validate-edit-profile';
 
 export interface EditProfileBody {
     email?: string;
@@ -53,8 +54,14 @@ export const editProfileController: Controller<AppError, User> = (
         ),
         chain(([userId, profileModifications]) =>
             pipe(
-                editProfileUseCase(userId, profileModifications),
+                validateEditProfileUseCase(profileModifications),
                 toTaskEither,
+                chain(() =>
+                    pipe(
+                        editProfileUseCase(userId, profileModifications),
+                        toTaskEither,
+                    ),
+                ),
             ),
         ),
         toResponse(false),

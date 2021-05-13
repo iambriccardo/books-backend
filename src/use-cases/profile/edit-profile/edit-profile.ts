@@ -1,6 +1,6 @@
 import { Lazy } from 'fp-ts/function';
-import { EditProfileBody } from '../../controllers/profile/edit-profile';
-import { User, UserModel } from '../../entities/user';
+import { EditProfileBody } from '../../../controllers/profile/edit-profile';
+import { User, UserModel } from '../../../entities/user';
 
 export const editProfileUseCase = (
     userId: string,

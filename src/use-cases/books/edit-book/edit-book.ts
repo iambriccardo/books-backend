@@ -1,6 +1,6 @@
 import { Lazy } from 'fp-ts/function';
-import { Book, BookModel } from '../../entities/book';
-import { EditBookBody } from '../../controllers/books/edit-book';
+import { Book, BookModel } from '../../../entities/book';
+import { EditBookBody } from '../../../controllers/books/edit-book';
 
 export const editBookUseCase = (
     bookId: string,

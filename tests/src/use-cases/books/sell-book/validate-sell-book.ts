@@ -26,6 +26,46 @@ describe('validateSellBookUseCase', function () {
         await expect(useCase()).to.be.rejected;
     });
 
+    it('should throw an error if title field is empty', async function () {
+        const body = sellBookBodyFixture({
+            title: '',
+        });
+
+        const useCase = validateSellBookUseCase(body);
+
+        await expect(useCase()).to.be.rejected;
+    });
+
+    it('should throw an error if description field is empty', async function () {
+        const body = sellBookBodyFixture({
+            description: '',
+        });
+
+        const useCase = validateSellBookUseCase(body);
+
+        await expect(useCase()).to.be.rejected;
+    });
+
+    it('should throw an error if currency field is empty', async function () {
+        const body = sellBookBodyFixture({
+            currency: '',
+        });
+
+        const useCase = validateSellBookUseCase(body);
+
+        await expect(useCase()).to.be.rejected;
+    });
+
+    it('should throw an error if locationName field is empty', async function () {
+        const body = sellBookBodyFixture({
+            locationName: '',
+        });
+
+        const useCase = validateSellBookUseCase(body);
+
+        await expect(useCase()).to.be.rejected;
+    });
+
     it('should throw an error if pictures are invalid', async function () {
         const body = sellBookBodyFixture({
             pictures: ['image1', 'image2'],

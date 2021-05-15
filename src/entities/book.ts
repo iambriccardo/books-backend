@@ -6,7 +6,7 @@ export interface Book {
     title: string;
     description: string;
     currency: string;
-    price: number;
+    amount: number;
     condition: 'bad' | 'ok' | 'good' | 'great' | 'na';
     pictures: string[];
     publicationDate: Date;
@@ -32,7 +32,7 @@ const BookSchema: Schema = new Schema(
         title: { type: String, required: true },
         description: { type: String, required: true },
         currency: { type: String, required: true },
-        price: { type: Number, required: true },
+        amount: { type: Number, required: true },
         condition: {
             type: String,
             enum: ['bad', 'ok', 'good', 'great', 'na'],

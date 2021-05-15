@@ -14,7 +14,7 @@ export interface SellBookBody {
     title: string;
     description: string;
     currency: string;
-    price: number;
+    amount: number;
     condition: 'bad' | 'ok' | 'good' | 'great' | 'na';
     pictures: string[];
     publicationDate: Date;
@@ -30,7 +30,7 @@ const SellBookBodyJTDSchemaType: JTDSchemaType<SellBookBody> = {
         title: { type: 'string' },
         description: { type: 'string' },
         currency: { type: 'string' },
-        price: { type: 'float32' },
+        amount: { type: 'float32' },
         condition: { enum: ['bad', 'ok', 'good', 'great', 'na'] },
         pictures: {
             elements: {

@@ -7,7 +7,7 @@ export const sellBookBodyFixture = (extraParams = {}): SellBookBody => {
         description:
             'Alice in Wonderland has been known for its curious story.',
         currency: 'EUR',
-        price: 20,
+        amount: 20,
         condition: 'ok',
         pictures: ['https://cloudinary.com/alice_in_wonderland.png'],
         publicationDate: new Date(),

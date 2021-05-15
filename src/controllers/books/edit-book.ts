@@ -14,7 +14,7 @@ import { validateEditBookUseCase } from '../../use-cases/books/edit-book/validat
 export interface EditBookBody {
     description?: string;
     currency?: string;
-    price?: number;
+    amount?: number;
     condition?: 'bad' | 'ok' | 'good' | 'great' | 'na';
     pictures?: string[];
 }
@@ -23,7 +23,7 @@ const EditBookBodyJTDSchemaType: JTDSchemaType<EditBookBody> = {
     optionalProperties: {
         description: { type: 'string' },
         currency: { type: 'string' },
-        price: { type: 'float32' },
+        amount: { type: 'float32' },
         condition: { enum: ['bad', 'ok', 'good', 'great', 'na'] },
         pictures: {
             elements: {

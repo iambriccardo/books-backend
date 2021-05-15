@@ -1079,7 +1079,7 @@
           "title",
           "description",
           "currency",
-          "price",
+          "amount",
           "condition",
           "pictures",
           "locationName"
@@ -1101,7 +1101,7 @@
             "type": "string",
             "example": "EUR"
           },
-          "price": {
+          "amount": {
             "type": "number",
             "example": 20
           },
@@ -1147,7 +1147,7 @@
             "type": "string",
             "example": "EUR"
           },
-          "price": {
+          "amount": {
             "type": "number",
             "example": 20
           },
@@ -1328,7 +1328,7 @@
             "type": "string",
             "example": "EUR"
           },
-          "price": {
+          "amount": {
             "type": "number",
             "example": 20
           },

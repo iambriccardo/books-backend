@@ -18,6 +18,7 @@ import { uploadBookPictureController } from '../../controllers/books/upload-book
 import { sellBookLinkController } from '../../controllers/books/sell-book-link';
 import { sellBookConfirmController } from '../../controllers/books/sell-book-confirm';
 import { getBookByTransactionController } from '../../controllers/books/get-book-by-transaction';
+import { getBookByIdController } from '../../controllers/books/get-book-by-id';
 
 const router = Router();
 
@@ -31,6 +32,12 @@ router.get(
     '/explore',
     isAuthenticated,
     connectsToController(exploreBooksController),
+);
+
+router.get(
+    '/by-id/:bookId',
+    isAuthenticated,
+    connectsToController(getBookByIdController),
 );
 
 router.get(

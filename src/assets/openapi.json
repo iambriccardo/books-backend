@@ -636,6 +636,51 @@
         }
       }
     },
+    "/books/by-id/{bookId}": {
+      "get": {
+        "tags": [
+          "books"
+        ],
+        "summary": "Gets the book by its id",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "608eb8c5059e3117c0dbc371"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Book"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/status/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/status/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/status/InternalServerError"
+          }
+        }
+      }
+    },
     "/profile/edit": {
       "put": {
         "tags": [

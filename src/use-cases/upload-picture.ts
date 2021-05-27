@@ -10,9 +10,9 @@ export const uploadPictureUseCase = (
         const result = await upload(base64File, options);
 
         return {
-            public_id: result.public_id,
+            publicId: result.public_id,
             url: result.url,
-            secure_url: result.secure_url,
+            secureUrl: result.secure_url,
         };
     };
 };

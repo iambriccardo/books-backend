@@ -1,6 +1,8 @@
 import cloudinary, { UploadApiResponse } from 'cloudinary';
 import { GenericObject } from './types';
 import { APP_NAME } from './environment';
+import { CloudinaryUploadError, UnsupportedMediaType } from '../errors/base';
+import { supportedTypes } from './multer';
 
 /**
  * For documentation look here [https://cloudinary.com/documentation/cloudinary_references].
@@ -16,13 +18,20 @@ export const upload = async (
     base64Image: string,
     options?: GenericObject,
 ): Promise<UploadApiResponse> => {
-    return await cloudinary.v2.uploader.upload(
-        `data:image/png;base64,${base64Image}`,
-        {
-            folder: APP_NAME,
-            ...options,
-        },
-    );
+    try {
+        return await cloudinary.v2.uploader.upload(
+            `data:image/png;base64,${base64Image}`,
+            {
+                folder: APP_NAME,
+                ...options,
+            },
+        );
+    } catch (err) {
+        if (err.message == 'Invalid image file')
+            throw new UnsupportedMediaType(supportedTypes);
+
+        throw new CloudinaryUploadError(err.message);
+    }
 };
 
 export const destroy = async (publicId: string): Promise<any> => {

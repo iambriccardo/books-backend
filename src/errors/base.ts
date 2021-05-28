@@ -16,6 +16,8 @@ const ERROR_TO_STATUS_CODE: IErrorToStatusCode = {
     FileUploadError: StatusCodes.INTERNAL_SERVER_ERROR,
     UnauthorizedError: StatusCodes.UNAUTHORIZED,
     AuthenticationError: StatusCodes.UNAUTHORIZED,
+    UnsupportedMediaType: StatusCodes.UNSUPPORTED_MEDIA_TYPE,
+    CloudinaryUploadError: StatusCodes.INTERNAL_SERVER_ERROR,
 };
 
 export const errorToStatusCode = (error: AppError): StatusCodes => {
@@ -143,6 +145,26 @@ export class AuthenticationError extends AppError {
             'AuthenticationError',
             'Authentication error',
             'There was a problem with the authentication.',
+        );
+    }
+}
+
+export class UnsupportedMediaType extends AppError {
+    constructor(supportedTypes: string[]) {
+        super(
+            'UnsupportedMediaType',
+            'Unsupported media type',
+            `Only ${supportedTypes.join(',')} are supported.`,
+        );
+    }
+}
+
+export class CloudinaryUploadError extends AppError {
+    constructor(message: string) {
+        super(
+            'CloudinaryUploadError',
+            'Cloudinary upload error',
+            `An error occurred while uploading to cloudinary: ${message}`,
         );
     }
 }

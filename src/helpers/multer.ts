@@ -2,15 +2,28 @@ import multer from 'multer';
 import { NextFunction, Request, Response } from 'express';
 import { logger } from './logging';
 import {
+    AppError,
     errorToJsonResponse,
     errorToStatusCode,
     FileUploadError,
+    UnsupportedMediaType,
 } from '../errors/base';
+import { Error } from 'mongoose';
+
+export const supportedTypes = ['image/png', 'image/jpg', 'image/jpeg'];
 
 const upload = multer({
     limits: {
         // We limit the file size to 5MB (5000000 bytes).
         fileSize: 5000000,
+    },
+    fileFilter: (req, file, cb) => {
+        if (supportedTypes.includes(file.mimetype)) {
+            cb(null, true);
+        } else {
+            cb(null, false);
+            return cb(new Error('UnsupportedMediaType'));
+        }
     },
 });
 
@@ -18,23 +31,32 @@ const handleMulterError = (
     req: Request,
     res: Response,
     next: NextFunction,
-    err: any,
+    error: any,
     filename: string,
 ) => {
-    if (err) {
-        const error = new FileUploadError(filename, err);
-        const statusCode = errorToStatusCode(error);
+    if (error) {
+        const appError = deriveAppError(filename, error);
+        const statusCode = errorToStatusCode(appError);
 
         logger.warn(
-            `An error occurred in multer while reading file ${filename} because ${err}`,
+            `An error occurred in multer while reading file ${filename} because ${error}`,
         );
 
         res.status(statusCode).json(
-            errorToJsonResponse(statusCode, req.originalUrl, error),
+            errorToJsonResponse(statusCode, req.originalUrl, appError),
         );
     } else {
         next();
     }
+};
+
+const deriveAppError = (filename: string, error: any): AppError => {
+    if (error instanceof Error) {
+        if (error.message === 'UnsupportedMediaType')
+            return new UnsupportedMediaType(supportedTypes);
+    }
+
+    return new FileUploadError(filename, error);
 };
 
 export const acceptsSingleFile = (filename: string) => {

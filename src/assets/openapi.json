@@ -488,6 +488,9 @@
           "401": {
             "$ref": "#/components/status/Unauthorized"
           },
+          "415": {
+            "$ref": "#/components/status/UnsupportedMediaType"
+          },
           "422": {
             "$ref": "#/components/status/UnprocessableEntity"
           },
@@ -867,6 +870,9 @@
           "401": {
             "$ref": "#/components/status/Unauthorized"
           },
+          "415": {
+            "$ref": "#/components/status/UnsupportedMediaType"
+          },
           "500": {
             "$ref": "#/components/status/InternalServerError"
           }
@@ -969,6 +975,9 @@
       },
       "Unauthorized": {
         "description": "Unauthorized"
+      },
+      "UnsupportedMediaType": {
+        "description": "Unsupported media type"
       },
       "InternalServerError": {
         "description": "Internal server error",

@@ -167,6 +167,42 @@
         }
       }
     },
+    "/books/explore": {
+      "post": {
+        "tags": [
+          "books"
+        ],
+        "summary": "Explores the books",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "body": {
+                      "$ref": "#/components/schemas/Explore"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/status/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/status/InternalServerError"
+          }
+        }
+      }
+    },
     "/books/selling": {
       "get": {
         "tags": [
@@ -311,7 +347,6 @@
           "books"
         ],
         "summary": "Puts for sale a given book",
-        "description": "seller, locationLatitude, locationLongitude are not mandatory because they are injected by the backend.",
         "security": [
           {
             "BearerAuth": []
@@ -1239,6 +1274,29 @@
                 "type": "string",
                 "example": "https://res.cloudinary.com/ddprvzpep/image/upload/v1620046108/books-backend-dev/tfxtpkrilwnnr7wjbq5y.jpg"
               }
+            }
+          }
+        }
+      },
+      "Explore": {
+        "type": "object",
+        "properties": {
+          "popular": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Book"
+            }
+          },
+          "mayInterestYou": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Book"
+            }
+          },
+          "recentlyViewed": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Book"
             }
           }
         }

@@ -9,6 +9,8 @@ import { getRecentlyViewedBooksUseCase } from '../../use-cases/books/get-recentl
 import { getMayInterestYouBooksUseCase } from '../../use-cases/books/get-may-interest-you-books';
 import { getUserFromRequestUseCase } from '../../use-cases/get-user-from-request';
 import { GenericObject } from '../../helpers/types';
+import { map } from 'fp-ts/es6/TaskEither';
+import { shuffleBooksUseCase } from '../../use-cases/books/shuffle-books';
 
 export const exploreBooksController: Controller<AppError, GenericObject> = (
     request: IControllerRequest,
@@ -18,13 +20,18 @@ export const exploreBooksController: Controller<AppError, GenericObject> = (
         toTaskEither,
         chain((user) =>
             sequenceT(taskEither)(
-                pipe(getRecentlyViewedBooksUseCase(user), toTaskEither),
-                pipe(getMayInterestYouBooksUseCase(user), toTaskEither),
+                pipe(shuffleBooksUseCase(user.userId), toTaskEither),
+                pipe(shuffleBooksUseCase(user.userId), toTaskEither),
+                pipe(shuffleBooksUseCase(user.userId), toTaskEither),
             ),
         ),
-        chain(([recentlyViewed, mayInterestYou]) =>
+        chain(([popularBooks, mayInterestYouBooks, recentlyViewedBooks]) =>
             pipe(
-                exploreBooksUseCase(recentlyViewed, mayInterestYou),
+                exploreBooksUseCase(
+                    popularBooks,
+                    mayInterestYouBooks,
+                    recentlyViewedBooks,
+                ),
                 toTaskEither,
             ),
         ),

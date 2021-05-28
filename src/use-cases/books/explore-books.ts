@@ -3,13 +3,15 @@ import { Book } from '../../entities/book';
 import { GenericObject } from '../../helpers/types';
 
 export const exploreBooksUseCase = (
-    recentlyViewedBooks: Book[],
+    popularBooks: Book[],
     mayInterestYouBooks: Book[],
+    recentlyViewedBooks: Book[],
 ): Lazy<Promise<GenericObject>> => {
     return async () => {
         return {
-            recentlyViewed: recentlyViewedBooks,
+            popular: popularBooks,
             mayInterestYou: mayInterestYouBooks,
+            recentlyViewed: recentlyViewedBooks,
         };
     };
 };

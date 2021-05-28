@@ -15,7 +15,6 @@ export const toTaskEither = <T>(
 };
 
 export const toAppError = (error: unknown): AppError => {
-    console.log(error);
     if (error instanceof AppError) {
         return error;
     } else if (error instanceof Error) {

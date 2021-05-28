@@ -7,12 +7,19 @@ import { searchBooksUseCase } from '../../use-cases/books/search-books';
 import { chain, map, orElse, taskEither } from 'fp-ts/TaskEither';
 import { sequenceT } from 'fp-ts/Apply';
 import { validateRequestQueryParam } from '../../use-cases/validate-request-query-param';
+import { getUserFromRequestUseCase } from '../../use-cases/get-user-from-request';
 
 export const searchBooksController: Controller<AppError, Book[]> = (
     request: IControllerRequest,
 ) =>
     pipe(
         sequenceT(taskEither)(
+            pipe(
+                getUserFromRequestUseCase(request),
+                toTaskEither,
+                map((user) => user.userId),
+                orElse(() => pipe(withValue(''), toTaskEither)),
+            ),
             pipe(
                 validateRequestQueryParam(request, 'searchQuery'),
                 toTaskEither,
@@ -24,8 +31,8 @@ export const searchBooksController: Controller<AppError, Book[]> = (
                 orElse(() => pipe(withValue(0), toTaskEither)),
             ),
         ),
-        chain(([query, limit]) =>
-            pipe(searchBooksUseCase(query, limit), toTaskEither),
+        chain(([userId, query, limit]) =>
+            pipe(searchBooksUseCase(query, limit, userId), toTaskEither),
         ),
         toResponse(false),
     );

@@ -4,10 +4,16 @@ import { Book, BookModel } from '../../entities/book';
 export const searchBooksUseCase = (
     searchQuery: string,
     limit: number,
+    searcherUserId: string,
 ): Lazy<Promise<Book[]>> => {
     return async () => {
         return BookModel.find(
-            { $text: { $search: searchQuery } },
+            {
+                $text: { $search: searchQuery },
+                seller: { $ne: searcherUserId },
+                buyer: { $exists: false },
+                saleDate: { $exists: false },
+            },
             { score: { $meta: 'textScore' } },
         )
             .limit(limit)

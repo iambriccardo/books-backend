@@ -4,9 +4,8 @@ import { pipe } from 'fp-ts/function';
 import { toTaskEither } from '../../helpers/extensions';
 import { convertFileToBase64UseCase } from '../../use-cases/convert-file-to-base64';
 import { chain, map, orElse, taskEither } from 'fp-ts/TaskEither';
-import { GenericObject } from '../../helpers/types';
 import { uploadPictureUseCase } from '../../use-cases/upload-picture';
-import { imageOptions } from '../../helpers/cloudinary';
+import { imageOptions, UploadResult } from '../../helpers/cloudinary';
 import { sequenceT } from 'fp-ts/Apply';
 import { getUserFromRequestUseCase } from '../../use-cases/get-user-from-request';
 import { addProfilePictureUseCase } from '../../use-cases/profile/add-profile-picture';
@@ -14,7 +13,7 @@ import { deletePictureUseCase } from '../../use-cases/delete-picture';
 
 export const uploadProfilePictureController: Controller<
     AppError,
-    GenericObject
+    UploadResult
 > = (request: IControllerRequest) =>
     pipe(
         convertFileToBase64UseCase(request, 'profile-picture'),

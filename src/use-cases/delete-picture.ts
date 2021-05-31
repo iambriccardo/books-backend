@@ -1,13 +1,15 @@
 import { Lazy } from 'fp-ts/function';
-import { destroy } from '../helpers/cloudinary';
-import { GenericObject } from '../helpers/types';
+import { destroy, UploadResult } from '../helpers/cloudinary';
+import { ServerError } from '../errors/base';
 
 export const deletePictureUseCase = (
     publicId: string,
-): Lazy<Promise<GenericObject>> => {
+): Lazy<Promise<UploadResult>> => {
     return async () => {
         await destroy(publicId);
 
-        return {};
+        throw new ServerError(
+            'A problem occurred while setting the profile picture.',
+        );
     };
 };

@@ -886,18 +886,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "body": {
-                      "type": "object",
-                      "properties": {
-                        "url": {
-                          "type": "string",
-                          "example": "image.png"
-                        }
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/UploadResult"
                 }
               }
             }

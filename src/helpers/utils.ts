@@ -9,3 +9,29 @@ export const shuffle = <T>(array: T[]): T[] => {
     }
     return array;
 };
+
+export interface Uptime {
+    hours: number;
+    minutes: number;
+    seconds: number;
+}
+
+export const computeUptime = (): Uptime => {
+    let utSeconds = process.uptime();
+    let utMinutes = utSeconds / 60;
+    let utHours = utMinutes / 60;
+
+    utSeconds = Math.floor(utSeconds);
+    utMinutes = Math.floor(utMinutes);
+    utHours = Math.floor(utHours);
+
+    utHours = utHours % 60;
+    utMinutes = utMinutes % 60;
+    utSeconds = utSeconds % 60;
+
+    return {
+        hours: utHours,
+        minutes: utMinutes,
+        seconds: utSeconds,
+    };
+};

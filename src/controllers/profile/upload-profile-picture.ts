@@ -1,7 +1,7 @@
 import { Controller, IControllerRequest, toResponse } from '../base';
-import { AppError } from '../../errors/base';
+import { AppError, ServerError } from '../../errors/base';
 import { pipe } from 'fp-ts/function';
-import { toTaskEither } from '../../helpers/extensions';
+import { toTaskEither, withError } from '../../helpers/extensions';
 import { convertFileToBase64UseCase } from '../../use-cases/convert-file-to-base64';
 import { chain, map, orElse, taskEither } from 'fp-ts/TaskEither';
 import { uploadPictureUseCase } from '../../use-cases/upload-picture';
@@ -13,7 +13,7 @@ import { deletePictureUseCase } from '../../use-cases/delete-picture';
 
 export const uploadProfilePictureController: Controller<
     AppError,
-    UploadResult
+    UploadResult | null
 > = (request: IControllerRequest) =>
     pipe(
         convertFileToBase64UseCase(request, 'profile-picture'),
@@ -37,12 +37,23 @@ export const uploadProfilePictureController: Controller<
         ),
         chain(([username, uploadResult]) =>
             pipe(
-                addProfilePictureUseCase(username, uploadResult),
+                addProfilePictureUseCase(username, uploadResult.secureUrl),
                 toTaskEither,
+                map(() => uploadResult),
                 orElse(() =>
                     pipe(
                         deletePictureUseCase(uploadResult.publicId),
                         toTaskEither,
+                        chain(() =>
+                            pipe(
+                                withError<UploadResult | null>(
+                                    new ServerError(
+                                        'Error while uploading the profile picture.',
+                                    ),
+                                ),
+                                toTaskEither,
+                            ),
+                        ),
                     ),
                 ),
             ),

@@ -8,6 +8,12 @@ export const withValue = <T>(value: T): Lazy<Promise<T>> => {
     };
 };
 
+export const withError = <T>(error: AppError): Lazy<Promise<T>> => {
+    return async () => {
+        throw error;
+    };
+};
+
 export const toTaskEither = <T>(
     lazyPromise: Lazy<Promise<T>>,
 ): TaskEither<AppError, T> => {

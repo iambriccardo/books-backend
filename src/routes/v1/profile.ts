@@ -5,6 +5,7 @@ import { getProfileDetailsController } from '../../controllers/profile/get-profi
 import { uploadProfilePictureController } from '../../controllers/profile/upload-profile-picture';
 import { acceptsSingleFile } from '../../helpers/multer';
 import { editProfileController } from '../../controllers/profile/edit-profile';
+import { removeProfilePictureController } from '../../controllers/profile/remove-profile-picture';
 
 const router = Router();
 
@@ -24,6 +25,12 @@ router.get(
     '/details/:userId',
     isAuthenticated,
     connectsToController(getProfileDetailsController),
+);
+
+router.delete(
+    '/picture/remove',
+    isAuthenticated,
+    connectsToController(removeProfilePictureController),
 );
 
 router.post(

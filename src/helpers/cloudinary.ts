@@ -1,7 +1,11 @@
 import cloudinary, { UploadApiResponse } from 'cloudinary';
 import { GenericObject } from './types';
 import { APP_NAME } from './environment';
-import { CloudinaryUploadError, UnsupportedMediaType } from '../errors/base';
+import {
+    CloudinaryError,
+    ServerError,
+    UnsupportedMediaType,
+} from '../errors/base';
 import { supportedTypes } from './multer';
 
 /**
@@ -13,6 +17,23 @@ export interface UploadResult {
     url: string;
     secureUrl: string;
 }
+
+export const publicIdFromUrl = (url?: string): string => {
+    if (!url)
+        throw new ServerError(
+            `Error while extracting public_id from an empty url.`,
+        );
+
+    const regex = new RegExp(`${APP_NAME}\\/(?:v\\d+\\/)?([^\\.]+)`);
+    const matches = regex.exec(url as string);
+
+    if (!matches)
+        throw new ServerError(
+            `Error while extracting public_id from url ${url}`,
+        );
+
+    return matches[0];
+};
 
 export const upload = async (
     base64Image: string,
@@ -30,12 +51,16 @@ export const upload = async (
         if (err.message == 'Invalid image file')
             throw new UnsupportedMediaType(supportedTypes);
 
-        throw new CloudinaryUploadError(err.message);
+        throw new CloudinaryError(err.message);
     }
 };
 
 export const destroy = async (publicId: string): Promise<any> => {
-    return await cloudinary.v2.uploader.destroy(publicId);
+    try {
+        return await cloudinary.v2.uploader.destroy(publicId);
+    } catch (err) {
+        throw new CloudinaryError(err.message);
+    }
 };
 
 export const imageOptions = {

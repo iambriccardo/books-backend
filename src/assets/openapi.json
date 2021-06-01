@@ -36,6 +36,40 @@
     }
   ],
   "paths": {
+    "/": {
+      "post": {
+        "summary": "Performs an health check with the system",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "uptime": {
+                      "type": "string",
+                      "example": "14 hour(s) 5 minute(s) 40 second(s)"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "OK"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "example": "1622561779"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "$ref": "#/components/status/ServiceUnavailable"
+          }
+        }
+      }
+    },
     "/auth/check": {
       "post": {
         "tags": [
@@ -854,6 +888,30 @@
         }
       }
     },
+    "/profile/picture/remove": {
+      "delete": {
+        "tags": [
+          "profile"
+        ],
+        "summary": "Removes the profile picture of the user",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok"
+          },
+          "401": {
+            "$ref": "#/components/status/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/status/InternalServerError"
+          }
+        }
+      }
+    },
     "/profile/picture/upload": {
       "post": {
         "tags": [
@@ -1006,6 +1064,30 @@
       "InternalServerError": {
         "description": "Internal server error",
         "$ref": "#/components/responses/ServerError"
+      },
+      "ServiceUnavailable": {
+        "description": "Service unavailable",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "uptime": {
+                  "type": "string",
+                  "example": "14 hour(s) 5 minute(s) 40 second(s)"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "An error occurred"
+                },
+                "timestamp": {
+                  "type": "string",
+                  "example": "1622561779"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "responses": {

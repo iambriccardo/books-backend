@@ -4,6 +4,7 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
+    "start": "npx ts-node src/index.ts",
     "test": "nyc ./node_modules/.bin/_mocha 'tests/**/*.ts'",
     "dev": "ts-node-dev --respawn --pretty --transpile-only --watch 'src/assets/*' src/index.ts",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"

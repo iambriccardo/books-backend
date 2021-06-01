@@ -36,7 +36,10 @@ describe('sellBookLink', function () {
     });
 
     it('should throw an error if the transaction is invalid', async function () {
-        const useCase = sellBookLinkUseCase(baseUrl, null);
+        const useCase = sellBookLinkUseCase(baseUrl, {
+            transactionId: '',
+            bookId: '',
+        });
 
         await expect(useCase()).to.be.rejected;
     });

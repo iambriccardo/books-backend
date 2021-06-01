@@ -39,7 +39,7 @@ describe('editBookUseCase', function () {
             title: 'Huger Games',
             description: 'This book is cool',
         };
-        const useCase = editBookUseCase(null, updates);
+        const useCase = editBookUseCase('', updates);
 
         await expect(useCase()).to.be.rejected;
     });

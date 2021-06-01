@@ -45,3 +45,4 @@ yarn.lock
 
 # Other
 /api_test.paw
+/build/

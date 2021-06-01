@@ -32,7 +32,7 @@ Last but not least, put a `.env` file in the root folder, containing the followi
 ```dotenv
 APP_NAME=[The name of the app]
 PORT=[The port where to listen for http request]
-MONGO_DB_URL=[The databse url for mongo db]
+MONGO_DB_URL=[The database url for mongo db]
 SECRET_KEY=[The secret key used to encrypt jwt tokens]
 ENABLE_LOGGING=[The boolean value representing if you want or not to enable logging]
 CLOUDINARY_URL=[The url of the cloudinary store]

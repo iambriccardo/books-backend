@@ -3,10 +3,7 @@
     "target": "es5",
     "module": "commonjs",
     "strict": true,
-    //    "baseUrl": "./src",
-    //    "paths": {
-    //      "@helpers/*": ["helpers/*"]
-    //    },
+    "outDir": "build",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true

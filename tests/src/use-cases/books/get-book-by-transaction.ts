@@ -38,7 +38,7 @@ describe('getBookByTransactionUseCase', function () {
     });
 
     it('should throw an error if the transaction is not existing', async function () {
-        const useCase = getBookByTransactionUseCase(null);
+        const useCase = getBookByTransactionUseCase('');
 
         await expect(useCase()).to.be.rejected;
     });

@@ -49,7 +49,7 @@ describe('sellBookConfirmUseCase', function () {
     it('should throw an error if the transaction is invalid', async function () {
         const useCase = sellBookConfirmUseCase(
             '708e519d8c2f4a0a88aa8216',
-            null,
+            '',
         );
 
         await expect(useCase()).to.be.rejected;

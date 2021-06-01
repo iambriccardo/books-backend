@@ -23,14 +23,12 @@ describe('searchBooksUseCase', function () {
 
     const bodies: SellBookBody[] = [
         sellBookBodyFixture({
-            saleDate: new Date(),
-            buyer: '608e4192842f4a0a88aa8216',
+            title: 'Alice in Wonderland',
+            description: 'Alice in Wonderland is an amazing book',
         }),
         sellBookBodyFixture({
             title: 'Lord of the Rings',
             description: 'Lord of the Rings is an amazing book.',
-            saleDate: new Date(),
-            buyer: '608e4192842f4a0a88aa8216',
         }),
     ];
 
@@ -39,7 +37,11 @@ describe('searchBooksUseCase', function () {
             await sellBookUseCase(body)();
         }
 
-        const useCase = searchBooksUseCase('Alice in Wonderland', 0);
+        const useCase = searchBooksUseCase(
+            'Alice in Wonderland',
+            0,
+            '608e4192842f4a0a88aa8216',
+        );
         await expect(useCase()).to.not.be.rejected;
 
         expect(await useCase()).to.have.length.above(0);
@@ -50,7 +52,7 @@ describe('searchBooksUseCase', function () {
             await sellBookUseCase(body)();
         }
 
-        const useCase = searchBooksUseCase('Invisible Man', 0);
+        const useCase = searchBooksUseCase('Invisible Man', 0, '');
         await expect(useCase()).to.not.be.rejected;
 
         expect(await useCase()).to.have.length.below(1);

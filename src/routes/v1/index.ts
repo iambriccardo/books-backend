@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
         res.send(healthCheck);
     } catch (e) {
         healthCheck.message = e;
-        res.status(503).send();
+        res.status(503).send(healthCheck);
     }
 });
 

@@ -16,8 +16,10 @@ const ERROR_TO_STATUS_CODE: IErrorToStatusCode = {
     FileUploadError: StatusCodes.INTERNAL_SERVER_ERROR,
     UnauthorizedError: StatusCodes.UNAUTHORIZED,
     AuthenticationError: StatusCodes.UNAUTHORIZED,
-    UnsupportedMediaType: StatusCodes.UNSUPPORTED_MEDIA_TYPE,
+    UnsupportedMediaTypeError: StatusCodes.UNSUPPORTED_MEDIA_TYPE,
     CloudinaryError: StatusCodes.INTERNAL_SERVER_ERROR,
+    PasswordsNotMatchingError: StatusCodes.UNPROCESSABLE_ENTITY,
+    PasswordsEqualError: StatusCodes.UNPROCESSABLE_ENTITY,
 };
 
 export const errorToStatusCode = (error: AppError): StatusCodes => {
@@ -110,11 +112,11 @@ export class InvalidParamError extends AppError {
 }
 
 export class UserNotFoundError extends AppError {
-    constructor(username: string) {
+    constructor(user: string) {
         super(
             'UserNotFoundError',
             'User not found error',
-            `The user ${username} doesn't exist.`,
+            `The user ${user} doesn't exist.`,
         );
     }
 }
@@ -149,11 +151,11 @@ export class AuthenticationError extends AppError {
     }
 }
 
-export class UnsupportedMediaType extends AppError {
+export class UnsupportedMediaTypeError extends AppError {
     constructor(supportedTypes: string[]) {
         super(
-            'UnsupportedMediaType',
-            'Unsupported media type',
+            'UnsupportedMediaTypeError',
+            'Unsupported media type error',
             `Only ${supportedTypes.join(',')} are supported.`,
         );
     }
@@ -165,6 +167,26 @@ export class CloudinaryError extends AppError {
             'CloudinaryError',
             'Cloudinary error',
             `An error occurred on cloudinary: ${message}`,
+        );
+    }
+}
+
+export class PasswordsNotMatchingError extends AppError {
+    constructor() {
+        super(
+            'PasswordsNotMatchingError',
+            'Passwords not matching error',
+            `The passwords are not matching.`,
+        );
+    }
+}
+
+export class PasswordsEqualError extends AppError {
+    constructor() {
+        super(
+            'PasswordsEqualError',
+            'Passwords equal error',
+            `The passwords are equal.`,
         );
     }
 }

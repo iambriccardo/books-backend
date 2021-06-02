@@ -20,10 +20,7 @@ export const optionalCheck = <T>(
     block: (value: T) => boolean,
     value?: T,
 ) => {
-    if (value != null) {
-        console.log('Checking');
-        check(field, block, value);
-    }
+    if (value != null) check(field, block, value);
 };
 
 export const optionalCheckNonEmpty = (field: string, value?: string) => {

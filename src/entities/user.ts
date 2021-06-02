@@ -1,5 +1,5 @@
 import { Document, Error, model, Model, Schema, Types } from 'mongoose';
-import { compare, genSalt, hash } from 'bcrypt-nodejs';
+import { compare, compareSync, genSalt, hash } from 'bcrypt-nodejs';
 
 export interface User {
     userId: string;
@@ -18,6 +18,7 @@ export interface User {
 
 export interface UserDocument extends User, Document {
     comparePassword: ComparePasswordFunction;
+    comparePasswordSync: ComparePasswordFunctionSync;
 }
 
 const UserSchema: Schema = new Schema(
@@ -45,7 +46,7 @@ const UserSchema: Schema = new Schema(
     },
 );
 
-UserSchema.pre('save', function save(next) {
+UserSchema.pre('save', function (next) {
     const user = this as UserDocument;
     if (!user.isModified('password')) return next();
 
@@ -80,6 +81,16 @@ const comparePassword: ComparePasswordFunction = function (
     );
 };
 
+type ComparePasswordFunctionSync = (candidatePassword: string) => boolean;
+
+const comparePasswordSync: ComparePasswordFunctionSync = function (
+    this: UserDocument,
+    candidatePassword,
+) {
+    return compareSync(candidatePassword, this.password);
+};
+
 UserSchema.methods.comparePassword = comparePassword;
+UserSchema.methods.comparePasswordSync = comparePasswordSync;
 
 export const UserModel: Model<UserDocument> = model('User', UserSchema);

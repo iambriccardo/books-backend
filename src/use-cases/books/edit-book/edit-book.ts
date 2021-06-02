@@ -1,6 +1,7 @@
 import { Lazy } from 'fp-ts/function';
 import { Book, BookModel } from '../../../entities/book';
 import { EditBookBody } from '../../../controllers/books/edit-book';
+import { ServerError } from '../../../errors/base';
 
 export const editBookUseCase = (
     bookId: string,
@@ -15,7 +16,7 @@ export const editBookUseCase = (
             },
         ).lean();
         if (modifiedBook == null)
-            throw new Error('Error while modifying the book.');
+            throw new ServerError('Error while modifying the book.');
 
         return modifiedBook;
     };

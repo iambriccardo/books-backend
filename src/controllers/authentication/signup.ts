@@ -29,8 +29,8 @@ export const signupController: Controller<AppError, void> = (
     pipe(
         validateRequestBodyUseCase(request, SignupBodyJTDSchema),
         toTaskEither,
-        chain((user) => pipe(sanitizeSignupUseCase(user), toTaskEither)),
-        chain((user) => pipe(validateSignupUseCase(user), toTaskEither)),
-        chain((user) => pipe(signupUseCase(user), toTaskEither)),
+        chain((body) => pipe(sanitizeSignupUseCase(body), toTaskEither)),
+        chain((body) => pipe(validateSignupUseCase(body), toTaskEither)),
+        chain((body) => pipe(signupUseCase(body), toTaskEither)),
         toResponse(false),
     );

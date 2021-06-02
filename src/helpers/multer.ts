@@ -6,7 +6,7 @@ import {
     errorToJsonResponse,
     errorToStatusCode,
     FileUploadError,
-    UnsupportedMediaType,
+    UnsupportedMediaTypeError,
 } from '../errors/base';
 import { Error } from 'mongoose';
 
@@ -53,7 +53,7 @@ const handleMulterError = (
 const deriveAppError = (filename: string, error: any): AppError => {
     if (error instanceof Error) {
         if (error.message === 'UnsupportedMediaType')
-            return new UnsupportedMediaType(supportedTypes);
+            return new UnsupportedMediaTypeError(supportedTypes);
     }
 
     return new FileUploadError(filename, error);

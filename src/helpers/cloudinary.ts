@@ -4,7 +4,7 @@ import { APP_NAME } from './environment';
 import {
     CloudinaryError,
     ServerError,
-    UnsupportedMediaType,
+    UnsupportedMediaTypeError,
 } from '../errors/base';
 import { supportedTypes } from './multer';
 
@@ -49,7 +49,7 @@ export const upload = async (
         );
     } catch (err) {
         if (err.message == 'Invalid image file')
-            throw new UnsupportedMediaType(supportedTypes);
+            throw new UnsupportedMediaTypeError(supportedTypes);
 
         throw new CloudinaryError(err.message);
     }

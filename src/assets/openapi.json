@@ -38,7 +38,7 @@
   "paths": {
     "/": {
       "post": {
-        "summary": "Performs an health check with the system",
+        "summary": "Performs an health check with the system (avaiable without v1).",
         "responses": {
           "200": {
             "description": "Ok",

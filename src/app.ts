@@ -9,6 +9,7 @@ import { MONGO_DB_URL, PORT } from './helpers/environment';
 import { logger } from './helpers/logging';
 import swaggerUi from 'swagger-ui-express';
 import { readJsonFile } from './helpers/files';
+import { healthCheck } from './helpers/utils';
 
 class Server {
     app = express();
@@ -29,8 +30,9 @@ class Server {
             swaggerUi.serve,
             swaggerUi.setup(readJsonFile('openapi.json')),
         );
-
         this.app.use('/v1', v1Routes);
+
+        this.app.get('/', healthCheck);
     }
 
     configure() {

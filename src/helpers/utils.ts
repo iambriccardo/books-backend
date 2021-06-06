@@ -1,3 +1,5 @@
+import { Request, Response } from 'express';
+
 export async function delay(ms: number): Promise<void> {
     await new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -34,4 +36,24 @@ export const computeUptime = (): Uptime => {
         minutes: utMinutes,
         seconds: utSeconds,
     };
+};
+
+export const healthCheck = async (
+    req: Request,
+    res: Response,
+): Promise<void> => {
+    const uptime = computeUptime();
+
+    const healthCheck = {
+        uptime: `${uptime.hours} Hour(s) ${uptime.minutes} minute(s) ${uptime.seconds} second(s)`,
+        message: 'OK',
+        timestamp: Date.now(),
+    };
+
+    try {
+        res.send(healthCheck);
+    } catch (e) {
+        healthCheck.message = e;
+        res.status(503).send(healthCheck);
+    }
 };

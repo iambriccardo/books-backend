@@ -10,6 +10,7 @@ import { logger } from './helpers/logging';
 import swaggerUi from 'swagger-ui-express';
 import { readJsonFile } from './helpers/files';
 import { healthCheck } from './helpers/utils';
+import { defaultRateLimiter } from './helpers/rate-limiting';
 
 class Server {
     app = express();
@@ -25,6 +26,7 @@ class Server {
         this.app.use(express.json({ limit: '50mb' }));
         this.app.use(express.urlencoded({ limit: '50mb' }));
         this.app.use(passport.initialize());
+        this.app.use(defaultRateLimiter);
         this.app.use(
             '/api-docs',
             swaggerUi.serve,

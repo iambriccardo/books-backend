@@ -15,6 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/express-rate-limit": "^5.1.1",
     "@types/got": "^9.6.11",
     "@types/jsonwebtoken": "^8.5.1",
     "@types/multer": "^1.4.5",
@@ -25,6 +26,7 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-rate-limit": "^5.2.6",
     "fp-ts": "^2.9.5",
     "got": "^11.8.2",
     "helmet": "^4.4.1",

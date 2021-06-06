@@ -20,6 +20,7 @@ const ERROR_TO_STATUS_CODE: IErrorToStatusCode = {
     CloudinaryError: StatusCodes.INTERNAL_SERVER_ERROR,
     PasswordsNotMatchingError: StatusCodes.UNPROCESSABLE_ENTITY,
     PasswordsEqualError: StatusCodes.UNPROCESSABLE_ENTITY,
+    TooManyRequestsError: StatusCodes.TOO_MANY_REQUESTS,
 };
 
 export const errorToStatusCode = (error: AppError): StatusCodes => {
@@ -187,6 +188,16 @@ export class PasswordsEqualError extends AppError {
             'PasswordsEqualError',
             'Passwords equal error',
             `The passwords are equal.`,
+        );
+    }
+}
+
+export class TooManyRequestsError extends AppError {
+    constructor() {
+        super(
+            'TooManyRequestsError',
+            'Too many requests error',
+            `The number of requests made by this client exceeded the limit, try again later.`,
         );
     }
 }

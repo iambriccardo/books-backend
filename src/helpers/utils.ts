@@ -57,3 +57,31 @@ export const healthCheck = async (
         res.status(503).send(healthCheck);
     }
 };
+
+export const createEdgeNGrams = (text: string): string[] => {
+    if (text && text.length > 2) {
+        const minGram = 2;
+        const maxGram = text.length;
+
+        return text
+            .split(' ')
+            .slice(0, 100)
+            .reduce((ngrams: string[], token: string) => {
+                if (token.length > minGram) {
+                    for (
+                        let i = minGram;
+                        i <= maxGram && i <= token.length;
+                        ++i
+                    ) {
+                        const gram = token.substr(0, i);
+                        ngrams = [...ngrams, gram];
+                    }
+                } else {
+                    ngrams = [...ngrams, token];
+                }
+
+                return ngrams;
+            }, []);
+    }
+    return [text];
+};

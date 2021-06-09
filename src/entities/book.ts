@@ -1,4 +1,5 @@
-import { Document, Model, model, Schema, Types } from 'mongoose';
+import { Document, Error, Model, model, Schema, Types } from 'mongoose';
+import { createEdgeNGrams } from '../helpers/utils';
 
 export interface Book {
     bookId: string;
@@ -18,7 +19,12 @@ export interface Book {
     buyer?: string;
 }
 
-export interface BookDocument extends Book, Document {}
+interface BookInternal {
+    searchableIsbn: string[];
+    searchableTitle: string[];
+}
+
+export interface BookDocument extends Book, BookInternal, Document {}
 
 const BookSchema: Schema = new Schema(
     {
@@ -28,7 +34,19 @@ const BookSchema: Schema = new Schema(
             unique: true,
             default: () => new Types.ObjectId(),
         },
+        searchableIsbn: {
+            type: [String],
+            required: false,
+            index: true,
+            select: false,
+        },
         isbn: { type: String, required: true },
+        searchableTitle: {
+            type: [String],
+            required: false,
+            index: true,
+            select: false,
+        },
         title: { type: String, required: true },
         description: { type: String, required: true },
         currency: { type: String, required: true },
@@ -55,6 +73,15 @@ const BookSchema: Schema = new Schema(
     isbn: 'text',
     title: 'text',
     description: 'text',
+});
+
+BookSchema.pre('save', function (next) {
+    const book = this as BookDocument;
+
+    book.searchableIsbn = createEdgeNGrams(book.isbn);
+    book.searchableTitle = createEdgeNGrams(book.title);
+
+    next();
 });
 
 export const BookModel: Model<BookDocument> = model('Book', BookSchema);

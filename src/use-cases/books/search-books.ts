@@ -9,7 +9,11 @@ export const searchBooksUseCase = (
     return async () => {
         return BookModel.find(
             {
-                $text: { $search: searchQuery },
+                $or: [
+                    { $text: { $search: searchQuery } },
+                    { searchableIsbn: searchQuery },
+                    { searchableTitle: searchQuery },
+                ],
                 seller: { $ne: searcherUserId },
                 buyer: { $exists: false },
                 saleDate: { $exists: false },

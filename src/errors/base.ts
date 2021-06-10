@@ -22,6 +22,8 @@ const ERROR_TO_STATUS_CODE: IErrorToStatusCode = {
     PasswordsNotMatchingError: StatusCodes.UNPROCESSABLE_ENTITY,
     PasswordsEqualError: StatusCodes.UNPROCESSABLE_ENTITY,
     TooManyRequestsError: StatusCodes.TOO_MANY_REQUESTS,
+    UserAlreadyExistsError: 512,
+    EmailAlreadyExistsError: 512,
 };
 
 export const errorToStatusCode = (error: AppError): StatusCodes => {
@@ -209,6 +211,26 @@ export class TooManyRequestsError extends AppError {
             'TooManyRequestsError',
             'Too many requests error',
             `The number of requests made by this client exceeded the limit, try again later.`,
+        );
+    }
+}
+
+export class UserAlreadyExistsError extends AppError {
+    constructor(username: string) {
+        super(
+            'UserAlreadyExistsError',
+            'User already exists error',
+            `The user ${username} already exists, try another username.`,
+        );
+    }
+}
+
+export class EmailAlreadyExistsError extends AppError {
+    constructor(email: string) {
+        super(
+            'EmailAlreadyExistsError',
+            'Email already exists error',
+            `The email ${email} already exists, try another email.`,
         );
     }
 }

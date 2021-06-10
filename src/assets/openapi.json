@@ -192,6 +192,9 @@
           },
           "500": {
             "$ref": "#/components/status/InternalServerError"
+          },
+          "512": {
+            "$ref": "#/components/status/Unassigned"
           }
         }
       }
@@ -1133,6 +1136,9 @@
             }
           }
         }
+      },
+      "Unassigned": {
+        "description": "Unassigned"
       }
     },
     "responses": {

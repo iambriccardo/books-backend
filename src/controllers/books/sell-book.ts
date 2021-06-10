@@ -5,9 +5,11 @@ import { sellBookUseCase } from '../../use-cases/books/sell-book/sell-book';
 import { AppError } from '../../errors/base';
 import { validateRequestBodyUseCase } from '../../use-cases/validate-request-body';
 import { Book } from '../../entities/book';
-import { chain } from 'fp-ts/TaskEither';
+import { chain, taskEither } from 'fp-ts/TaskEither';
 import { JTDSchemaType } from 'ajv/dist/jtd';
 import { validateSellBookUseCase } from '../../use-cases/books/sell-book/validate-sell-book';
+import { sequenceT } from 'fp-ts/Apply';
+import { getAllCurrenciesUseCase } from '../../use-cases/currencies/get-all-currencies';
 
 export interface SellBookBody {
     isbn: string;
@@ -49,9 +51,16 @@ export const sellBookController: Controller<AppError, Book> = (
     request: IControllerRequest,
 ) =>
     pipe(
-        validateRequestBodyUseCase(request, SellBookBodyJTDSchemaType),
-        toTaskEither,
-        chain((book) => pipe(validateSellBookUseCase(book), toTaskEither)),
-        chain((book) => pipe(sellBookUseCase(book), toTaskEither)),
+        sequenceT(taskEither)(
+            pipe(
+                validateRequestBodyUseCase(request, SellBookBodyJTDSchemaType),
+                toTaskEither,
+            ),
+            pipe(getAllCurrenciesUseCase(), toTaskEither),
+        ),
+        chain(([body, currencies]) =>
+            pipe(validateSellBookUseCase(body, currencies), toTaskEither),
+        ),
+        chain((body) => pipe(sellBookUseCase(body), toTaskEither)),
         toResponse(false),
     );

@@ -24,7 +24,7 @@ export const uploadProfilePictureController: Controller<
                 pipe(
                     getUserFromRequestUseCase(request),
                     toTaskEither,
-                    map((user) => user.username),
+                    map((user) => user.userId),
                 ),
                 pipe(
                     uploadPictureUseCase(
@@ -35,9 +35,9 @@ export const uploadProfilePictureController: Controller<
                 ),
             ),
         ),
-        chain(([username, uploadResult]) =>
+        chain(([userId, uploadResult]) =>
             pipe(
-                addProfilePictureUseCase(username, uploadResult.secureUrl),
+                addProfilePictureUseCase(userId, uploadResult.secureUrl),
                 toTaskEither,
                 map(() => uploadResult),
                 orElse(() =>

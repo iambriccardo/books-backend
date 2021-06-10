@@ -1478,10 +1478,6 @@
             "type": "string",
             "example": "$"
           },
-          "code": {
-            "type": "string",
-            "example": "USD"
-          },
           "name": {
             "type": "string",
             "example": "US Dollar"

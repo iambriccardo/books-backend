@@ -5,11 +5,8 @@ import { exploreBooksUseCase } from '../../use-cases/books/explore-books';
 import { toTaskEither } from '../../helpers/extensions';
 import { sequenceT } from 'fp-ts/Apply';
 import { chain, taskEither } from 'fp-ts/TaskEither';
-import { getRecentlyViewedBooksUseCase } from '../../use-cases/books/get-recently-viewed-books';
-import { getMayInterestYouBooksUseCase } from '../../use-cases/books/get-may-interest-you-books';
 import { getUserFromRequestUseCase } from '../../use-cases/get-user-from-request';
 import { GenericObject } from '../../helpers/types';
-import { map } from 'fp-ts/es6/TaskEither';
 import { shuffleBooksUseCase } from '../../use-cases/books/shuffle-books';
 
 export const exploreBooksController: Controller<AppError, GenericObject> = (

@@ -2,27 +2,22 @@
   "currencies": [
     {
       "symbol": "$",
-      "code": "USD",
       "name": "US Dollar"
     },
     {
       "symbol": "€",
-      "code": "EUR",
       "name": "Euro"
     },
     {
       "symbol": "£",
-      "code": "GBP",
       "name": "Pound sterling"
     },
     {
       "symbol": "BTC",
-      "code": "BTC",
       "name": "Bitcoin"
     },
     {
       "symbol": "ETH",
-      "code": "ETH",
       "name": "Ethereum"
     }
   ]

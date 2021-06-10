@@ -47,19 +47,19 @@ export const upload = async (
                 ...options,
             },
         );
-    } catch (err) {
-        if (err.message == 'Invalid image file')
+    } catch (error) {
+        if (error.message == 'Invalid image file')
             throw new UnsupportedMediaTypeError(supportedTypes);
 
-        throw new CloudinaryError(err.message);
+        throw new CloudinaryError(error.message);
     }
 };
 
 export const destroy = async (publicId: string): Promise<any> => {
     try {
         return await cloudinary.v2.uploader.destroy(publicId);
-    } catch (err) {
-        throw new CloudinaryError(err.message);
+    } catch (error) {
+        throw new CloudinaryError(error.message);
     }
 };
 

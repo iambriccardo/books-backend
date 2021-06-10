@@ -18,6 +18,7 @@ const ERROR_TO_STATUS_CODE: IErrorToStatusCode = {
     AuthenticationError: StatusCodes.UNAUTHORIZED,
     UnsupportedMediaTypeError: StatusCodes.UNSUPPORTED_MEDIA_TYPE,
     CloudinaryError: StatusCodes.INTERNAL_SERVER_ERROR,
+    GCPError: StatusCodes.INTERNAL_SERVER_ERROR,
     PasswordsNotMatchingError: StatusCodes.UNPROCESSABLE_ENTITY,
     PasswordsEqualError: StatusCodes.UNPROCESSABLE_ENTITY,
     TooManyRequestsError: StatusCodes.TOO_MANY_REQUESTS,
@@ -167,7 +168,17 @@ export class CloudinaryError extends AppError {
         super(
             'CloudinaryError',
             'Cloudinary error',
-            `An error occurred on cloudinary: ${message}`,
+            `An error occurred with Cloudinary: ${message}`,
+        );
+    }
+}
+
+export class GCPError extends AppError {
+    constructor(message: string) {
+        super(
+            'GCPError',
+            'GCP error',
+            `An error occurred with Google Cloud Platform: ${message}`,
         );
     }
 }

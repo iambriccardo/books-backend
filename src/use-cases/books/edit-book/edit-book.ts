@@ -4,12 +4,13 @@ import { EditBookBody } from '../../../controllers/books/edit-book';
 import { ServerError } from '../../../errors/base';
 
 export const editBookUseCase = (
+    userId: string,
     bookId: string,
     body: EditBookBody,
 ): Lazy<Promise<Book>> => {
     return async () => {
         const modifiedBook = await BookModel.findOneAndUpdate(
-            { bookId },
+            { bookId, seller: userId },
             body,
             {
                 new: true,

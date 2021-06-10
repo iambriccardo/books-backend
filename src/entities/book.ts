@@ -1,4 +1,4 @@
-import { Document, Error, Model, model, Schema, Types } from 'mongoose';
+import { Document, Model, model, Schema, Types } from 'mongoose';
 import { createEdgeNGrams } from '../helpers/utils';
 
 export interface Book {

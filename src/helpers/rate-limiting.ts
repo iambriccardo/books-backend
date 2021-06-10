@@ -1,5 +1,5 @@
 import rateLimit from 'express-rate-limit';
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { respondWithError, TooManyRequestsError } from '../errors/base';
 
 export const defaultRateLimiter = rateLimit({

@@ -1,6 +1,5 @@
 import { Lazy } from 'fp-ts/function';
 import { UserModel } from '../../entities/user';
-import { UserNotFoundError } from '../../errors/base';
 import { GenericObject } from '../../helpers/types';
 
 export const checkAccountUseCase = (

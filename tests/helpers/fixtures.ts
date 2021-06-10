@@ -1,4 +1,5 @@
 import { SellBookBody } from '../../src/controllers/books/sell-book';
+import { Currency } from '../../src/entities/currencies';
 
 export const sellBookBodyFixture = (extraParams = {}): SellBookBody => {
     return {
@@ -6,7 +7,7 @@ export const sellBookBodyFixture = (extraParams = {}): SellBookBody => {
         title: 'Alice in Wonderland',
         description:
             'Alice in Wonderland has been known for its curious story.',
-        currency: 'EUR',
+        currency: '$',
         amount: 20,
         condition: 'ok',
         pictures: ['https://cloudinary.com/alice_in_wonderland.png'],
@@ -15,6 +16,14 @@ export const sellBookBodyFixture = (extraParams = {}): SellBookBody => {
         locationName: 'Trento',
         locationLatitude: 46.0747793,
         locationLongitude: 11.3547582,
+        ...extraParams,
+    };
+};
+
+export const currencyFixture = (extraParams = {}): Currency => {
+    return {
+        symbol: '$',
+        name: 'US Dollar',
         ...extraParams,
     };
 };

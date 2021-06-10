@@ -1,7 +1,10 @@
 import { describe } from 'mocha';
 import { expect, use } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { sellBookBodyFixture } from '../../../../helpers/fixtures';
+import {
+    currencyFixture,
+    sellBookBodyFixture,
+} from '../../../../helpers/fixtures';
 import { validateSellBookUseCase } from '../../../../../src/use-cases/books/sell-book/validate-sell-book';
 
 use(chaiAsPromised);
@@ -10,7 +13,7 @@ describe('validateSellBookUseCase', function () {
     it('should return the body if the validation has been successful', async function () {
         const body = sellBookBodyFixture();
 
-        const useCase = validateSellBookUseCase(body);
+        const useCase = validateSellBookUseCase(body, [currencyFixture()]);
 
         await expect(useCase()).to.not.be.rejected;
         expect(await useCase()).to.be.deep.equal(body);
@@ -21,7 +24,7 @@ describe('validateSellBookUseCase', function () {
             isbn: '1234',
         });
 
-        const useCase = validateSellBookUseCase(body);
+        const useCase = validateSellBookUseCase(body, [currencyFixture()]);
 
         await expect(useCase()).to.be.rejected;
     });
@@ -31,7 +34,7 @@ describe('validateSellBookUseCase', function () {
             title: '',
         });
 
-        const useCase = validateSellBookUseCase(body);
+        const useCase = validateSellBookUseCase(body, [currencyFixture()]);
 
         await expect(useCase()).to.be.rejected;
     });
@@ -41,7 +44,7 @@ describe('validateSellBookUseCase', function () {
             description: '',
         });
 
-        const useCase = validateSellBookUseCase(body);
+        const useCase = validateSellBookUseCase(body, [currencyFixture()]);
 
         await expect(useCase()).to.be.rejected;
     });
@@ -51,7 +54,7 @@ describe('validateSellBookUseCase', function () {
             currency: '',
         });
 
-        const useCase = validateSellBookUseCase(body);
+        const useCase = validateSellBookUseCase(body, [currencyFixture()]);
 
         await expect(useCase()).to.be.rejected;
     });
@@ -61,7 +64,7 @@ describe('validateSellBookUseCase', function () {
             locationName: '',
         });
 
-        const useCase = validateSellBookUseCase(body);
+        const useCase = validateSellBookUseCase(body, [currencyFixture()]);
 
         await expect(useCase()).to.be.rejected;
     });
@@ -71,7 +74,7 @@ describe('validateSellBookUseCase', function () {
             pictures: ['image1', 'image2'],
         });
 
-        const useCase = validateSellBookUseCase(body);
+        const useCase = validateSellBookUseCase(body, [currencyFixture()]);
 
         await expect(useCase()).to.be.rejected;
     });

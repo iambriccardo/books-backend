@@ -21,25 +21,28 @@ describe('editBookUseCase', function () {
     afterEach(deleteCollections(BookModel));
 
     it('should edit the book if the book is present', async function () {
-        const body = sellBookBodyFixture();
+        const seller = '608e519d8c2f4a0a88aa8216';
+        const body = sellBookBodyFixture({ seller });
 
         const book = await sellBookUseCase(body)();
 
         const updates = {
             description: 'This book is cool',
         };
-        const useCase = editBookUseCase(book.bookId, updates);
+        const useCase = editBookUseCase(seller, book.bookId, updates);
 
         const editedBook = await useCase();
         expect(editedBook.description).to.eq(updates.description);
     });
 
     it('should not edit the book if the book is not present', async function () {
+        const seller = '608e519d8c2f4a0a88aa8216';
+
         const updates = {
             title: 'Huger Games',
             description: 'This book is cool',
         };
-        const useCase = editBookUseCase('', updates);
+        const useCase = editBookUseCase(seller, '', updates);
 
         await expect(useCase()).to.be.rejected;
     });

@@ -10,15 +10,63 @@
     },
     {
       "symbol": "£",
-      "name": "Pound sterling"
+      "name": "Pound Sterling"
     },
     {
-      "symbol": "BTC",
+      "symbol": "¥",
+      "name": "Japanese Yen"
+    },
+    {
+      "symbol": "$",
+      "name": "Canadian Dollar"
+    },
+    {
+      "symbol": "¥",
+      "name": "Chinese Yuan Renminbi"
+    },
+    {
+      "symbol": "元",
+      "name": "Hong Kong Dollar"
+    },
+    {
+      "symbol": "₿",
       "name": "Bitcoin"
     },
     {
-      "symbol": "ETH",
+      "symbol": "Ξ",
       "name": "Ethereum"
+    },
+    {
+      "symbol": "Ð",
+      "name": "Dogecoin"
+    },
+    {
+      "symbol": "XRP",
+      "name": "XRP"
+    },
+    {
+      "symbol": "USDC",
+      "name": "USD Coin"
+    },
+    {
+      "symbol": "XMR",
+      "name": "Monero"
+    },
+    {
+      "symbol": "₳",
+      "name": "Cardano"
+    },
+    {
+      "symbol": "◈",
+      "name": "Dai"
+    },
+    {
+      "symbol": "USD₮",
+      "name": "Tether US Dollar"
+    },
+    {
+      "symbol": "EUR₮",
+      "name": "Tether Euro"
     }
   ]
 }

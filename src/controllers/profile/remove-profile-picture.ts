@@ -2,7 +2,7 @@ import { Controller, IControllerRequest, toResponse } from '../base';
 import { AppError } from '../../errors/base';
 import { pipe } from 'fp-ts/function';
 import { toTaskEither } from '../../helpers/extensions';
-import { chain, orElse } from 'fp-ts/TaskEither';
+import { chain, map, orElse } from 'fp-ts/TaskEither';
 import { getUserFromRequestUseCase } from '../../use-cases/get-user-from-request';
 import { addProfilePictureUseCase } from '../../use-cases/profile/add-profile-picture';
 import { deletePictureUseCase } from '../../use-cases/delete-picture';
@@ -27,19 +27,20 @@ export const removeProfilePictureController: Controller<AppError, void> = (
                         toTaskEither,
                     ),
                 ),
-                chain(() =>
+                map(() => user),
+            ),
+        ),
+        chain((user) =>
+            pipe(
+                deletePictureUseCase(user.profilePicture),
+                toTaskEither,
+                orElse(() =>
                     pipe(
-                        deletePictureUseCase(user.profilePicture),
-                        toTaskEither,
-                        orElse(() =>
-                            pipe(
-                                addProfilePictureUseCase(
-                                    user.username,
-                                    user.profilePicture,
-                                ),
-                                toTaskEither,
-                            ),
+                        addProfilePictureUseCase(
+                            user.username,
+                            user.profilePicture,
                         ),
+                        toTaskEither,
                     ),
                 ),
             ),

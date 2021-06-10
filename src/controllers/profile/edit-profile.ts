@@ -52,17 +52,15 @@ export const editProfileController: Controller<AppError, User> = (
                 toTaskEither,
             ),
         ),
-        chain(([userId, profileModifications]) =>
+        chain(([userId, body]) =>
             pipe(
-                validateEditProfileUseCase(profileModifications),
+                validateEditProfileUseCase(body),
                 toTaskEither,
-                chain(() =>
-                    pipe(
-                        editProfileUseCase(userId, profileModifications),
-                        toTaskEither,
-                    ),
-                ),
+                map(() => [userId, body] as [string, EditProfileBody]),
             ),
+        ),
+        chain(([userId, body]) =>
+            pipe(editProfileUseCase(userId, body), toTaskEither),
         ),
         toResponse(false),
     );

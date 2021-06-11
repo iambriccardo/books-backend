@@ -9,6 +9,9 @@ import fromAuthHeaderAsBearerToken = ExtractJwt.fromAuthHeaderAsBearerToken;
 export const AuthLocalStrategy = new LocalStrategy(
     { usernameField: 'usernameOrEmail' },
     (usernameOrEmail, password, done) => {
+        // TODO: find way to use the interceptor to do this automatically.
+        usernameOrEmail = usernameOrEmail.toLowerCase();
+
         UserModel.findOne(
             {
                 $or: [

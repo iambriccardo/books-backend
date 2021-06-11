@@ -11,9 +11,7 @@ export const validateSignupUseCase = (
 
         check(
             'username',
-            (username) =>
-                validator.isLength(username, { min: 3, max: 128 }) &&
-                validator.isLowercase(username),
+            (username) => validator.isLength(username, { min: 3, max: 128 }),
             body.username,
         );
 

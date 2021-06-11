@@ -82,3 +82,11 @@ export const useApplyFunctionToRequestBodyField = (
         };
     };
 };
+
+export const useFieldValueToLowerCase = (
+    fieldName: string,
+): Interceptor<IControllerRequest> => {
+    return useApplyFunctionToRequestBodyField(fieldName, (fieldValue) =>
+        fieldValue.toLowerCase(),
+    );
+};

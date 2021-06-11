@@ -7,10 +7,7 @@ export const checkAccountUseCase = (
 ): Lazy<Promise<GenericObject>> => {
     return async () => {
         const user = await UserModel.findOne({
-            $or: [
-                { username: usernameOrEmail },
-                { 'contactInformation.email': usernameOrEmail },
-            ],
+            $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }],
         });
 
         return user ? { username: user.username } : {};

@@ -35,7 +35,7 @@ describe('validateSignupUseCase', function () {
     it('should throw an error if username field is invalid', async function () {
         const body: SignupBody = {
             email: 'mario@domain.com',
-            username: 'MARIO',
+            username: 'ma',
             password: '1234567',
         };
 

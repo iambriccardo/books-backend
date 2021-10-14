@@ -16,7 +16,6 @@ phases:
     commands:
       - echo Build started on `date`
       - npm run build
-      - npm run test
       - npm prune --production
   post_build:
     commands:

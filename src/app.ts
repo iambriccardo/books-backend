@@ -24,7 +24,7 @@ class Server {
         this.app.use(helmet());
         this.app.use(cors());
         this.app.use(express.json({ limit: '50mb' }));
-        this.app.use(express.urlencoded({ limit: '50mb' }));
+        this.app.use(express.urlencoded({ extended: true, limit: '50mb' }));
         this.app.use(passport.initialize());
         this.app.use(defaultRateLimiter);
         this.app.use(

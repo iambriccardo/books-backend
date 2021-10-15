@@ -58,7 +58,7 @@ npm test
 
 ### Documentation
 
-Start the server and go to `/api-docs` endpoint or open the file `src/assets/openapi.json` on GitLab.
+Start the server and go to `/api-docs` endpoint or open the file `/assets/openapi.json` on GitLab.
 
 ### Authors
 

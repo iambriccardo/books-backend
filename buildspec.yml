@@ -22,6 +22,7 @@ phases:
       - echo Build completed on `date`
 artifacts:
   files:
+    - assets/**/*
     - build/**/*
     - package.json
     - package-lock.json

@@ -7,7 +7,7 @@
     "start": "node build/src/index.js",
     "build": "tsc",
     "postinstall": "npm run build",
-    "test": "nyc ./node_modules/.bin/_mocha 'tests/**/*.ts'",
+    "test": "nyc ./node_modules/.bin/_mocha 'tests/**/*.ts' --timeout 12000",
     "dev": "ts-node-dev --respawn --pretty --transpile-only --watch 'src/assets/*' src/index.ts",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
   },
@@ -69,6 +69,7 @@
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.3.1",
     "mocha": "^8.3.2",
+    "mockgoose": "^8.0.4",
     "nyc": "^15.1.0",
     "prettier": "^2.2.1",
     "ts-mockito": "^2.6.1",

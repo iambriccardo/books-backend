@@ -1,8 +1,11 @@
 import dotenv from 'dotenv';
-import fs from 'fs';
 
-if (fs.existsSync('.env')) {
-    dotenv.config({ path: '.env' });
+if (process.env.MODE == 'production') {
+    console.log('Loading production .env file.');
+    dotenv.config({ path: '.env.prod' });
+} else {
+    console.log('Loading development .env file.');
+    dotenv.config({ path: '.env.dev' });
 }
 
 export const API_VERSION = 'v1';

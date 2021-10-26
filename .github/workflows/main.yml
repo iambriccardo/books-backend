@@ -21,7 +21,7 @@ jobs:
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
         with:
-          images: ghcr.io/RiccardoBusetti/books-backend
+          images: ghcr.io/riccardobusetti/books-backend
           tag-sha: true
           tag-edge: false
           tag-latest: true
@@ -51,7 +51,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK }}
         with:
           command: monitor
-          image: "ghcr.io/RiccardoBusetti/books-backend:main"
+          image: "ghcr.io/riccardobusetti/books-backend:main"
           args: --file=Dockerfile --project-name=books-backend 
           
       - name: Push image

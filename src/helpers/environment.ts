@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 if (process.env.MODE == 'production') {
     console.log('Loading production .env file.');
     dotenv.config({ path: '.env.prod' });
-} else {
+} else if (process.env.MODE == 'development') {
     console.log('Loading development .env file.');
     dotenv.config({ path: '.env.dev' });
 }

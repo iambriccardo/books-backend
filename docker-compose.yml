@@ -2,6 +2,8 @@ version: '3'
 services:
   node:
     image: riccardobusetti/books-backend:main
+    env_file:
+      - .env
     ports:
       - 7000:7000
     volumes:

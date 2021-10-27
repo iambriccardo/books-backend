@@ -46,3 +46,8 @@ yarn.lock
 # Other
 /api_test.paw
 /build/
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

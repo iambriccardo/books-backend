@@ -52,5 +52,5 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_ACCESS_SECRET_KEY }}
           application_name: books-backend
           environment_name: books-backend
-          version_label: "app-ad5f-211027_102024"
+          version_label: "app-fdc1-211027_111844"
           region: eu-central-1

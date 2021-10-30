@@ -45,8 +45,8 @@ yarn.lock
 .nyc_output
 
 # Other
-/api_test.paw
-/build/
+/app/api_test.paw
+/app/build/
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*

@@ -1,0 +1,17 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = require("express");
+var authentication_1 = require("../../helpers/authentication");
+var base_1 = require("../../controllers/base");
+var get_profile_details_1 = require("../../controllers/profile/get-profile-details");
+var upload_profile_picture_1 = require("../../controllers/profile/upload-profile-picture");
+var multer_1 = require("../../helpers/multer");
+var edit_profile_1 = require("../../controllers/profile/edit-profile");
+var remove_profile_picture_1 = require("../../controllers/profile/remove-profile-picture");
+var router = express_1.Router();
+router.put('/edit', authentication_1.isAuthenticated, base_1.connectsToController(edit_profile_1.editProfileController));
+router.get('/details', authentication_1.isAuthenticated, base_1.connectsToController(get_profile_details_1.getProfileDetailsController));
+router.get('/details/:userId', authentication_1.isAuthenticated, base_1.connectsToController(get_profile_details_1.getProfileDetailsController));
+router.delete('/picture/remove', authentication_1.isAuthenticated, base_1.connectsToController(remove_profile_picture_1.removeProfilePictureController));
+router.post('/picture/upload', authentication_1.isAuthenticated, multer_1.acceptsSingleFile('profile-picture'), base_1.connectsToController(upload_profile_picture_1.uploadProfilePictureController));
+exports.default = router;

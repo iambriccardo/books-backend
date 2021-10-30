@@ -1,0 +1,17 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = require("express");
+var base_1 = require("../../controllers/base");
+var signup_1 = require("../../controllers/authentication/signup");
+require("../../helpers/authentication");
+var login_1 = require("../../controllers/authentication/login");
+var check_account_1 = require("../../controllers/authentication/check-account");
+var interceptors_1 = require("../../interceptors/interceptors");
+var change_password_1 = require("../../controllers/authentication/change-password");
+var authentication_1 = require("../../helpers/authentication");
+var router = express_1.Router();
+router.put('/password/change', authentication_1.isAuthenticated, base_1.connectsToController(change_password_1.changePasswordController));
+router.post('/check', base_1.connectsToController(check_account_1.checkAccountController, interceptors_1.useFieldValueToLowerCase('usernameOrEmail')));
+router.post('/login', base_1.connectsToController(login_1.loginController, interceptors_1.useFieldValueToLowerCase('usernameOrEmail')));
+router.post('/signup', base_1.connectsToController(signup_1.signupController, interceptors_1.useFieldValueToLowerCase('username'), interceptors_1.useFieldValueToLowerCase('email')));
+exports.default = router;

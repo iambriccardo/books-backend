@@ -1,18 +1,33 @@
-version: '3'
+version: "3.3"
 services:
-  node:
-    image: riccardobusetti/books-backend:main
+  nginx:
+    depends_on:
+      - backend
+    restart: always # because it is routing traffic to our entire app
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - '80:80'
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+     - '7000:7000'
+    restart: on-failure
+    container_name: backend
+    volumes:
+      - /app/node_modules # Inside the container, don't try to override this folder, just leave as is
     env_file:
       - .env
-    ports:
-      - 7000:7000
-    volumes:
-      - ./:/code
   mongo:
-    image: mongo
+    image: 'mongo'
+    container_name: 'mongo'
     ports:
-      - 27017:27017
-    volumes:
+      - '27017:27017'
+    volumes: 
       - mongodb:/data/db
+
 volumes:
- mongodb:
+  mongodb:

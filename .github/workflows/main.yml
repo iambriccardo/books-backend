@@ -62,6 +62,12 @@ jobs:
           file: ./backend/Dockerfile
           context: ./backend
 
+      - name: Get current time
+        uses: 1466587594/get-current-time@v2
+        id: current-time
+        with:
+          format: YYYYMMDD-HH
+
       - name: Generate deployment package
         run: zip -r deploy.zip . -x '*.git*'
 

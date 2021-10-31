@@ -62,11 +62,11 @@ jobs:
           file: ./backend/Dockerfile
           context: ./backend
 
-      - name: Get current time
-        uses: 1466587594/get-current-time@v2
-        id: current-time
+      - name: Generate build number
+        id: build_number
+        uses: einaregilsson/build-number@v3
         with:
-          format: YYYYMMDD-HH
+          token: ${{ secrets.REPOSITORY_TOKEN }}
 
       - name: Generate deployment package
         run: zip -r deploy.zip . -x '*.git*'
@@ -78,6 +78,6 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_ACCESS_SECRET_KEY }}
           application_name: books
           environment_name: Books-env
-          version_label: "books-deployment-${{ steps.current-time.outputs.time }}"
+          version_label: "books-deployment-${{ steps.build_number.outputs.build_number }}"
           region: eu-central-1
           deployment_package: deploy.zip

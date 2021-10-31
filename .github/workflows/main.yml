@@ -62,12 +62,16 @@ jobs:
           file: ./backend/Dockerfile
           context: ./backend
 
-      # - name: Deploy to EB
-      #   uses: einaregilsson/beanstalk-deploy@v14
-      #   with:
-      #     aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
-      #     aws_secret_key: ${{ secrets.AWS_ACCESS_SECRET_KEY }}
-      #     application_name: books-backend
-      #     environment_name: books-backend
-      #     version_label: "app-fdc1-211027_111844"
-      #     region: eu-central-1
+      - name: Generate deployment package
+        run: zip -r deploy.zip . -x '*.git*'
+
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v14
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_ACCESS_SECRET_KEY }}
+          application_name: books
+          environment_name: Books-env
+          version_label: "books-deployment-${{ steps.current-time.outputs.time }}"
+          region: eu-central-1
+          deployment_package: deploy.zip

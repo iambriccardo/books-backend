@@ -1,5 +1,7 @@
 # books-backend
 
+[![Publish Docker images](https://github.com/RiccardoBusetti/books-backend/actions/workflows/main.yml/badge.svg)](https://github.com/RiccardoBusetti/books-backend/actions/workflows/main.yml)
+
 This repository contains the backend logic that powers the Books platform via a RESTful API.
 
 _Note that this document is still in WIP, thus some information might be missed or not up to date._

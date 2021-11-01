@@ -56,7 +56,7 @@ jobs:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           SELL_BOOK_CONFIRM_BASE_URL: ${{ secrets.SELL_BOOK_CONFIRM_BASE_URL }}
 
-      - run: rm -r .nyc_output node_modules
+      - run: rm -r .nyc_output node_modules build
         working-directory: ./backend
 
       - name: Docker meta backend
@@ -110,8 +110,8 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
           aws_secret_key: ${{ secrets.AWS_ACCESS_SECRET_KEY }}
-          application_name: books
-          environment_name: Books-env
+          application_name: ${{ secrets.AWS_APPLICATION_NAME }}
+          environment_name: ${{ secrets.AWS_ENVIRONMENT_NAME }}
           version_label: "books-deployment-${{ steps.build_number.outputs.build_number }}"
           region: eu-central-1
           deployment_package: deploy.zip

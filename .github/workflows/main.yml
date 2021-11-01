@@ -21,14 +21,18 @@ jobs:
       - name: Check out
         uses: actions/checkout@v2
 
-      - name: Docker meta nginx
-        id: docker_meta_nginx
-        uses: crazy-max/ghaction-docker-meta@v1
+      - name: Send telegram message on push
+        uses: appleboy/telegram-action@master
         with:
-          images: riccardobusetti/books-nginx
-          tag-sha: true
-          tag-edge: false
-          tag-latest: true
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ${{ github.actor }} created commit:
+            Commit message: ${{ github.event.commits[0].message }}
+
+            Repository: ${{ github.repository }}
+
+            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
@@ -58,6 +62,15 @@ jobs:
 
       - run: rm -r .nyc_output node_modules build
         working-directory: ./backend
+
+      - name: Docker meta nginx
+        id: docker_meta_nginx
+        uses: crazy-max/ghaction-docker-meta@v1
+        with:
+          images: riccardobusetti/books-nginx
+          tag-sha: true
+          tag-edge: false
+          tag-latest: true
 
       - name: Docker meta backend
         id: docker_meta_backend

@@ -14,8 +14,8 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x]
-        mongodb-version: ["4.0", "4.2", "4.4"]
+        node-version: [14.x]
+        mongodb-version: ["4.0"]
 
     steps:
       - name: Check out
@@ -40,11 +40,11 @@ jobs:
         with:
           mongodb-version: ${{ matrix.mongodb-version }}
 
-      - run: cd backend
-
       - run: npm install
+        working-directory: ./backend
 
       - run: npm run test
+        working-directory: ./backend
         env:
           APP_NAME: ${{ secrets.APP_NAME }}
           PORT: ${{ secrets.PORT }}
@@ -57,8 +57,7 @@ jobs:
           SELL_BOOK_CONFIRM_BASE_URL: ${{ secrets.SELL_BOOK_CONFIRM_BASE_URL }}
 
       - run: rm -r .nyc_output node_modules
-
-      - run: cd ..
+        working-directory: ./backend
 
       - name: Docker meta backend
         id: docker_meta_backend

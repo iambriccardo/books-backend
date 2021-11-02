@@ -40,6 +40,9 @@ jobs:
         mongodb-version: ["4.0"]
 
     steps:
+      - name: Check out
+        uses: actions/checkout@v2
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
@@ -66,9 +69,6 @@ jobs:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           SELL_BOOK_CONFIRM_BASE_URL: ${{ secrets.SELL_BOOK_CONFIRM_BASE_URL }}
 
-      - run: rm -r .nyc_output node_modules build
-        working-directory: ./backend
-
       - name: Send telegram message with status
         if: always()
         uses: appleboy/telegram-action@master
@@ -83,6 +83,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Check out
+        uses: actions/checkout@v2
+
       - name: Docker meta nginx
         id: docker_meta_nginx
         uses: crazy-max/ghaction-docker-meta@v1
@@ -149,6 +152,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Check out
+        uses: actions/checkout@v2
+
       - name: Generate deployment package
         run: zip -r deploy.zip . -x '*.git*'
 

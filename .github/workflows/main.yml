@@ -132,12 +132,6 @@ jobs:
           file: ./backend/Dockerfile
           context: ./backend
 
-      - name: Generate build number
-        id: build_number
-        uses: einaregilsson/build-number@v3
-        with:
-          token: ${{ secrets.REPOSITORY_TOKEN }}
-
       - name: Send telegram message with status
         if: always()
         uses: appleboy/telegram-action@master
@@ -154,6 +148,12 @@ jobs:
     steps:
       - name: Check out
         uses: actions/checkout@v2
+
+      - name: Generate build number
+        id: build_number
+        uses: einaregilsson/build-number@v3
+        with:
+          token: ${{ secrets.REPOSITORY_TOKEN }}
 
       - name: Generate deployment package
         run: zip -r deploy.zip . -x '*.git*'

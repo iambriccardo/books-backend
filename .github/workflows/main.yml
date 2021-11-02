@@ -141,6 +141,34 @@ jobs:
           message: |
             The job ${{ github.job }} of ${{ github.repository }} has status ${{ job.status }}
 
+  security:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run Snyk to check nginx Docker image for vulnerabilities
+        uses: snyk/actions/docker@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          image: riccardobusetti/books-nginx:main
+
+      - name: Run Snyk to check backend Docker image for vulnerabilities
+        uses: snyk/actions/docker@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          image: riccardobusetti/books-backend:main
+
+      - name: Send telegram message with status
+        if: always()
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            The job ${{ github.job }} of ${{ github.repository }} has status ${{ job.status }}
+
   deploy:
     needs: test
     runs-on: ubuntu-latest

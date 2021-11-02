@@ -27,8 +27,8 @@ jobs:
             Repository: ${{ github.repository }}
 
             See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+
   test:
-    if: "!contains(github.event.head_commit.message, 'skip ci')"
     needs: setup
     runs-on: ubuntu-latest
 
@@ -69,11 +69,9 @@ jobs:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
-            New status ${{ job.status }} for ${{ github.job }} of ${{ github.repository }}
+            The job ${{ github.job }} of of ${{ github.repository }} has status ${{ job.status }}
 
-            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
   build:
-    if: "!contains(github.event.head_commit.message, 'skip ci')"
     needs: test
     runs-on: ubuntu-latest
 
@@ -130,6 +128,19 @@ jobs:
         with:
           token: ${{ secrets.REPOSITORY_TOKEN }}
 
+      - name: Send telegram message with status
+        if: always()
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            The job ${{ github.job }} of of ${{ github.repository }} has status ${{ job.status }}
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Generate deployment package
         run: zip -r deploy.zip . -x '*.git*'
 
@@ -151,6 +162,4 @@ jobs:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
-            New status ${{ job.status }} for ${{ github.job }} of ${{ github.repository }}
-
-            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+            The job ${{ github.job }} of of ${{ github.repository }} has status ${{ job.status }}

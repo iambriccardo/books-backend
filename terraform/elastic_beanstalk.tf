@@ -12,7 +12,7 @@ resource "aws_elastic_beanstalk_environment" "EB_environment" {
     # we need to specify what profile is used for the instances!
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "IamInstanceProfile"
-    value     = "aws-elasticbeanstalk-ec2-role"
+    value     = aws_iam_instance_profile.beanstalk_ec2.name
   }
 
   # Define autoscaling boundaries: 

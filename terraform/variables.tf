@@ -1,11 +1,11 @@
 # The EB App's Name
 variable "elasticapp" {
-    default = "test-app-2"
+    default = "test-app"
 }
 
 # The EB Env's Name
 variable "elasticenv" {
-    default = "test-env-2"
+    default = "test-env"
 }
 
 variable "region" {

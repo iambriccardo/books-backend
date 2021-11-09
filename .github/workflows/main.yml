@@ -78,43 +78,8 @@ jobs:
           message: |
             The job ${{ github.job }} of ${{ github.repository }} has status ${{ job.status }}
 
-  security:
-    needs: test
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Check out
-        uses: actions/checkout@v2
-
-      # - name: Build the backend Docker image
-      #   run: docker build -t riccardobusetti/books-backend-security .
-      #   working-directory: ./backend
-
-      # - name: Run Snyk to check backend Docker image for vulnerabilities
-      #   continue-on-error: true
-      #   uses: snyk/actions/docker@master
-      #   env:
-      #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      #   with:
-      #     image: riccardobusetti/books-backend-security
-      #     args: --file=./backend/Dockerfile
-
-      # - name: Upload result to GitHub Code Scanning
-      #   uses: github/codeql-action/upload-sarif@v1
-      #   with:
-      #     sarif_file: snyk.sarif
-
-      - name: Send telegram message with status
-        if: always()
-        uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            The job ${{ github.job }} of ${{ github.repository }} has status ${{ job.status }}
-
   build:
-    needs: security
+    needs: test
     runs-on: ubuntu-latest
 
     steps:
@@ -177,7 +142,7 @@ jobs:
             The job ${{ github.job }} of ${{ github.repository }} has status ${{ job.status }}
 
   deploy:
-    needs: security
+    needs: test
     runs-on: ubuntu-latest
 
     steps:

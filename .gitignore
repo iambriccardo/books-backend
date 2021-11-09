@@ -53,7 +53,7 @@ yarn.lock
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
 
-terraform/.terraform
+.terraform
 *.tfstate
 *.tfstate.backup
 .terraform.lock.hcl

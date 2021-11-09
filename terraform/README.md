@@ -1,14 +1,5 @@
 # Terraform Configuration
 
-## AWS Authentication
-The credentials for AWS Authentication are currently taken from the machine's environment variables. To work successfully, ensure to have following variables declared:
-- AWS_ACCESS_KEY_ID
-- AWS_SECRET_ACCESS_KEY
-
-## Remote State
-The Terraform state is saved remotely using an AWS S3 Bucket. To initialize the remote state, head to the /remote-state folder and run `terraform init && terraform apply`. This will create the resources required to store the state remotely. 
-NOTE: this has to be done BEFORE running `terraform init` from the ~/terraform directory!
-
 ## Infrastructure Definition
 The configuration contained in this Terraform Setup defines an AWS Infrastructure composed by the following resources and services:
 - **Elastic Beanstalk**
@@ -18,18 +9,22 @@ The configuration contained in this Terraform Setup defines an AWS Infrastructur
     - A *IAM Instance Profile*, to manage the EC2 Instance within Elastic Beanstalk
     - A *IAM Role* associated to the Instance Profile
     - 3 *IAM Policy Attachments*, to define the IAM Role's Permissions
+
+## Backend and Remote State
+### Old Approach
+The first approach to remote Terraform State saving exploited AWS's **S3 Buckets**. The initial approach contained a dedicated `./remote-state` folder, with a Terraform configuration used to initialize the S3 Bucket and the KMS Encryption, and the `backend.tf` file was configured to use that S3 Bucket. This old configuration exploited following resources:
 - **S3**
     - An *S3 Bucket*, to store the Terraform State remotely
     - A *S3 Bucket Public Access Block* to ensure that the S3 Bucket is private
-
-### Note on KMS Encryption
-For further security, the S3 Bucket containing the remote state can be encrypted using AWS's KMS Service. This exploits following resources:
 - **KMS**
     - A *KMS Key* to encrypt the S3 Bucket
     - A *KMS Alias* to access the encrypted bucket
+- **DynamoDB**
+    - A *DynamoDB Table*, to prevent multiple users from modifying Terraform State in the S3 Bucket
 
-Since these resources are not included in the Free Tier, the related lines are currently commented. Affected lines are *backend.tf:[6-7]* and *remote-state/state.tf:{[1-12], [24-31]}*
+### Current Approach
+In order to integrate Terraform with Github Actions, the aforementioned approach was replaced with **Terraform Cloud**. Currently, the `backend.tf` file is configured to save the state remotely on Terraform Cloud. This approach allows to define Elastic Beanstalk's Environment Variables inside Terraform (without having to define them from AWS UI or CLI) and to retrieve their values from Terraform Cloud.
 
-
-## AWS Credentials
-To avoid publishing credentials, every terraform action for the project requires the path to a shared credentials file. Ensure to have AWS CLI installed, then head to the ~/.aws/credentials path, to find the credentials file. This file is generated when running the `aws configure` command
+## AWS Authentication
+Different approaches were tested to implement AWS Authentication. The current approach exploits **Terraform Cloud's Environment Variables**: to ensure the correct execution, `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` must be defined as Environment Variables from within Terraform Cloud.
+Before using Terraform Cloud, AWS Authentication was performed using the local *~/.aws/credentials* file

@@ -1,5 +1,10 @@
 # Terraform Configuration
 
+## AWS Authentication
+The credentials for AWS Authentication are currently taken from the machine's environment variables. To work successfully, ensure to have following variables declared:
+- AWS_ACCESS_KEY_ID
+- AWS_SECRET_ACCESS_KEY
+
 ## Remote State
 The Terraform state is saved remotely using an AWS S3 Bucket. To initialize the remote state, head to the /remote-state folder and run `terraform init && terraform apply`. This will create the resources required to store the state remotely. 
 NOTE: this has to be done BEFORE running `terraform init` from the ~/terraform directory!
@@ -16,9 +21,14 @@ The configuration contained in this Terraform Setup defines an AWS Infrastructur
 - **S3**
     - An *S3 Bucket*, to store the Terraform State remotely
     - A *S3 Bucket Public Access Block* to ensure that the S3 Bucket is private
+
+### Note on KMS Encryption
+For further security, the S3 Bucket containing the remote state can be encrypted using AWS's KMS Service. This exploits following resources:
 - **KMS**
     - A *KMS Key* to encrypt the S3 Bucket
     - A *KMS Alias* to access the encrypted bucket
+
+Since these resources are not included in the Free Tier, the related lines are currently commented. Affected lines are *backend.tf:[6-7]* and *remote-state/state.tf:{[1-12], [24-31]}*
 
 
 ## AWS Credentials

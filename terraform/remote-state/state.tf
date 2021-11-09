@@ -11,6 +11,8 @@
 #   target_key_id = aws_kms_key.terraform-bucket-key.key_id
 # }
 
+# TODO: remove backend on S3
+
 resource "aws_s3_bucket" "terraform-state" {
   # This resource creates an s3 Bucket to store the Terraform State
   bucket = "books-backend-tfstate-687187154654"

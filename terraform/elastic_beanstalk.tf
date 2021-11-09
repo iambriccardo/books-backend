@@ -15,6 +15,8 @@ resource "aws_elastic_beanstalk_environment" "EB_environment" {
     value     = aws_iam_instance_profile.beanstalk_ec2.name
   }
 
+  #TODO: add env variables for ebs!! https://stackoverflow.com/questions/39185178/how-to-pass-aws-elastic-beanstalk-environment-settings-to-a-terraform-module
+
   # Define autoscaling boundaries: 
   setting {
     namespace = "aws:autoscaling:asg"

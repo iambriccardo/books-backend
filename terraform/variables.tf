@@ -20,10 +20,6 @@ variable "solution_stack_name" {
     default = "64bit Amazon Linux 2 v3.4.8 running Docker"
 }
 
-variable "shared_credentials_file" {
-    type = string
-}
-
 variable "autoscaling_min" {
     default = 1
 }

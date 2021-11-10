@@ -1,5 +1,14 @@
 # Terraform Configuration
 
+## Structure
+```
+├── backend.tf
+├── elastic_beanstalk.tf 
+├── iam_role.tf 
+├── main.tf 
+└── variables.tf
+```
+
 ## Infrastructure Definition
 The configuration contained in this Terraform Setup defines an AWS Infrastructure composed by the following resources and services:
 - **Elastic Beanstalk**
@@ -28,3 +37,6 @@ In order to integrate Terraform with Github Actions, the aforementioned approach
 ## AWS Authentication
 Different approaches were tested to implement AWS Authentication. The current approach exploits **Terraform Cloud's Environment Variables**: to ensure the correct execution, `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` must be defined as Environment Variables from within Terraform Cloud.
 Before using Terraform Cloud, AWS Authentication was performed using the local *~/.aws/credentials* file
+
+## Elastic Beanstalk Environment Settings
+The configuration of Elastic Beanstalk is entirely defined in the `elastic_beanstalk.tf` file. The settings of the Elastic Beanstalk Environment are divided into two main categories, each defined using a dedicated *dynamic setting* block. <br> The first set of settings defines the general Environment's configuration parameters, namely *autoscaling boundaries* and *IAM Instance Profile*, by taking the attributes from a local value. Since these are general configuration parameters, they can be hard-coded within the repository. <br> The second set of settings defines all the Environment Variables, by looping on a local map. These variables contain sensitive information which should not be hard-coded in the repository: for this reason, their values are defined in Terraform Cloud, and referred to simply as `var.<ENV_VAR_NAME>` inside the repository.

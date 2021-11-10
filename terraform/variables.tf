@@ -1,11 +1,9 @@
-# The EB App's Name
 variable "elasticapp" {
-    default = "test-app"
+    default = "books-app"
 }
 
-# The EB Env's Name
 variable "elasticenv" {
-    default = "test-env"
+    default = "books-env"
 }
 
 variable "region" {
@@ -27,3 +25,15 @@ variable "autoscaling_min" {
 variable "autoscaling_max" {
     default = 1
 }
+
+
+# Terraform Cloud Variables:
+variable "APP_NAME" {}
+variable "PORT" {}
+variable "MONGO_DB_URL" {}
+variable "SESSION_SECRET_KEY" {}
+variable "ENABLE_LOGGING" {}
+variable "CLOUDINARY_URL" {}
+variable "GCP_API_KEY" {}
+variable "SECRET_KEY" {}
+variable "SELL_BOOK_CONFIRM_BASE_URL" {}

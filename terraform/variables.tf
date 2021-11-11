@@ -1,29 +1,29 @@
 variable "elasticapp" {
-    default = "books-app"
+  default = "books-app"
 }
 
 variable "elasticenv" {
-    default = "books-env"
+  default = "books-env"
 }
 
 variable "region" {
-    default = "eu-central-1"
+  default = "eu-central-1"
 }
 
 variable "profile" {
-    default = "default"
+  default = "default"
 }
 
 variable "solution_stack_name" {
-    default = "64bit Amazon Linux 2 v3.4.8 running Docker"
+  default = "64bit Amazon Linux 2 v3.4.8 running Docker"
 }
 
 variable "autoscaling_min" {
-    default = 1
+  default = 1
 }
 
 variable "autoscaling_max" {
-    default = 1
+  default = 1
 }
 
 

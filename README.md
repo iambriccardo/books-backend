@@ -12,6 +12,7 @@ _Note that this document is still in WIP, thus some information might be missed 
 * [How to run](#how-to-run)
 * [How to test](#how-to-test)
 * [Documentation](#documentation)
+* [CI/CD Pipeline](#ci/cd-pipeline)
 * [Authors](#authors)
 
 ### Installation
@@ -61,6 +62,10 @@ npm test
 ### Documentation
 
 Start the server and go to `/api-docs` endpoint or open the file `/assets/openapi.json` on GitLab.
+
+### CI/CD Pipeline
+
+The report for the CI/CD pipeline can be found [here](CICD-REPORT.md).
 
 ### Authors
 

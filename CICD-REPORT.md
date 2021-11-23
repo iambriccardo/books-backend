@@ -159,6 +159,18 @@ The first set of settings defines the general Environment's configuration parame
 
 The second set of settings defines all the Environment Variables, by looping on a local map. These variables contain sensitive information which should not be hard-coded in the repository: for this reason, their values are defined in Terraform Cloud, and referred to simply as `var.` inside the repository.
 
+### Cross Platform Deployment
+
+A possible future improvement is the support of different cloud providers. For reasons stated in the upcoming section, this project was deployed using AWS, and Terraform was configured to build an infrastructure on said cloud provider. However, it is possible to further generalize the current pipeline in order for it to support multiple providers.
+
+First, the pipeline should provide a way to choose the cloud provider: the most basic approach would be to define some keywords to be specified in commits' messages (eg: *AWS*, *Azure*, *Google*).
+
+Next, it is necessary to configure Terraform so that it can behave differently according to the required cloud provider.
+
+A first approach to this was to restructure the Terraform directory using modules: by creating a new module for each provider, and configuring the root module to coordinate those modules, this could be possible. However, every execution of `terraform apply` would trigger every module, and therefore deploy on all cloud providers. There exists a `-target=` parameter, but it can only be used to target a specific resource to be planned or applied (eg: *elastic_beanstalk_environment*), and it is not applicable to target a whole module.
+
+The simpler approach would be to define different Terraform directories, one per different cloud provider. Then, the *provision stage* in the `main.yml` should be modified, by having the `working-directory:` parameter point towards the directory related to the chosen cloud provider.
+
 ## AWS
 
 ### Motivations
